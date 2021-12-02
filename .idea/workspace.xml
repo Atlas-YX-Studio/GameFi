@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25c36b0d-e7de-42fa-aecb-e0cbc952918b" name="Changes" comment="game fi" />
+    <list default="true" id="25c36b0d-e7de-42fa-aecb-e0cbc952918b" name="Changes" comment="game fi">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -238,7 +241,7 @@
       <workItem from="1638347587749" duration="1099000" />
       <workItem from="1638412453360" duration="13622000" />
       <workItem from="1638437698544" duration="572000" />
-      <workItem from="1638438732790" duration="321000" />
+      <workItem from="1638438732790" duration="1091000" />
     </task>
     <task id="LOCAL-00001" summary="recover">
       <created>1634203104579</created>
@@ -275,7 +278,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638438995462</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="game fi">
+      <created>1638439068240</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1638439068240</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

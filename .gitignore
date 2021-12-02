@@ -1,7 +1,8 @@
 # Compiled class file
 *.class
 /.idea/
-/target/
+/mybatis-generator/
+**/target
 
 # Log file
 *.log
