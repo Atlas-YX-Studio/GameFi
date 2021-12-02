@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25c36b0d-e7de-42fa-aecb-e0cbc952918b" name="Changes" comment="game fi" />
+    <list default="true" id="25c36b0d-e7de-42fa-aecb-e0cbc952918b" name="Changes" comment="game fi">
+      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,6 +59,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
   <component name="ProjectId" id="1zUVC54Ovs4ru65RCruC4DyQpb7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -69,12 +78,13 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/bixin/gameFi/aww/bean/DO" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.18095239" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="ReactorSettings">
@@ -95,7 +105,7 @@
       <recent name="com.bixin.nft.bean.vo" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.IdoServerApplication">
+  <component name="RunManager" selected="Spring Boot.GameFiApplication">
     <configuration name="BossIncomeTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.bixin.ido.server.test.BossIncomeTest" />
       <module name="bixin-ido-server" />
@@ -173,6 +183,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="GameFiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="GameFi" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.bixin.gameFi.GameFiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="IdoServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="gameFI" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.bixin.gameFi.GameFiApplication" />
@@ -225,7 +242,9 @@
       <workItem from="1638240658874" duration="3536000" />
       <workItem from="1638340854062" duration="720000" />
       <workItem from="1638347587749" duration="1099000" />
-      <workItem from="1638412453360" duration="12880000" />
+      <workItem from="1638412453360" duration="13622000" />
+      <workItem from="1638437698544" duration="572000" />
+      <workItem from="1638438732790" duration="223000" />
     </task>
     <task id="LOCAL-00001" summary="recover">
       <created>1634203104579</created>
@@ -248,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638429354096</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="game fi">
+      <created>1638436443135</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1638436443135</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
