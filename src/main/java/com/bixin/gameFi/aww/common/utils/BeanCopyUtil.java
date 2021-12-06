@@ -1,4 +1,4 @@
-package com.bixin.gameFi.aww.utils;
+package com.bixin.gameFi.aww.common.utils;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;

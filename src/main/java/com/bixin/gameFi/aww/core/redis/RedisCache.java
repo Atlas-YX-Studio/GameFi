@@ -1,8 +1,8 @@
 package com.bixin.gameFi.aww.core.redis;
 
 import com.alibaba.fastjson.JSON;
-import com.bixin.gameFi.aww.utils.BeanCopyUtil;
-import com.bixin.gameFi.aww.utils.LocalDateTimeUtil;
+import com.bixin.gameFi.aww.common.utils.BeanCopyUtil;
+import com.bixin.gameFi.aww.common.utils.LocalDateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;

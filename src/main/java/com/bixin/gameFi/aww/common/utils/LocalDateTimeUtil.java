@@ -1,4 +1,4 @@
-package com.bixin.gameFi.aww.utils;
+package com.bixin.gameFi.aww.common.utils;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
