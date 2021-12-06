@@ -7,7 +7,7 @@ spring:
 ## application name
 spring:
   application:
-    name: ido-server-server
+    name: gameFi
 
 server:
   port: 8999
