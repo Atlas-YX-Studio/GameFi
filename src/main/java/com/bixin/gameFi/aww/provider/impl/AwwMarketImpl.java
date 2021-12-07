@@ -1,6 +1,6 @@
 package com.bixin.gameFi.aww.provider.impl;
 
-import com.bixin.gameFi.aww.bean.dto.GameFISellEventDto;
+import com.bixin.gameFi.aww.bean.dto.TakeOrderEventDto;
 import com.bixin.gameFi.aww.provider.IGameFiProvider;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
  * create   2021/12/2
  */
 @Component
-public class AwwMarketImpl implements IGameFiProvider<GameFISellEventDto> {
+public class AwwMarketImpl implements IGameFiProvider<TakeOrderEventDto> {
     @Override
-    public void dispatcher(GameFISellEventDto gameFISellEventDto) {
+    public void dispatcher(TakeOrderEventDto gameFISellEventDto) {
 
     }
 }
