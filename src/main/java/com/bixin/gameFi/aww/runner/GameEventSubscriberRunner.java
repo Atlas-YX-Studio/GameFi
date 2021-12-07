@@ -1,6 +1,6 @@
 package com.bixin.gameFi.aww.runner;
 
-import com.bixin.gameFi.aww.common.enums.GameType;
+import com.bixin.gameFi.aww.common.enums.ARMGameEventType;
 import com.bixin.gameFi.aww.common.queue.GameEventBlockingQueue;
 import com.bixin.gameFi.aww.config.GameConfig;
 import com.bixin.gameFi.aww.core.factory.NamedThreadFactory;
@@ -99,11 +99,11 @@ public class GameEventSubscriberRunner implements ApplicationRunner {
             EventFilter eventFilter = new EventFilter(Collections.singletonList(gameConfig.getEvent().getWebsocketContractAddress()));
             Flowable<EventNotification> notificationFlowable = subscriber.newTxnSendRecvEventNotifications(eventFilter);
 
-            Map<GameType, LinkedBlockingQueue<JsonNode>> queueMap = GameEventBlockingQueue.queueMap;
+            Map<ARMGameEventType, LinkedBlockingQueue<JsonNode>> queueMap = GameEventBlockingQueue.queueMap;
 
             notificationFlowable.blockingIterable().forEach(b -> {
                 EventNotificationResult eventResult = b.getParams().getResult();
-                GameType eventType = GameType.of(getEventName(eventResult.getTypeTag()));
+                ARMGameEventType eventType = ARMGameEventType.of(getEventName(eventResult.getTypeTag()));
                 JsonNode data = eventResult.getData();
 
                 // FIXME: 2021/8/30 debug
