@@ -47,3 +47,21 @@ CREATE TABLE `aww_match_records`
   AUTO_INCREMENT = 10000
   DEFAULT CHARSET = utf8mb4 COMMENT ='nft事件表';
 
+
+DROP TABLE IF EXISTS aww_arm_info;
+CREATE TABLE `aww_arm_info`
+(
+    `id`             bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `arm_id`         bigint(20) NOT NULL COMMENT 'nft id',
+    `name`           varchar(128)   NOT NULL COMMENT '名称',
+    `rarity`         tinyint(1) NOT NULL COMMENT '稀有度',
+    `stamina`        tinyint(1) NOT NULL COMMENT '体力值',
+    `win_rate_bonus` tinyint(1) NOT NULL COMMENT '附加胜率',
+    `image_link`     varchar(256) NOT NULL COMMENT '图片链接',
+    `image_data`     mediumtext COMMENT '图片数据',
+    `created`        tinyint(1) NOT NULL COMMENT '已创建',
+    `create_time`    bigint(20) NOT NULL COMMENT '创建时间',
+    `update_time`    bigint(20) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY           `idx_nft_id` (`nft_id`),
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COMMENT='手臂信息记录表';
