@@ -1,4 +1,4 @@
-package com.bixin.gameFi.aww.provider;
+package com.bixin.gameFi.aww.core.provider;
 
 /**
  * @author zhangcheng

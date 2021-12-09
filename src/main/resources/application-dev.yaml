@@ -29,7 +29,10 @@ logging:
 ## ------------------------------业务相关配置写到下面-------------------------
 gamefi:
   aww:
-    event:
+    common:
+      url: https://main-seed.starcoin.org
+      contract-address: 64c66296d98d6ab08579b14487157e05
+      chain-id: 1
+    websocket:
       websocket-host: 60.205.3.84
       websocket-port: 8970
-      websocket-contract-address: 64c66296d98d6ab08579b14487157e05

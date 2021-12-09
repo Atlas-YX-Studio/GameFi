@@ -1,4 +1,4 @@
-package com.bixin.gameFi.aww.provider;
+package com.bixin.gameFi.aww.core.provider;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

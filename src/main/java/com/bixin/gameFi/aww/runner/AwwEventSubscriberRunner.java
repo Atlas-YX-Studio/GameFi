@@ -1,8 +1,8 @@
 package com.bixin.gameFi.aww.runner;
 
-import com.bixin.gameFi.aww.common.enums.ARMGameEventType;
-import com.bixin.gameFi.aww.common.queue.GameEventBlockingQueue;
-import com.bixin.gameFi.aww.config.GameConfig;
+import com.bixin.gameFi.aww.common.enums.AwwEventType;
+import com.bixin.gameFi.aww.common.queue.AwwEventBlockingQueue;
+import com.bixin.gameFi.aww.config.AwwConfig;
 import com.bixin.gameFi.aww.core.factory.NamedThreadFactory;
 import com.bixin.gameFi.aww.core.redis.RedisCache;
 import com.bixin.gameFi.aww.common.utils.LocalDateTimeUtil;
@@ -43,10 +43,10 @@ import java.util.concurrent.locks.LockSupport;
  */
 @Slf4j
 @Component
-public class GameEventSubscriberRunner implements ApplicationRunner {
+public class AwwEventSubscriberRunner implements ApplicationRunner {
 
     @Resource
-    GameConfig gameConfig;
+    AwwConfig gameConfig;
     @Resource
     RedisCache redisCache;
 
@@ -93,17 +93,17 @@ public class GameEventSubscriberRunner implements ApplicationRunner {
         String[] sourceArgs = 0 == args.getSourceArgs().length ? new String[]{""} : args.getSourceArgs();
         log.info("GameEventSubscriberRunner start running [{}]", sourceArgs);
         try {
-            WebSocketService service = new WebSocketService("ws://" + gameConfig.getEvent().getWebsocketHost() + ":" + gameConfig.getEvent().getWebsocketPort(), true);
+            WebSocketService service = new WebSocketService("ws://" + gameConfig.getWebsocket().getWebsocketHost() + ":" + gameConfig.getWebsocket().getWebsocketPort(), true);
             service.connect();
             StarcoinSubscriber subscriber = new StarcoinSubscriber(service);
-            EventFilter eventFilter = new EventFilter(Collections.singletonList(gameConfig.getEvent().getWebsocketContractAddress()));
+            EventFilter eventFilter = new EventFilter(Collections.singletonList(gameConfig.getCommon().getContractAddress()));
             Flowable<EventNotification> notificationFlowable = subscriber.newTxnSendRecvEventNotifications(eventFilter);
 
-            Map<ARMGameEventType, LinkedBlockingQueue<JsonNode>> queueMap = GameEventBlockingQueue.queueMap;
+            Map<AwwEventType, LinkedBlockingQueue<JsonNode>> queueMap = AwwEventBlockingQueue.queueMap;
 
             notificationFlowable.blockingIterable().forEach(b -> {
                 EventNotificationResult eventResult = b.getParams().getResult();
-                ARMGameEventType eventType = ARMGameEventType.of(getEventName(eventResult.getTypeTag()));
+                AwwEventType eventType = AwwEventType.of(getEventName(eventResult.getTypeTag()));
                 JsonNode data = eventResult.getData();
 
                 // FIXME: 2021/8/30 debug
@@ -128,7 +128,7 @@ public class GameEventSubscriberRunner implements ApplicationRunner {
             long duration = initTime + (atomicSum.incrementAndGet() - 1) * initIntervalTime;
             duration = Math.min(duration, maxIntervalTime);
             log.error("GameEventSubscriberRunner run exception count {}, next retry {}, params {}",
-                    atomicSum.get(), duration, gameConfig.getEvent(), e);
+                    atomicSum.get(), duration, gameConfig.getWebsocket(), e);
             LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(duration));
             DefaultApplicationArguments applicationArguments = new DefaultApplicationArguments("retry " + atomicSum.get());
             this.process(applicationArguments);

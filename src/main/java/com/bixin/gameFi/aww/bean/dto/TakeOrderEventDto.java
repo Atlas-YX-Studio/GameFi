@@ -1,11 +1,14 @@
 package com.bixin.gameFi.aww.bean.dto;
 
+import com.bixin.gameFi.aww.bean.DO.AwwMatchRecords;
+import com.bixin.gameFi.aww.common.utils.LocalDateTimeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * @author zhangcheng
@@ -25,4 +28,52 @@ public class TakeOrderEventDto {
     private TokenCode pay_token_code;
     private long time;
 
+    public static AwwMatchRecords of(TakeOrderEventDto dto) {
+        Long currentTime = LocalDateTimeUtil.getMilliByTime(LocalDateTime.now());
+        AwwMatchRecords.AwwMatchRecordsBuilder builder = AwwMatchRecords.builder()
+                .sellAddress(dto.getSeller())
+                .buyAddress(dto.getBuyer())
+//                .awwId()
+//                .groupId()
+//                .icon()  
+//                .groupName()
+//                .awwName()
+                .price(dto.getSelling_price())
+                .fee(dto.getPlatform_fee())
+                .matchTime(dto.getTime())
+                .createTime(currentTime)
+                .updateTime(currentTime);
+
+        return builder.build();
+    }
+
 }
+
+/*
+
+    private Long id;
+
+    private String sellAddress;
+
+    private String buyAddress;
+
+    private Long awwId;
+
+    private Long groupId;
+
+    private String icon;
+
+    private String groupName;
+
+    private String awwName;
+
+    private BigDecimal price;
+
+    private BigDecimal fee;
+
+    private Long matchTime;
+
+    private Long createTime;
+
+    private Long updateTime;
+*/

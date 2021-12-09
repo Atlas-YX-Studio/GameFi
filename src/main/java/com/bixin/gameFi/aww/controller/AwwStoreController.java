@@ -51,7 +51,7 @@ public class AwwStoreController {
 
         return P.success(awwMarkets, hasNext);
     }
-    
+
     @GetMapping("/getSellRecords")
     public P getSellRecords(@RequestParam(value = "address", defaultValue = "") String address,
                             @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,

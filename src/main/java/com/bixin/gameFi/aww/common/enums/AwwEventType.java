@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ARMGameEventType {
+public enum AwwEventType {
 
     PLACE_ORDER_EVENT("ARMPlaceOrderEvent"),
     TAKE_ORDER_EVENT("ARMTakeOrderEvent"),
@@ -19,7 +19,7 @@ public enum ARMGameEventType {
 
     private String desc;
 
-    public static ARMGameEventType of(String desc) {
+    public static AwwEventType of(String desc) {
         switch (desc) {
             case "ARMPlaceOrderEvent":
                 return PLACE_ORDER_EVENT;

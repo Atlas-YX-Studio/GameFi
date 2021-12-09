@@ -13,20 +13,27 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "gamefi.aww")
-public class GameConfig {
+public class AwwConfig {
 
-    private Event event = new Event();
+    private Common common = new Common();
+    private Websocket websocket = new Websocket();
+
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Event {
-
-        private String websocketHost;
-        private String websocketPort;
-        private String websocketContractAddress;
-
+    public static class Common {
+        private String url;
+        private String contractAddress;
+        private int chainId;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Websocket {
+        private String websocketHost;
+        private String websocketPort;
+    }
 
 }
