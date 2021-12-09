@@ -335,4 +335,28 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByPages" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    aww_match_records
+    <where>
+      <if test="sellAddress != null">
+        AND sell_address = #{sellAddress}
+      </if>
+      <if test="buyAddress != null">
+        AND buy_address = #{buyAddress}
+      </if>
+    </where>
+    ORDER BY
+    <if test="sort != null">
+      ${sort}
+    </if>
+    <if test="pageFrom != null and pageSize !=null">
+      limit #{pageFrom},#{pageSize}
+    </if>
+  </select>
+
+
 </mapper>

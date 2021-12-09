@@ -335,4 +335,33 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByPages" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    aww_market
+    <where>
+      <if test="groupId != null">
+        AND group_id = #{groupId}
+      </if>
+      <if test="rarity != null">
+        AND rarity = #{rarity}
+      </if>
+      <if test="startPrice != null">
+        AND sell_price &gt;= #{startPrice}
+      </if>
+      <if test="endPrice != null">
+        AND sell_price &lt;= #{endPrice}
+      </if>
+    </where>
+    ORDER BY
+    <if test="sort != null">
+      ${sort}
+    </if>
+    <if test="pageFrom != null and pageSize !=null">
+      limit #{pageFrom},#{pageSize}
+    </if>
+  </select>
+
 </mapper>

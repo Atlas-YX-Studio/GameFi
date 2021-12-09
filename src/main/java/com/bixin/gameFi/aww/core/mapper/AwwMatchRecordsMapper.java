@@ -5,6 +5,7 @@ import com.bixin.gameFi.aww.core.wrapDDL.AwwMatchRecordsDDL;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface AwwMatchRecordsMapper {
@@ -29,4 +30,7 @@ public interface AwwMatchRecordsMapper {
     int updateByPrimaryKeySelective(AwwMatchRecords record);
 
     int updateByPrimaryKey(AwwMatchRecords record);
+
+    List<AwwMatchRecords> selectByPages(Map<String, Object> paramMap);
+
 }

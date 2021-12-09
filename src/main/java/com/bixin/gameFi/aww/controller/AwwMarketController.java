@@ -1,75 +1,65 @@
 package com.bixin.gameFi.aww.controller;
 
+import com.bixin.gameFi.aww.bean.DO.AwwMarket;
 import com.bixin.gameFi.aww.common.contants.PathConstant;
 import com.bixin.gameFi.aww.common.response.P;
+import com.bixin.gameFi.aww.service.IAwwMarketService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zhangcheng
  * create  2021/12/9
  */
 @RestController
-@RequestMapping(PathConstant.AWW_REQUEST_PATH_PREFIX +"/market")
+@RequestMapping(PathConstant.AWW_REQUEST_PATH_PREFIX + "/market")
 public class AwwMarketController {
 
+    @Resource
+    IAwwMarketService awwMarketService;
 
     @GetMapping("/getALL")
-    public P getALlByPage(@RequestParam(value = "groupId", defaultValue = "0") long groupId,
-                          @RequestParam(value = "startPrice", defaultValue = "0") long startPrtice,
-                          @RequestParam(value = "endPrice", defaultValue = "0") long endPrice,
-                          @RequestParam(value = "sort", defaultValue = "0") int sort,
-                          @RequestParam(value = "rarity", defaultValue = "all") String rarity,
-                          @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
-                          @RequestParam(value = "pageNum", defaultValue = "0") long pageNum) {
+    public P getALL(@RequestParam(value = "groupId", defaultValue = "0") long groupId,
+                    @RequestParam(value = "startPrice", defaultValue = "0") long startPrice,
+                    @RequestParam(value = "endPrice", defaultValue = "0") long endPrice,
+                    @RequestParam(value = "sort", defaultValue = "0") int sort,
+                    @RequestParam(value = "rarity", defaultValue = "all") String rarity,
+                    @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
+                    @RequestParam(value = "pageNum", defaultValue = "0") long pageNum) {
 
-//        if (pageNum < 0 || pageSize <= 0 || groupId < 0
-//                || StringUtils.isEmpty(open) || StringUtils.isEmpty(currency)) {
-//            return P.failed("parameter is invalid");
-//        }
-//        List<Map<String, Object>> maps = nftMarketService.selectByPage(true, pageSize + 1, pageNum, sort, groupId, currency, open);
-//        if (CollectionUtils.isEmpty(maps)) {
-//            return P.success(null, false);
-//        }
-//
-//        boolean hasNext = false;
-//        if (maps.size() > pageSize) {
-//            maps = maps.subList(0, maps.size() - 1);
-//            hasNext = true;
-//        }
-//
-//        List<NftSelfSellingVo> list = new ArrayList<>();
-//        maps.stream().forEach(p -> list.add(NftSelfSellingVo.of(p)));
-//
-//        Set<Long> groupIds = list.stream().map(p -> p.getGroupId()).collect(Collectors.toSet());
-//        Map<Long, NftGroupDo> map = new HashMap<>();
-//        groupIds.forEach(id -> {
-//            NftGroupDo nftGroupDo = nftGroupService.selectById(id);
-//            map.put(id, nftGroupDo);
-//        });
-//
-//        for (NftSelfSellingVo p : list) {
-//            NftGroupDo nftGroupDo = map.get(p.getGroupId());
-//            if (Objects.nonNull(nftGroupDo)) {
-//                String boxToken = nftGroupDo.getBoxToken();
-//                String nftMeta = nftGroupDo.getNftMeta();
-//                String nftBody = nftGroupDo.getNftBody();
-//                p.setBoxToken(boxToken);
-//                p.setNftMeta(nftMeta);
-//                p.setNftBody(nftBody);
-//            }
-//        }
-//
-//        return P.success(list, hasNext);
+        if (groupId < 0 || pageNum < 0 || pageSize <= 0 || sort < 0
+                || startPrice < 0 || endPrice <= 0 || endPrice < startPrice
+                || StringUtils.isEmpty(rarity)) {
+            return P.failed("parameter is invalid");
+        }
 
-        return P.success();
+        List<AwwMarket> awwMarkets = awwMarketService.selectByPages(true,
+                groupId,
+                startPrice,
+                endPrice,
+                rarity,
+                pageSize + 1,
+                pageNum,
+                sort);
+
+        if (CollectionUtils.isEmpty(awwMarkets)) {
+            return P.success(null, false);
+        }
+
+        boolean hasNext = false;
+        if (awwMarkets.size() > pageSize) {
+            awwMarkets = awwMarkets.subList(0, awwMarkets.size() - 1);
+            hasNext = true;
+        }
+
+        return P.success(awwMarkets, hasNext);
     }
 
 }
