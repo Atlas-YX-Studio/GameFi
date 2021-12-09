@@ -23,5 +23,6 @@ public class TakeOrderEventDto {
     private BigDecimal selling_price;
     private BigDecimal platform_fee;
     private TokenCode pay_token_code;
+    private long time;
 
 }

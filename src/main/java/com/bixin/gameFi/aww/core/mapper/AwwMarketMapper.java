@@ -1,0 +1,31 @@
+package com.bixin.gameFi.aww.core.mapper;
+
+import com.bixin.gameFi.aww.bean.DO.AwwMarket;
+import com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+public interface AwwMarketMapper {
+    long countByDDL(AwwMarketDDL DDL);
+
+    int deleteByDDL(AwwMarketDDL DDL);
+
+    int deleteByPrimaryKey(Long id);
+
+    int insert(AwwMarket record);
+
+    int insertSelective(AwwMarket record);
+
+    List<AwwMarket> selectByDDL(AwwMarketDDL DDL);
+
+    AwwMarket selectByPrimaryKey(Long id);
+
+    int updateByDDLSelective(@Param("record") AwwMarket record, @Param("DDL") AwwMarketDDL DDL);
+
+    int updateByDDL(@Param("record") AwwMarket record, @Param("DDL") AwwMarketDDL DDL);
+
+    int updateByPrimaryKeySelective(AwwMarket record);
+
+    int updateByPrimaryKey(AwwMarket record);
+}

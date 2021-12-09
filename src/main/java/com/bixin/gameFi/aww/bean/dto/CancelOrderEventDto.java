@@ -21,5 +21,6 @@ public class CancelOrderEventDto {
     private String seller;
     private BigDecimal selling_price;
     private TokenCode pay_token_code;
+    private long time;
 
 }
