@@ -63,5 +63,5 @@ CREATE TABLE `aww_arm_info`
     `create_time`    bigint(20) NOT NULL COMMENT '创建时间',
     `update_time`    bigint(20) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY           `idx_nft_id` (`nft_id`),
+    KEY           `idx_nft_id` (`arm_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COMMENT='手臂信息记录表';

@@ -50,7 +50,7 @@ java -jar E:\work\/Users/bixin/Documents/mybatis-generator-core-1.3.2\lib\/Users
 <!--            &lt;!&ndash; if ColumnName is java format set true,else false&ndash;&gt;-->
 <!--            <property name="useActualColumnNames" value="true"/>-->
 <!--        </table>-->
-        <table tableName="aww_match_records">
+        <table tableName="aww_arm_info">
             <!-- if ColumnName is java format set true,else false-->
             <property name="useActualColumnNames" value="false"/>
         </table>

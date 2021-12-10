@@ -5,6 +5,7 @@ import com.bixin.gameFi.aww.core.redis.RedisCache;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import com.bixin.gameFi.aww.service.IAwwStoreService;
 import com.bixin.gameFi.aww.service.chain.ContractService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
  * @author zhangcheng
  * create  2021/12/9
  */
+@Slf4j
 @Component
 public class AwwMarketScheduler {
 
@@ -47,7 +49,7 @@ public class AwwMarketScheduler {
     }
 
     private void pullAwwNftMarketList() {
-
+        log.info("ssssssssss");
 
     }
 
