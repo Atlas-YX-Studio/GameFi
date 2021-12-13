@@ -24,6 +24,11 @@ logging:
   path: logs
   logLevel: INFO
 
+starcoin:
+  client:
+    url: http://13.229.71.62:9850
+#    url: https://main-seed.starcoin.org
+    chainId: 1
 
 ## ------------------------------业务相关配置写到下面-------------------------
 gamefi:
@@ -35,3 +40,15 @@ gamefi:
     websocket:
       websocket-host: 60.205.3.84
       websocket-port: 8970
+      websocket-contract-address: 64c66296d98d6ab08579b14487157e05
+    content:
+      address: "0x16a8bf4d0c3718518d81f132801e4aaa"
+      aww-module: "AWW"
+      arm-module: "ARM"
+      aww-game-module: "AWWGame"
+      market-module: "ARMMarket"
+      scripts-module: "AWWScripts"
+      nft-name: "aww arm"
+      title-page-image: "https://test.kikoswap.com/v1/nft/image/group/1"
+      description: "aww arms"
+      image-info-api: "https://test.kikoswap.com/v1/nft/image/info/"

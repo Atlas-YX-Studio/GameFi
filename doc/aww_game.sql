@@ -59,7 +59,7 @@ CREATE TABLE `aww_arm_info`
     `win_rate_bonus` tinyint(1) NOT NULL COMMENT '附加胜率',
     `image_link`     varchar(256) NOT NULL COMMENT '图片链接',
     `image_data`     mediumtext COMMENT '图片数据',
-    `created`        tinyint(1) NOT NULL COMMENT '已创建',
+    `created`        tinyint(1) NOT NULL COMMENT '已创建, 0未上链, 1已上链',
     `create_time`    bigint(20) NOT NULL COMMENT '创建时间',
     `update_time`    bigint(20) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),

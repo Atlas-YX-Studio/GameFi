@@ -11,26 +11,59 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AwwArmInfo {
+    /**
+     * 主键id
+     */
     private Long id;
 
+    /**
+     * NFT id (链上)
+     */
     private Long armId;
 
+    /**
+     * 名称
+     */
     private String name;
 
-    private Boolean rarity;
+    /**
+     * 稀有度
+     */
+    private Byte rarity;
 
-    private Boolean stamina;
+    /**
+     * 体力值
+      */
+    private Byte stamina;
 
-    private Boolean winRateBonus;
+    /**
+     * 附加胜率
+     */
+    private Byte winRateBonus;
 
+    /**
+     * 图片链接
+     */
     private String imageLink;
 
+    /**
+     * 已创建
+     */
     private Boolean created;
 
+    /**
+     * 创建时间
+     */
     private Long createTime;
 
+    /**
+     * 更新时间
+     */
     private Long updateTime;
 
+    /**
+     * 图片数据
+     */
     private String imageData;
 
 }

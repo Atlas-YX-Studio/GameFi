@@ -17,7 +17,7 @@ public class AwwConfig {
 
     private Common common = new Common();
     private Websocket websocket = new Websocket();
-
+    private Content content = new Content();
 
     @Data
     @NoArgsConstructor
@@ -34,6 +34,30 @@ public class AwwConfig {
     public static class Websocket {
         private String websocketHost;
         private String websocketPort;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Content {
+        private String address;
+        private String marketModule;
+        private String armModule;
+        private String awwModule;
+        private String awwGameModule;
+        private String scriptsModule;
+
+        private String nftName;
+        private String titlePageImage;
+        private String description;
+
+        private Long imageId;
+        private String imageData;
+        private String nftMeta;
+        private String nftBody;
+        private String scripts;
+        //        image-info-api: "https://test.kikoswap.com/v1/nft/image/group/1"
+        private String imageInfoApi;
     }
 
 }
