@@ -10,6 +10,9 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="rarity" jdbcType="INTEGER" property="rarity" />
     <result column="sell_price" jdbcType="DECIMAL" property="sellPrice" />
+    <result column="stamina" jdbcType="INTEGER" property="stamina" />
+    <result column="used_stamina" jdbcType="INTEGER" property="usedStamina" />
+    <result column="win_rate_bonus" jdbcType="INTEGER" property="winRateBonus" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
@@ -73,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, chain_id, aww_id, aww_name, owner, address, rarity, sell_price, icon, create_time, 
-    update_time
+    id, chain_id, aww_id, aww_name, owner, address, rarity, sell_price, stamina, used_stamina, 
+    win_rate_bonus, icon, create_time, update_time
   </sql>
   <select id="selectByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultMap="BaseResultMap">
     select
@@ -91,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from aww_market
     where id = #{id,jdbcType=BIGINT}
@@ -107,13 +110,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
-    insert into aww_market (id, chain_id, aww_id, 
-      aww_name, owner, address, 
-      rarity, sell_price, icon, 
+    insert into aww_market (id, chain_id, aww_id,
+      aww_name, owner, address,
+      rarity, sell_price, stamina,
+      used_stamina, win_rate_bonus, icon,
       create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{chainId,jdbcType=BIGINT}, #{awwId,jdbcType=BIGINT}, 
-      #{awwName,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{rarity,jdbcType=INTEGER}, #{sellPrice,jdbcType=DECIMAL}, #{icon,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{chainId,jdbcType=BIGINT}, #{awwId,jdbcType=BIGINT},
+      #{awwName,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{rarity,jdbcType=INTEGER}, #{sellPrice,jdbcType=DECIMAL}, #{stamina,jdbcType=INTEGER},
+      #{usedStamina,jdbcType=INTEGER}, #{winRateBonus,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR},
       #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
@@ -142,6 +147,15 @@
       </if>
       <if test="sellPrice != null">
         sell_price,
+      </if>
+      <if test="stamina != null">
+        stamina,
+      </if>
+      <if test="usedStamina != null">
+        used_stamina,
+      </if>
+      <if test="winRateBonus != null">
+        win_rate_bonus,
       </if>
       <if test="icon != null">
         icon,
@@ -177,6 +191,15 @@
       </if>
       <if test="sellPrice != null">
         #{sellPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="stamina != null">
+        #{stamina,jdbcType=INTEGER},
+      </if>
+      <if test="usedStamina != null">
+        #{usedStamina,jdbcType=INTEGER},
+      </if>
+      <if test="winRateBonus != null">
+        #{winRateBonus,jdbcType=INTEGER},
       </if>
       <if test="icon != null">
         #{icon,jdbcType=VARCHAR},
@@ -222,6 +245,15 @@
       <if test="record.sellPrice != null">
         sell_price = #{record.sellPrice,jdbcType=DECIMAL},
       </if>
+      <if test="record.stamina != null">
+        stamina = #{record.stamina,jdbcType=INTEGER},
+      </if>
+      <if test="record.usedStamina != null">
+        used_stamina = #{record.usedStamina,jdbcType=INTEGER},
+      </if>
+      <if test="record.winRateBonus != null">
+        win_rate_bonus = #{record.winRateBonus,jdbcType=INTEGER},
+      </if>
       <if test="record.icon != null">
         icon = #{record.icon,jdbcType=VARCHAR},
       </if>
@@ -246,6 +278,9 @@
       address = #{record.address,jdbcType=VARCHAR},
       rarity = #{record.rarity,jdbcType=INTEGER},
       sell_price = #{record.sellPrice,jdbcType=DECIMAL},
+      stamina = #{record.stamina,jdbcType=INTEGER},
+      used_stamina = #{record.usedStamina,jdbcType=INTEGER},
+      win_rate_bonus = #{record.winRateBonus,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
@@ -277,6 +312,15 @@
       <if test="sellPrice != null">
         sell_price = #{sellPrice,jdbcType=DECIMAL},
       </if>
+      <if test="stamina != null">
+        stamina = #{stamina,jdbcType=INTEGER},
+      </if>
+      <if test="usedStamina != null">
+        used_stamina = #{usedStamina,jdbcType=INTEGER},
+      </if>
+      <if test="winRateBonus != null">
+        win_rate_bonus = #{winRateBonus,jdbcType=INTEGER},
+      </if>
       <if test="icon != null">
         icon = #{icon,jdbcType=VARCHAR},
       </if>
@@ -298,6 +342,9 @@
       address = #{address,jdbcType=VARCHAR},
       rarity = #{rarity,jdbcType=INTEGER},
       sell_price = #{sellPrice,jdbcType=DECIMAL},
+      stamina = #{stamina,jdbcType=INTEGER},
+      used_stamina = #{usedStamina,jdbcType=INTEGER},
+      win_rate_bonus = #{winRateBonus,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
@@ -308,7 +355,7 @@
     SELECT
     <include refid="Base_Column_List" />
     FROM
-    aww_market
+    aww_match_records
     <where>
       <if test="sellAddress != null">
         AND sell_address = #{sellAddress}

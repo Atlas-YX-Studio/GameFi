@@ -3,6 +3,9 @@ package com.bixin.gameFi.aww.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * @author zhangcheng
  * create   2021/12/6
@@ -20,16 +23,9 @@ public enum AwwEventType {
     private String desc;
 
     public static AwwEventType of(String desc) {
-        switch (desc) {
-            case "ARMPlaceOrderEvent":
-                return PLACE_ORDER_EVENT;
-            case "ARMCancelOrderEvent":
-                return CANCEL_ORDER_EVENT;
-            case "ARMTakeOrderEvent":
-                return TAKE_ORDER_EVENT;
-            default:
-                return null;
-        }
+        Optional<AwwEventType> typeOptional = Arrays.stream(AwwEventType.values()).filter(p -> desc.equalsIgnoreCase(p.getDesc())).findFirst();
+        return typeOptional.isPresent() ? typeOptional.get() : null;
+
     }
 
 }

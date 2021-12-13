@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author zhangcheng
@@ -27,18 +28,22 @@ public class AwwMarketImpl implements IAwwMarketService {
 
     @Override
     public List<AwwMarket> selectByPages(boolean predicateNextPage,
-                                         Long groupId,
                                          Long startPrice,
                                          Long endPrice,
-                                         String rarity,
+                                         Integer rarity,
                                          Long pageSize,
                                          Long pageNum,
                                          int sort) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("groupId", groupId);
-        paramMap.put("rarity", rarity);
-        paramMap.put("startPrice", startPrice);
-        paramMap.put("endPrice", endPrice);
+        if (Objects.nonNull(startPrice) && startPrice > 0) {
+            paramMap.put("startPrice", startPrice);
+        }
+        if (Objects.nonNull(endPrice) && endPrice > 0) {
+            paramMap.put("endPrice", endPrice);
+        }
+        if (Objects.nonNull(rarity) && rarity > 0) {
+            paramMap.put("rarity", rarity);
+        }
         paramMap.put("pageFrom", predicateNextPage ? (pageNum - 1) * (pageSize - 1) : (pageNum - 1) * pageSize);
         paramMap.put("pageSize", pageSize);
 

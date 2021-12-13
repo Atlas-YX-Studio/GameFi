@@ -12,7 +12,7 @@ public interface IAwwMarketService {
 
     int insert(AwwMarket record);
 
-    List<AwwMarket> selectByPages(boolean predicateNextPage, Long groupId, Long startPrice, Long endPrice, String rarity,
+    List<AwwMarket> selectByPages(boolean predicateNextPage,  Long startPrice, Long endPrice, Integer rarity,
                                   Long pageSize, Long pageNum, int sort);
 
 }

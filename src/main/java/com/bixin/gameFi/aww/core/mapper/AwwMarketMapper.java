@@ -1,12 +1,11 @@
 package com.bixin.gameFi.aww.core.mapper;
 
 import com.bixin.gameFi.aww.bean.DO.AwwMarket;
-import com.bixin.gameFi.aww.bean.DO.AwwMatchRecords;
 import com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
 
 public interface AwwMarketMapper {
     long countByDDL(AwwMarketDDL DDL);
@@ -32,6 +31,5 @@ public interface AwwMarketMapper {
     int updateByPrimaryKey(AwwMarket record);
 
     List<AwwMarket> selectByPages(Map<String, Object> paramMap);
-
 
 }

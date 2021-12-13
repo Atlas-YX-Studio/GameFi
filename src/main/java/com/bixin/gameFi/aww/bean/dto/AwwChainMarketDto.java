@@ -31,17 +31,61 @@ public class AwwChainMarketDto {
         private Long id;
         private String seller;
         private BigDecimal selling_price;
-        private BidToken bid_tokens;
+        private List<ItemNFT> nft;
+    }
 
-        @Data
-        @Builder
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @JsonIgnoreProperties(ignoreUnknown = true)
-       public static class BidToken {
-            private Long value;
-        }
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ItemNFT {
+        private List<NFTVec> vec;
+    }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class NFTVec {
+        private long id;
+        private String creator;
+        private TypeMeta type_meta;
+        private BodyMeta body;
+    }
+
+//    @Data
+//    @Builder
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    @JsonIgnoreProperties(ignoreUnknown = true)
+//    public static class BaseMeta {
+//        private String name;
+//        private String image;
+//        private String image_data;
+//        private String "description";
+//    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TypeMeta {
+        private long rarity;
+        private long stamina;
+        private long win_rate_bonus;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class BodyMeta {
+        private long time;
+        private long used_stamina;
     }
 
 }

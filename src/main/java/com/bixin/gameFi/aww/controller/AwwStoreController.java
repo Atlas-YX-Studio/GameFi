@@ -37,7 +37,7 @@ public class AwwStoreController {
         if (pageNum < 0 || pageSize <= 0 || StringUtils.isEmpty(address)) {
             return P.failed("parameter is invalid");
         }
-        List<AwwMarket> awwMarkets = awwMarketService.selectByPages(true, null, null, null, null,
+        List<AwwMarket> awwMarkets = awwMarketService.selectByPages(true, null, null, null,
                 pageSize + 1, pageNum, 0);
         if (CollectionUtils.isEmpty(awwMarkets)) {
             return P.success(null, false);

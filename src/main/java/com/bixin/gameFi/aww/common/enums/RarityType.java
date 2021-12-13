@@ -3,6 +3,10 @@ package com.bixin.gameFi.aww.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * @author zhangcheng
  * create  2021/12/8
@@ -11,32 +15,19 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RarityType {
 
-    COMMON("common"),
-    RARITY("rarity"),
-    EPIC("epic"),
-    CENTURY("century"),
-    ONLY("only"),
+    COMMON(1),
+    RARITY(2),
+    EPIC(3),
+    CENTURY(4),
+    ONLY(5),
 
     ;
 
-    private String desc;
+    private Integer rarity;
 
-    public static RarityType of(String desc) {
-        switch (desc) {
-            case "common":
-                return COMMON;
-            case "rarity":
-                return RARITY;
-            case "epic":
-                return EPIC;
-            case "century":
-                return CENTURY;
-            case "only":
-                return ONLY;
-            default:
-                return null;
-        }
+    public static RarityType of(Integer rarity) {
+        Optional<RarityType> typeOptional = Arrays.stream(RarityType.values()).filter(p -> Objects.equals(p.getRarity(), rarity)).findFirst();
+        return typeOptional.isPresent() ? typeOptional.get() : null;
     }
-
 
 }

@@ -5,7 +5,6 @@ import com.bixin.gameFi.aww.common.contants.PathConstant;
 import com.bixin.gameFi.aww.common.response.P;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,22 +25,19 @@ public class AwwMarketController {
     IAwwMarketService awwMarketService;
 
     @GetMapping("/getALL")
-    public P getALL(@RequestParam(value = "groupId", defaultValue = "0") long groupId,
-                    @RequestParam(value = "startPrice", defaultValue = "0") long startPrice,
+    public P getALL(@RequestParam(value = "startPrice", defaultValue = "0") long startPrice,
                     @RequestParam(value = "endPrice", defaultValue = "0") long endPrice,
-                    @RequestParam(value = "sort", defaultValue = "0") int sort,
-                    @RequestParam(value = "rarity", defaultValue = "all") String rarity,
+                    @RequestParam(value = "rarity", defaultValue = "0") int rarity,
                     @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
-                    @RequestParam(value = "pageNum", defaultValue = "0") long pageNum) {
+                    @RequestParam(value = "pageNum", defaultValue = "0") long pageNum,
+                    @RequestParam(value = "sort", defaultValue = "0") int sort) {
 
-        if (groupId < 0 || pageNum < 0 || pageSize <= 0 || sort < 0
-                || startPrice < 0 || endPrice <= 0 || endPrice < startPrice
-                || StringUtils.isEmpty(rarity)) {
+        if (pageNum< 0 || pageSize <= 0 || sort < 0 || rarity < 0
+                || startPrice < 0 || endPrice < 0 || endPrice < startPrice){
             return P.failed("parameter is invalid");
         }
 
         List<AwwMarket> awwMarkets = awwMarketService.selectByPages(true,
-                groupId,
                 startPrice,
                 endPrice,
                 rarity,

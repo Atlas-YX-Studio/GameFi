@@ -615,6 +615,186 @@ public class AwwMarketDDL {
             return (Criteria) this;
         }
 
+        public Criteria andStaminaIsNull() {
+            addCriterion("stamina is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaIsNotNull() {
+            addCriterion("stamina is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaEqualTo(Integer value) {
+            addCriterion("stamina =", value, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaNotEqualTo(Integer value) {
+            addCriterion("stamina <>", value, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaGreaterThan(Integer value) {
+            addCriterion("stamina >", value, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaGreaterThanOrEqualTo(Integer value) {
+            addCriterion("stamina >=", value, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaLessThan(Integer value) {
+            addCriterion("stamina <", value, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaLessThanOrEqualTo(Integer value) {
+            addCriterion("stamina <=", value, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaIn(List<Integer> values) {
+            addCriterion("stamina in", values, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaNotIn(List<Integer> values) {
+            addCriterion("stamina not in", values, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaBetween(Integer value1, Integer value2) {
+            addCriterion("stamina between", value1, value2, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andStaminaNotBetween(Integer value1, Integer value2) {
+            addCriterion("stamina not between", value1, value2, "stamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaIsNull() {
+            addCriterion("used_stamina is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaIsNotNull() {
+            addCriterion("used_stamina is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaEqualTo(Integer value) {
+            addCriterion("used_stamina =", value, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaNotEqualTo(Integer value) {
+            addCriterion("used_stamina <>", value, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaGreaterThan(Integer value) {
+            addCriterion("used_stamina >", value, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaGreaterThanOrEqualTo(Integer value) {
+            addCriterion("used_stamina >=", value, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaLessThan(Integer value) {
+            addCriterion("used_stamina <", value, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaLessThanOrEqualTo(Integer value) {
+            addCriterion("used_stamina <=", value, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaIn(List<Integer> values) {
+            addCriterion("used_stamina in", values, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaNotIn(List<Integer> values) {
+            addCriterion("used_stamina not in", values, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaBetween(Integer value1, Integer value2) {
+            addCriterion("used_stamina between", value1, value2, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedStaminaNotBetween(Integer value1, Integer value2) {
+            addCriterion("used_stamina not between", value1, value2, "usedStamina");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusIsNull() {
+            addCriterion("win_rate_bonus is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusIsNotNull() {
+            addCriterion("win_rate_bonus is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusEqualTo(Integer value) {
+            addCriterion("win_rate_bonus =", value, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusNotEqualTo(Integer value) {
+            addCriterion("win_rate_bonus <>", value, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusGreaterThan(Integer value) {
+            addCriterion("win_rate_bonus >", value, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("win_rate_bonus >=", value, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusLessThan(Integer value) {
+            addCriterion("win_rate_bonus <", value, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusLessThanOrEqualTo(Integer value) {
+            addCriterion("win_rate_bonus <=", value, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusIn(List<Integer> values) {
+            addCriterion("win_rate_bonus in", values, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusNotIn(List<Integer> values) {
+            addCriterion("win_rate_bonus not in", values, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusBetween(Integer value1, Integer value2) {
+            addCriterion("win_rate_bonus between", value1, value2, "winRateBonus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWinRateBonusNotBetween(Integer value1, Integer value2) {
+            addCriterion("win_rate_bonus not between", value1, value2, "winRateBonus");
+            return (Criteria) this;
+        }
+
         public Criteria andIconIsNull() {
             addCriterion("icon is null");
             return (Criteria) this;
