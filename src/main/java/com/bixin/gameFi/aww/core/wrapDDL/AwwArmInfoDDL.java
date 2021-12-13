@@ -304,52 +304,52 @@ public class AwwArmInfoDDL {
             return (Criteria) this;
         }
 
-        public Criteria andRarityEqualTo(Boolean value) {
+        public Criteria andRarityEqualTo(Byte value) {
             addCriterion("rarity =", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityNotEqualTo(Boolean value) {
+        public Criteria andRarityNotEqualTo(Byte value) {
             addCriterion("rarity <>", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityGreaterThan(Boolean value) {
+        public Criteria andRarityGreaterThan(Byte value) {
             addCriterion("rarity >", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andRarityGreaterThanOrEqualTo(Byte value) {
             addCriterion("rarity >=", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityLessThan(Boolean value) {
+        public Criteria andRarityLessThan(Byte value) {
             addCriterion("rarity <", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityLessThanOrEqualTo(Boolean value) {
+        public Criteria andRarityLessThanOrEqualTo(Byte value) {
             addCriterion("rarity <=", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityIn(List<Boolean> values) {
+        public Criteria andRarityIn(List<Byte> values) {
             addCriterion("rarity in", values, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityNotIn(List<Boolean> values) {
+        public Criteria andRarityNotIn(List<Byte> values) {
             addCriterion("rarity not in", values, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityBetween(Boolean value1, Boolean value2) {
+        public Criteria andRarityBetween(Byte value1, Byte value2) {
             addCriterion("rarity between", value1, value2, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andRarityNotBetween(Byte value1, Byte value2) {
             addCriterion("rarity not between", value1, value2, "rarity");
             return (Criteria) this;
         }
@@ -364,52 +364,52 @@ public class AwwArmInfoDDL {
             return (Criteria) this;
         }
 
-        public Criteria andStaminaEqualTo(Boolean value) {
+        public Criteria andStaminaEqualTo(Byte value) {
             addCriterion("stamina =", value, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaNotEqualTo(Boolean value) {
+        public Criteria andStaminaNotEqualTo(Byte value) {
             addCriterion("stamina <>", value, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaGreaterThan(Boolean value) {
+        public Criteria andStaminaGreaterThan(Byte value) {
             addCriterion("stamina >", value, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andStaminaGreaterThanOrEqualTo(Byte value) {
             addCriterion("stamina >=", value, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaLessThan(Boolean value) {
+        public Criteria andStaminaLessThan(Byte value) {
             addCriterion("stamina <", value, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaLessThanOrEqualTo(Boolean value) {
+        public Criteria andStaminaLessThanOrEqualTo(Byte value) {
             addCriterion("stamina <=", value, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaIn(List<Boolean> values) {
+        public Criteria andStaminaIn(List<Byte> values) {
             addCriterion("stamina in", values, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaNotIn(List<Boolean> values) {
+        public Criteria andStaminaNotIn(List<Byte> values) {
             addCriterion("stamina not in", values, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaBetween(Boolean value1, Boolean value2) {
+        public Criteria andStaminaBetween(Byte value1, Byte value2) {
             addCriterion("stamina between", value1, value2, "stamina");
             return (Criteria) this;
         }
 
-        public Criteria andStaminaNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andStaminaNotBetween(Byte value1, Byte value2) {
             addCriterion("stamina not between", value1, value2, "stamina");
             return (Criteria) this;
         }
@@ -424,52 +424,52 @@ public class AwwArmInfoDDL {
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusEqualTo(Boolean value) {
+        public Criteria andWinRateBonusEqualTo(Byte value) {
             addCriterion("win_rate_bonus =", value, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusNotEqualTo(Boolean value) {
+        public Criteria andWinRateBonusNotEqualTo(Byte value) {
             addCriterion("win_rate_bonus <>", value, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusGreaterThan(Boolean value) {
+        public Criteria andWinRateBonusGreaterThan(Byte value) {
             addCriterion("win_rate_bonus >", value, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andWinRateBonusGreaterThanOrEqualTo(Byte value) {
             addCriterion("win_rate_bonus >=", value, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusLessThan(Boolean value) {
+        public Criteria andWinRateBonusLessThan(Byte value) {
             addCriterion("win_rate_bonus <", value, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusLessThanOrEqualTo(Boolean value) {
+        public Criteria andWinRateBonusLessThanOrEqualTo(Byte value) {
             addCriterion("win_rate_bonus <=", value, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusIn(List<Boolean> values) {
+        public Criteria andWinRateBonusIn(List<Byte> values) {
             addCriterion("win_rate_bonus in", values, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusNotIn(List<Boolean> values) {
+        public Criteria andWinRateBonusNotIn(List<Byte> values) {
             addCriterion("win_rate_bonus not in", values, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusBetween(Boolean value1, Boolean value2) {
+        public Criteria andWinRateBonusBetween(Byte value1, Byte value2) {
             addCriterion("win_rate_bonus between", value1, value2, "winRateBonus");
             return (Criteria) this;
         }
 
-        public Criteria andWinRateBonusNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andWinRateBonusNotBetween(Byte value1, Byte value2) {
             addCriterion("win_rate_bonus not between", value1, value2, "winRateBonus");
             return (Criteria) this;
         }

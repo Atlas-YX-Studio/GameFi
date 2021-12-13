@@ -5,9 +5,9 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="arm_id" jdbcType="BIGINT" property="armId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="rarity" jdbcType="BIT" property="rarity" />
-    <result column="stamina" jdbcType="BIT" property="stamina" />
-    <result column="win_rate_bonus" jdbcType="BIT" property="winRateBonus" />
+    <result column="rarity" jdbcType="TINYINT" property="rarity" />
+    <result column="stamina" jdbcType="TINYINT" property="stamina" />
+    <result column="win_rate_bonus" jdbcType="TINYINT" property="winRateBonus" />
     <result column="image_link" jdbcType="VARCHAR" property="imageLink" />
     <result column="created" jdbcType="BIT" property="created" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
@@ -135,7 +135,7 @@
       image_link, created, create_time, 
       update_time, image_data)
     values (#{id,jdbcType=BIGINT}, #{armId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{rarity,jdbcType=BIT}, #{stamina,jdbcType=BIT}, #{winRateBonus,jdbcType=BIT}, 
+      #{rarity,jdbcType=TINYINT}, #{stamina,jdbcType=TINYINT}, #{winRateBonus,jdbcType=TINYINT},
       #{imageLink,jdbcType=VARCHAR}, #{created,jdbcType=BIT}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT}, #{imageData,jdbcType=LONGVARCHAR})
   </insert>
@@ -187,13 +187,13 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="rarity != null">
-        #{rarity,jdbcType=BIT},
+        #{rarity,jdbcType=TINYINT},
       </if>
       <if test="stamina != null">
-        #{stamina,jdbcType=BIT},
+        #{stamina,jdbcType=TINYINT},
       </if>
       <if test="winRateBonus != null">
-        #{winRateBonus,jdbcType=BIT},
+        #{winRateBonus,jdbcType=TINYINT},
       </if>
       <if test="imageLink != null">
         #{imageLink,jdbcType=VARCHAR},
@@ -231,13 +231,13 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.rarity != null">
-        rarity = #{record.rarity,jdbcType=BIT},
+        rarity = #{record.rarity,jdbcType=TINYINT},
       </if>
       <if test="record.stamina != null">
-        stamina = #{record.stamina,jdbcType=BIT},
+        stamina = #{record.stamina,jdbcType=TINYINT},
       </if>
       <if test="record.winRateBonus != null">
-        win_rate_bonus = #{record.winRateBonus,jdbcType=BIT},
+        win_rate_bonus = #{record.winRateBonus,jdbcType=TINYINT},
       </if>
       <if test="record.imageLink != null">
         image_link = #{record.imageLink,jdbcType=VARCHAR},
@@ -264,9 +264,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       arm_id = #{record.armId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
-      rarity = #{record.rarity,jdbcType=BIT},
-      stamina = #{record.stamina,jdbcType=BIT},
-      win_rate_bonus = #{record.winRateBonus,jdbcType=BIT},
+      rarity = #{record.rarity,jdbcType=TINYINT},
+      stamina = #{record.stamina,jdbcType=TINYINT},
+      win_rate_bonus = #{record.winRateBonus,jdbcType=TINYINT},
       image_link = #{record.imageLink,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=BIT},
       create_time = #{record.createTime,jdbcType=BIGINT},
@@ -281,9 +281,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       arm_id = #{record.armId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
-      rarity = #{record.rarity,jdbcType=BIT},
-      stamina = #{record.stamina,jdbcType=BIT},
-      win_rate_bonus = #{record.winRateBonus,jdbcType=BIT},
+      rarity = #{record.rarity,jdbcType=TINYINT},
+      stamina = #{record.stamina,jdbcType=TINYINT},
+      win_rate_bonus = #{record.winRateBonus,jdbcType=TINYINT},
       image_link = #{record.imageLink,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=BIT},
       create_time = #{record.createTime,jdbcType=BIGINT},
@@ -302,13 +302,13 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="rarity != null">
-        rarity = #{rarity,jdbcType=BIT},
+        rarity = #{rarity,jdbcType=TINYINT},
       </if>
       <if test="stamina != null">
-        stamina = #{stamina,jdbcType=BIT},
+        stamina = #{stamina,jdbcType=TINYINT},
       </if>
       <if test="winRateBonus != null">
-        win_rate_bonus = #{winRateBonus,jdbcType=BIT},
+        win_rate_bonus = #{winRateBonus,jdbcType=TINYINT},
       </if>
       <if test="imageLink != null">
         image_link = #{imageLink,jdbcType=VARCHAR},
@@ -332,9 +332,9 @@
     update aww_arm_info
     set arm_id = #{armId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
-      rarity = #{rarity,jdbcType=BIT},
-      stamina = #{stamina,jdbcType=BIT},
-      win_rate_bonus = #{winRateBonus,jdbcType=BIT},
+      rarity = #{rarity,jdbcType=TINYINT},
+      stamina = #{stamina,jdbcType=TINYINT},
+      win_rate_bonus = #{winRateBonus,jdbcType=TINYINT},
       image_link = #{imageLink,jdbcType=VARCHAR},
       created = #{created,jdbcType=BIT},
       create_time = #{createTime,jdbcType=BIGINT},
@@ -346,9 +346,9 @@
     update aww_arm_info
     set arm_id = #{armId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
-      rarity = #{rarity,jdbcType=BIT},
-      stamina = #{stamina,jdbcType=BIT},
-      win_rate_bonus = #{winRateBonus,jdbcType=BIT},
+      rarity = #{rarity,jdbcType=TINYINT},
+      stamina = #{stamina,jdbcType=TINYINT},
+      win_rate_bonus = #{winRateBonus,jdbcType=TINYINT},
       image_link = #{imageLink,jdbcType=VARCHAR},
       created = #{created,jdbcType=BIT},
       create_time = #{createTime,jdbcType=BIGINT},
