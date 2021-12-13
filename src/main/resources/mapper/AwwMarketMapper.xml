@@ -5,12 +5,10 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="chain_id" jdbcType="BIGINT" property="chainId" />
     <result column="aww_id" jdbcType="BIGINT" property="awwId" />
-    <result column="group_id" jdbcType="BIGINT" property="groupId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="aww_name" jdbcType="VARCHAR" property="awwName" />
     <result column="owner" jdbcType="VARCHAR" property="owner" />
     <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="rarity" jdbcType="VARCHAR" property="rarity" />
+    <result column="rarity" jdbcType="INTEGER" property="rarity" />
     <result column="sell_price" jdbcType="DECIMAL" property="sellPrice" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
@@ -75,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, chain_id, aww_id, group_id, name, aww_name, owner, address, rarity, sell_price, 
-    icon, create_time, update_time
+    id, chain_id, aww_id, aww_name, owner, address, rarity, sell_price, icon, create_time, 
+    update_time
   </sql>
   <select id="selectByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultMap="BaseResultMap">
     select
@@ -110,15 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
     insert into aww_market (id, chain_id, aww_id, 
-      group_id, name, aww_name, 
-      owner, address, rarity, 
-      sell_price, icon, create_time, 
-      update_time)
+      aww_name, owner, address, 
+      rarity, sell_price, icon, 
+      create_time, update_time)
     values (#{id,jdbcType=BIGINT}, #{chainId,jdbcType=BIGINT}, #{awwId,jdbcType=BIGINT}, 
-      #{groupId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{awwName,jdbcType=VARCHAR}, 
-      #{owner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{rarity,jdbcType=VARCHAR}, 
-      #{sellPrice,jdbcType=DECIMAL}, #{icon,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=BIGINT})
+      #{awwName,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{rarity,jdbcType=INTEGER}, #{sellPrice,jdbcType=DECIMAL}, #{icon,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
     insert into aww_market
@@ -131,12 +127,6 @@
       </if>
       <if test="awwId != null">
         aww_id,
-      </if>
-      <if test="groupId != null">
-        group_id,
-      </if>
-      <if test="name != null">
-        name,
       </if>
       <if test="awwName != null">
         aww_name,
@@ -173,12 +163,6 @@
       <if test="awwId != null">
         #{awwId,jdbcType=BIGINT},
       </if>
-      <if test="groupId != null">
-        #{groupId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
       <if test="awwName != null">
         #{awwName,jdbcType=VARCHAR},
       </if>
@@ -189,7 +173,7 @@
         #{address,jdbcType=VARCHAR},
       </if>
       <if test="rarity != null">
-        #{rarity,jdbcType=VARCHAR},
+        #{rarity,jdbcType=INTEGER},
       </if>
       <if test="sellPrice != null">
         #{sellPrice,jdbcType=DECIMAL},
@@ -223,12 +207,6 @@
       <if test="record.awwId != null">
         aww_id = #{record.awwId,jdbcType=BIGINT},
       </if>
-      <if test="record.groupId != null">
-        group_id = #{record.groupId,jdbcType=BIGINT},
-      </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
       <if test="record.awwName != null">
         aww_name = #{record.awwName,jdbcType=VARCHAR},
       </if>
@@ -239,7 +217,7 @@
         address = #{record.address,jdbcType=VARCHAR},
       </if>
       <if test="record.rarity != null">
-        rarity = #{record.rarity,jdbcType=VARCHAR},
+        rarity = #{record.rarity,jdbcType=INTEGER},
       </if>
       <if test="record.sellPrice != null">
         sell_price = #{record.sellPrice,jdbcType=DECIMAL},
@@ -263,12 +241,10 @@
     set id = #{record.id,jdbcType=BIGINT},
       chain_id = #{record.chainId,jdbcType=BIGINT},
       aww_id = #{record.awwId,jdbcType=BIGINT},
-      group_id = #{record.groupId,jdbcType=BIGINT},
-      name = #{record.name,jdbcType=VARCHAR},
       aww_name = #{record.awwName,jdbcType=VARCHAR},
       owner = #{record.owner,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
-      rarity = #{record.rarity,jdbcType=VARCHAR},
+      rarity = #{record.rarity,jdbcType=INTEGER},
       sell_price = #{record.sellPrice,jdbcType=DECIMAL},
       icon = #{record.icon,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=BIGINT},
@@ -286,12 +262,6 @@
       <if test="awwId != null">
         aww_id = #{awwId,jdbcType=BIGINT},
       </if>
-      <if test="groupId != null">
-        group_id = #{groupId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
       <if test="awwName != null">
         aww_name = #{awwName,jdbcType=VARCHAR},
       </if>
@@ -302,7 +272,7 @@
         address = #{address,jdbcType=VARCHAR},
       </if>
       <if test="rarity != null">
-        rarity = #{rarity,jdbcType=VARCHAR},
+        rarity = #{rarity,jdbcType=INTEGER},
       </if>
       <if test="sellPrice != null">
         sell_price = #{sellPrice,jdbcType=DECIMAL},
@@ -323,12 +293,10 @@
     update aww_market
     set chain_id = #{chainId,jdbcType=BIGINT},
       aww_id = #{awwId,jdbcType=BIGINT},
-      group_id = #{groupId,jdbcType=BIGINT},
-      name = #{name,jdbcType=VARCHAR},
       aww_name = #{awwName,jdbcType=VARCHAR},
       owner = #{owner,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
-      rarity = #{rarity,jdbcType=VARCHAR},
+      rarity = #{rarity,jdbcType=INTEGER},
       sell_price = #{sellPrice,jdbcType=DECIMAL},
       icon = #{icon,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT},
@@ -342,17 +310,11 @@
     FROM
     aww_market
     <where>
-      <if test="groupId != null">
-        AND group_id = #{groupId}
+      <if test="sellAddress != null">
+        AND sell_address = #{sellAddress}
       </if>
-      <if test="rarity != null">
-        AND rarity = #{rarity}
-      </if>
-      <if test="startPrice != null">
-        AND sell_price &gt;= #{startPrice}
-      </if>
-      <if test="endPrice != null">
-        AND sell_price &lt;= #{endPrice}
+      <if test="buyAddress != null">
+        AND buy_address = #{buyAddress}
       </if>
     </where>
     ORDER BY

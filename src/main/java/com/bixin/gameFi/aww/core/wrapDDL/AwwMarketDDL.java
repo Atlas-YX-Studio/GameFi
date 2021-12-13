@@ -285,136 +285,6 @@ public class AwwMarketDDL {
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIsNull() {
-            addCriterion("group_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIsNotNull() {
-            addCriterion("group_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdEqualTo(Long value) {
-            addCriterion("group_id =", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotEqualTo(Long value) {
-            addCriterion("group_id <>", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdGreaterThan(Long value) {
-            addCriterion("group_id >", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("group_id >=", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLessThan(Long value) {
-            addCriterion("group_id <", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLessThanOrEqualTo(Long value) {
-            addCriterion("group_id <=", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIn(List<Long> values) {
-            addCriterion("group_id in", values, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotIn(List<Long> values) {
-            addCriterion("group_id not in", values, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdBetween(Long value1, Long value2) {
-            addCriterion("group_id between", value1, value2, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotBetween(Long value1, Long value2) {
-            addCriterion("group_id not between", value1, value2, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
         public Criteria andAwwNameIsNull() {
             addCriterion("aww_name is null");
             return (Criteria) this;
@@ -635,62 +505,52 @@ public class AwwMarketDDL {
             return (Criteria) this;
         }
 
-        public Criteria andRarityEqualTo(String value) {
+        public Criteria andRarityEqualTo(Integer value) {
             addCriterion("rarity =", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityNotEqualTo(String value) {
+        public Criteria andRarityNotEqualTo(Integer value) {
             addCriterion("rarity <>", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityGreaterThan(String value) {
+        public Criteria andRarityGreaterThan(Integer value) {
             addCriterion("rarity >", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityGreaterThanOrEqualTo(String value) {
+        public Criteria andRarityGreaterThanOrEqualTo(Integer value) {
             addCriterion("rarity >=", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityLessThan(String value) {
+        public Criteria andRarityLessThan(Integer value) {
             addCriterion("rarity <", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityLessThanOrEqualTo(String value) {
+        public Criteria andRarityLessThanOrEqualTo(Integer value) {
             addCriterion("rarity <=", value, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityLike(String value) {
-            addCriterion("rarity like", value, "rarity");
-            return (Criteria) this;
-        }
-
-        public Criteria andRarityNotLike(String value) {
-            addCriterion("rarity not like", value, "rarity");
-            return (Criteria) this;
-        }
-
-        public Criteria andRarityIn(List<String> values) {
+        public Criteria andRarityIn(List<Integer> values) {
             addCriterion("rarity in", values, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityNotIn(List<String> values) {
+        public Criteria andRarityNotIn(List<Integer> values) {
             addCriterion("rarity not in", values, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityBetween(String value1, String value2) {
+        public Criteria andRarityBetween(Integer value1, Integer value2) {
             addCriterion("rarity between", value1, value2, "rarity");
             return (Criteria) this;
         }
 
-        public Criteria andRarityNotBetween(String value1, String value2) {
+        public Criteria andRarityNotBetween(Integer value1, Integer value2) {
             addCriterion("rarity not between", value1, value2, "rarity");
             return (Criteria) this;
         }

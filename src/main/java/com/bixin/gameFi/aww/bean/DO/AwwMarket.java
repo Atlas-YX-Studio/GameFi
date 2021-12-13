@@ -19,17 +19,13 @@ public class AwwMarket {
 
     private Long awwId;
 
-    private Long groupId;
-
-    private String name;
-
     private String awwName;
 
     private String owner;
 
     private String address;
 
-    private String rarity;
+    private Integer rarity;
 
     private BigDecimal sellPrice;
 
@@ -38,6 +34,5 @@ public class AwwMarket {
     private Long createTime;
 
     private Long updateTime;
-
 
 }
