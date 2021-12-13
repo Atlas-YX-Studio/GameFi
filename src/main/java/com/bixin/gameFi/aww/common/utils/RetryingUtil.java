@@ -1,4 +1,4 @@
-package com.bixin.gameFi.starcoin.utils;
+package com.bixin.gameFi.aww.common.utils;
 
 import com.github.rholder.retry.*;
 import lombok.extern.slf4j.Slf4j;

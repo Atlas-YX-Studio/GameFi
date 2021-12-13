@@ -1,4 +1,4 @@
-package com.bixin.gameFi.starcoin.common.exception;
+package com.bixin.gameFi.aww.common.exception;
 
 import lombok.Getter;
 

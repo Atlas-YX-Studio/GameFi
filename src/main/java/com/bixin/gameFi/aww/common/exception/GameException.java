@@ -1,6 +1,6 @@
-package com.bixin.gameFi.starcoin.common.exception;
+package com.bixin.gameFi.aww.common.exception;
 
-import com.bixin.gameFi.starcoin.common.errorcode.IdoErrorCode;
+import com.bixin.gameFi.aww.common.code.ErrCode;
 import lombok.Getter;
 
 /**
@@ -8,23 +8,23 @@ import lombok.Getter;
  * @author: 系统
  */
 @Getter
-public class IdoException extends BizException {
+public class GameException extends BizException {
 
     private int code;
 
     private String message;
 
-    public IdoException() {
+    public GameException() {
         super();
     }
 
-    public IdoException(final IdoErrorCode errorCode) {
+    public GameException(final ErrCode errorCode) {
         super(errorCode.getMessage());
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
     }
 
-    public IdoException(final IdoErrorCode errorCode, final Throwable cause) {
+    public GameException(final ErrCode errorCode, final Throwable cause) {
         super(errorCode.getMessage(), cause);
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();

@@ -1,13 +1,13 @@
 package com.bixin.gameFi.aww.service;
 
 import com.bixin.gameFi.aww.bean.DO.AwwArmInfo;
+import com.bixin.gameFi.aww.common.code.GameErrCode;
 import com.bixin.gameFi.aww.config.AwwConfig;
 import com.bixin.gameFi.aww.core.mapper.AwwArmInfoMapper;
 import com.bixin.gameFi.aww.core.wrapDDL.AwwArmInfoDDL;
-import com.bixin.gameFi.starcoin.common.errorcode.IdoErrorCode;
-import com.bixin.gameFi.starcoin.common.exception.IdoException;
-import com.bixin.gameFi.starcoin.core.service.ContractService;
+import com.bixin.gameFi.aww.common.exception.GameException;
 import com.bixin.gameFi.aww.common.utils.TypeArgsUtil;
+import com.bixin.gameFi.aww.service.chain.ContractService;
 import com.google.common.collect.Lists;
 import com.novi.serde.Bytes;
 import lombok.extern.slf4j.Slf4j;
@@ -45,24 +45,24 @@ public class AWWContractService {
     public void initNFTMarket(BigInteger creatorFee, BigInteger platformFee) {
         if (!contractService.deployContract(awwConfig.getContent().getAddress(), "contract/aww/" + awwConfig.getContent().getAwwModule() + ".mv", null)) {
             log.error("AWW 部署失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_DEPLOY_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
         // 部署nft合约
         if (!deployNFTContractWithImage()) {
             log.error("ARM合约 部署失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_DEPLOY_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
         if (!contractService.deployContract(awwConfig.getContent().getAddress(), "contract/aww/" + awwConfig.getContent().getMarketModule() + ".mv", null)) {
             log.error("AWW Market部署失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_DEPLOY_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
         if (!deployAWWGameContract()) {
             log.error("AWW Game部署失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_DEPLOY_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
         if (!contractService.deployContract(awwConfig.getContent().getAddress(), "contract/aww/" + awwConfig.getContent().getScriptsModule() + ".mv", null)) {
             log.error("AWW Scripts部署失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_DEPLOY_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
@@ -76,7 +76,7 @@ public class AWWContractService {
                 .build();
         if (!contractService.callFunction(awwConfig.getContent().getAddress(), scriptFunctionObj)) {
             log.error("ARM Config初始化失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_CALL_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
         }
     }
 
@@ -92,7 +92,7 @@ public class AWWContractService {
             armInfoDo.setWinRateBonus((byte) 30);
             if (!mintKikoCatNFTWithImage(armInfoDo)) {
                 log.error("ARM {} mint失败", armInfoDo.getName());
-                throw new IdoException(IdoErrorCode.CONTRACT_CALL_FAILURE);
+                throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
             }
         }
     }
@@ -108,7 +108,7 @@ public class AWWContractService {
         // 部署nft合约
         if (!deployNFTContractWithImage()) {
             log.error("ARM合约 部署失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_DEPLOY_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
 
         // mint nft + 盲盒
@@ -134,7 +134,7 @@ public class AWWContractService {
             // 铸造NFT，存放图片url
             if (!mintKikoCatNFTWithImage(awwArmInfoDo)) {
                 log.error("ARM {} mint失败", awwArmInfoDo.getName());
-                throw new IdoException(IdoErrorCode.CONTRACT_CALL_FAILURE);
+                throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
             }
             log.info("ARM {} mint成功", awwArmInfoDo.getName());
             awwArmInfoDo.setCreated(true);
@@ -147,7 +147,7 @@ public class AWWContractService {
         // 市场创建resource
         if (!initMarket()) {
             log.error("ARM 市场初始化失败, 设置币种");
-            throw new IdoException(IdoErrorCode.CONTRACT_CALL_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
         }
     }
 
@@ -346,7 +346,7 @@ public class AWWContractService {
                 .build();
         if (!contractService.callFunction("0xC445808B4AecA9a5779908386a8673de", scriptFunctionObj)) {
             log.error("buy arm 失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_CALL_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
         }
     }
 
@@ -366,7 +366,7 @@ public class AWWContractService {
                 .build();
         if (!contractService.callFunction("0xC445808B4AecA9a5779908386a8673de", scriptFunctionObj)) {
             log.error("战斗 失败");
-            throw new IdoException(IdoErrorCode.CONTRACT_CALL_FAILURE);
+            throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
         }
     }
 
