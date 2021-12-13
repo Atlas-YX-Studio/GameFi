@@ -2,6 +2,7 @@ package com.bixin.gameFi.aww.service.Impl;
 
 import com.bixin.gameFi.aww.bean.DO.AwwMarket;
 import com.bixin.gameFi.aww.core.mapper.AwwMarketMapper;
+import com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,24 @@ public class AwwMarketImpl implements IAwwMarketService {
     @Override
     public int insert(AwwMarket record) {
         return awwMarketMapper.insert(record);
+    }
+
+    @Override
+    public List<AwwMarket> selectAll() {
+        return awwMarketMapper.selectByDDL(new AwwMarketDDL());
+    }
+
+    @Override
+    public int deleteAll() {
+        return awwMarketMapper.deleteByDDL(new AwwMarketDDL());
+    }
+
+    @Override
+    public int deleteById(List<Long> ids) {
+        AwwMarketDDL ddl = new AwwMarketDDL();
+        AwwMarketDDL.Criteria criteria = ddl.createCriteria();
+        criteria.andIdIn(ids);
+        return awwMarketMapper.deleteByDDL(ddl);
     }
 
     @Override

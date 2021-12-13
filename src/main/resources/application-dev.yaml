@@ -37,15 +37,11 @@ gamefi:
     chain-id: 1
   aww:
     common:
-      url: https://main-seed.starcoin.org
       contract-address: "0x16a8bf4d0c3718518d81f132801e4aaa"
-      chain-id: 1
     websocket:
       websocket-host: 60.205.3.84
       websocket-port: 8970
-      websocket-contract-address: "0x16a8bf4d0c3718518d81f132801e4aaa"
     content:
-      address: "0x16a8bf4d0c3718518d81f132801e4aaa"
       aww-module: "AWW"
       arm-module: "ARM"
       aww-game-module: "AWWGame"
@@ -55,4 +51,3 @@ gamefi:
       title-page-image: "https://test.kikoswap.com/v1/nft/image/group/1"
       description: "aww arms"
       image-info-api: "https://test.kikoswap.com/v1/nft/image/info/"
-

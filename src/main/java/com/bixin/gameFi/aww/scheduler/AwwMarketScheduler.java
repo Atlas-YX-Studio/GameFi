@@ -1,13 +1,16 @@
 package com.bixin.gameFi.aww.scheduler;
 
+import com.bixin.gameFi.aww.bean.DO.AwwArmInfo;
+import com.bixin.gameFi.aww.bean.DO.AwwMarket;
 import com.bixin.gameFi.aww.bean.dto.AwwChainMarketDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourceDto;
-import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.aww.config.AwwConfig;
-import com.bixin.gameFi.core.redis.RedisCache;
+import com.bixin.gameFi.aww.service.IAwwArmInfoService;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import com.bixin.gameFi.aww.service.IAwwStoreService;
-import com.bixin.gameFi.core.contract.ContractService;
+import com.bixin.gameFi.common.utils.JacksonUtil;
+import com.bixin.gameFi.core.contract.ContractBiz;
+import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,9 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zhangcheng
@@ -36,7 +39,9 @@ public class AwwMarketScheduler {
     @Resource
     IAwwStoreService awwStoreService;
     @Resource
-    ContractService contractService;
+    IAwwArmInfoService awwArmInfoService;
+    @Resource
+    ContractBiz contractService;
 
 
     private static final long PROCESSING_EXPIRE_TIME = 30 * 1000L;
@@ -69,6 +74,7 @@ public class AwwMarketScheduler {
         }
         String awwKey = awwConfig.getCommon().getContractAddress() + awwSuffix;
 
+        List<AwwMarket> awwMarketList = new ArrayList<>();
         chainResourceDto.getResult().getResources().forEach((key, value) -> {
             try {
                 if (!key.startsWith(awwKey)) {
@@ -79,20 +85,88 @@ public class AwwMarketScheduler {
                 if (CollectionUtils.isEmpty(map) || !map.containsKey("json")) {
                     return;
                 }
-                AwwChainMarketDto nftBoxDto = JacksonUtil.readValue(JacksonUtil.toJson(map.get("json")), new TypeReference<>() {
+                AwwChainMarketDto awwChainMarketDto = JacksonUtil.readValue(JacksonUtil.toJson(map.get("json")), new TypeReference<>() {
                 });
-
-
-
-
-
-
+                if (CollectionUtils.isEmpty(awwChainMarketDto.getItems())) {
+                    return;
+                }
+                awwChainMarketDto.getItems().forEach(item -> awwMarketList.add(buildAwwMarket(item)));
             } catch (Exception e) {
                 log.error("AwwMarketScheduler exception {}, {}", key, value, e);
             }
         });
+        if(CollectionUtils.isEmpty(awwMarketList)){
+            awwMarketService.deleteAll();
+            return;
+        }
+        List<AwwMarket> oldMarkets = awwMarketService.selectAll();
+//        List<AwwArmInfo> awwArmInfos = awwArmInfoService.selectAll();
+
+
+        Map<Long, List<AwwMarket>> newMarketMap = awwMarketList.stream().collect(Collectors.groupingBy(AwwMarket::getChainId));
+        Map<Long, List<AwwMarket>> oldMarketMap = oldMarkets.stream().collect(Collectors.groupingBy(AwwMarket::getChainId));
+        Map<Long, List<AwwArmInfo>> armInfos = awwArmInfos.stream().collect(Collectors.groupingBy(AwwArmInfo::getArmId));
+
+        List<Long> delIds = new ArrayList<>();
+        List<AwwMarket> updates = new ArrayList<>();
+        List<AwwMarket> inserts = new ArrayList<>();
+
+
 
     }
+
+
+    private AwwMarket buildAwwMarket(AwwChainMarketDto.Item item) {
+        AwwChainMarketDto.NFTVec vec = item.getNft().getVec().get(0);
+        AwwChainMarketDto.TypeMeta typeMeta = vec.getType_meta();
+        AwwChainMarketDto.BodyMeta bodyMeta = vec.getBody();
+        AwwMarket.AwwMarketBuilder marketBuilder = AwwMarket.builder()
+                .chainId(item.getId())
+//                .awwId()
+//                .awwName()
+//                .icon()
+                .owner(item.getSeller())
+                .address(awwConfig.getCommon().getContractAddress())
+                .rarity(typeMeta.getRarity())
+                .sellPrice(item.getSelling_price())
+                .stamina(typeMeta.getStamina())
+                .usedStamina(bodyMeta.getUsed_stamina())
+                .winRateBonus(typeMeta.getWin_rate_bonus());
+        return marketBuilder.build();
+    }
+
+
+//    public class AwwMarket {
+//        private Long id;
+//
+//        private Long chainId;
+//
+//        private Long awwId;
+//
+//        private String awwName;
+//
+//        private String owner;
+//
+//        private String address;
+//
+//        private Integer rarity;
+//
+//        private BigDecimal sellPrice;
+//
+//        private Integer stamina;
+//
+//        private Integer usedStamina;
+//
+//        private Integer winRateBonus;
+//
+//        private String icon;
+//
+//        private Long createTime;
+//
+//        private Long updateTime;
+//
+//
+//    }
 
 
 }

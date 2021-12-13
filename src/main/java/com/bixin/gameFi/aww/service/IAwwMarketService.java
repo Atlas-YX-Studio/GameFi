@@ -1,6 +1,7 @@
 package com.bixin.gameFi.aww.service;
 
 import com.bixin.gameFi.aww.bean.DO.AwwMarket;
+import com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL;
 
 import java.util.List;
 
@@ -11,6 +12,12 @@ import java.util.List;
 public interface IAwwMarketService {
 
     int insert(AwwMarket record);
+
+    List<AwwMarket> selectAll();
+
+    int deleteAll();
+
+    int deleteById(List<Long>  id);
 
     List<AwwMarket> selectByPages(boolean predicateNextPage,  Long startPrice, Long endPrice, Integer rarity,
                                   Long pageSize, Long pageNum, int sort);

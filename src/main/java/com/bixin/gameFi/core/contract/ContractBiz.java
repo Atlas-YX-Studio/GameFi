@@ -34,7 +34,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-public class ContractService {
+public class ContractBiz {
 
     @Resource
     GameFiConfig gameFiConfig;

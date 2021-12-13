@@ -2,7 +2,7 @@ package com.bixin.gameFi.test.aww;
 
 import com.bixin.gameFi.GameFiApplication;
 import com.bixin.gameFi.aww.biz.AWWContractBiz;
-import com.bixin.gameFi.core.contract.ContractService;
+import com.bixin.gameFi.core.contract.ContractBiz;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ class NftInitServiceTest {
     @Resource
     private AWWContractBiz awwContractService;
     @Resource
-    private ContractService contractService;
+    private ContractBiz contractService;
 
     @Test
     void initNFTMarket() {

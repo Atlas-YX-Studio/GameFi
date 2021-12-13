@@ -7,7 +7,7 @@ import com.bixin.gameFi.aww.core.wrapDDL.AwwArmInfoDDL;
 import com.bixin.gameFi.common.code.GameErrCode;
 import com.bixin.gameFi.common.exception.GameException;
 import com.bixin.gameFi.common.utils.TypeArgsUtil;
-import com.bixin.gameFi.core.contract.ContractService;
+import com.bixin.gameFi.core.contract.ContractBiz;
 import com.google.common.collect.Lists;
 import com.novi.serde.Bytes;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class AWWContractBiz {
     @Resource
     private AwwArmInfoMapper awwArmInfoMapper;
     @Resource
-    private ContractService contractService;
+    private ContractBiz contractService;
 
     /**
      * 1.部署NFT Market
@@ -43,7 +43,7 @@ public class AWWContractBiz {
      * @return
      */
     public void initNFTMarket(BigInteger creatorFee, BigInteger platformFee) {
-        if (!contractService.deployContract(awwConfig.getContent().getAddress(), "contract/aww/" + awwConfig.getContent().getAwwModule() + ".mv", null)) {
+        if (!contractService.deployContract(awwConfig.getCommon().getContractAddress(), "contract/aww/" + awwConfig.getContent().getAwwModule() + ".mv", null)) {
             log.error("AWW 部署失败");
             throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
@@ -52,7 +52,7 @@ public class AWWContractBiz {
             log.error("ARM合约 部署失败");
             throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
-        if (!contractService.deployContract(awwConfig.getContent().getAddress(), "contract/aww/" + awwConfig.getContent().getMarketModule() + ".mv", null)) {
+        if (!contractService.deployContract(awwConfig.getCommon().getContractAddress(), "contract/aww/" + awwConfig.getContent().getMarketModule() + ".mv", null)) {
             log.error("AWW Market部署失败");
             throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
@@ -60,13 +60,13 @@ public class AWWContractBiz {
             log.error("AWW Game部署失败");
             throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
-        if (!contractService.deployContract(awwConfig.getContent().getAddress(), "contract/aww/" + awwConfig.getContent().getScriptsModule() + ".mv", null)) {
+        if (!contractService.deployContract(awwConfig.getCommon().getContractAddress(), "contract/aww/" + awwConfig.getContent().getScriptsModule() + ".mv", null)) {
             log.error("AWW Scripts部署失败");
             throw new GameException(GameErrCode.CONTRACT_DEPLOY_FAILURE);
         }
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
-                .moduleAddress(awwConfig.getContent().getAddress())
+                .moduleAddress(awwConfig.getCommon().getContractAddress())
                 .moduleName(awwConfig.getContent().getScriptsModule())
                 .functionName("init_config")
                 .args(Lists.newArrayList(
@@ -74,7 +74,7 @@ public class AWWContractBiz {
                         BcsSerializeHelper.serializeU128ToBytes(platformFee)
                 ))
                 .build();
-        if (!contractService.callFunction(awwConfig.getContent().getAddress(), scriptFunctionObj)) {
+        if (!contractService.callFunction(awwConfig.getCommon().getContractAddress(), scriptFunctionObj)) {
             log.error("ARM Config初始化失败");
             throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
         }
@@ -184,7 +184,7 @@ public class AWWContractBiz {
      */
     private boolean deployNFTContractWithImage() {
         String moduleName = awwConfig.getContent().getArmModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         String path = "contract/aww/" + moduleName + ".mv";
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
@@ -209,7 +209,7 @@ public class AWWContractBiz {
      */
     private boolean deployAWWGameContract() {
         String moduleName = awwConfig.getContent().getAwwGameModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         String path = "contract/aww/" + moduleName + ".mv";
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
@@ -226,7 +226,7 @@ public class AWWContractBiz {
      * mint NFT，存放图片url
      */
     private boolean mintKikoCatNFTWithImage(AwwArmInfo awwArmInfoDo) {
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
 
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
@@ -252,7 +252,7 @@ public class AWWContractBiz {
      */
     private boolean deployNFTContractWithImageData() {
         String moduleName = awwConfig.getContent().getArmModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         String path = "contract/aww/" + moduleName + ".mv";
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
@@ -273,7 +273,7 @@ public class AWWContractBiz {
      * mint NFT，存放图片元数据
      */
     private boolean mintKikoCatNFTWithImageData(AwwArmInfo awwArmInfoDo) {
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
 
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
@@ -300,7 +300,7 @@ public class AWWContractBiz {
      * @return
      */
     private boolean transferNFT(long nftId, String toAddress) {
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
                 .moduleAddress("0x00000000000000000000000000000001")
@@ -323,7 +323,7 @@ public class AWWContractBiz {
      */
     private boolean initMarket() {
         String moduleName = awwConfig.getContent().getScriptsModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
                 .moduleAddress(address)
@@ -337,7 +337,7 @@ public class AWWContractBiz {
 
     public void playerMintArm() {
         String moduleName = awwConfig.getContent().getScriptsModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
                 .moduleAddress(address)
@@ -354,7 +354,7 @@ public class AWWContractBiz {
 
     public void fight() {
         String moduleName = awwConfig.getContent().getScriptsModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
                 .moduleAddress(address)
@@ -374,7 +374,7 @@ public class AWWContractBiz {
 
     public boolean sellNFT() {
         String moduleName = awwConfig.getContent().getScriptsModule();
-        String address = awwConfig.getContent().getAddress();
+        String address = awwConfig.getCommon().getContractAddress();
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
                 .builder()
                 .moduleAddress(address)

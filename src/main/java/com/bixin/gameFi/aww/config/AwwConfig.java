@@ -38,7 +38,6 @@ public class AwwConfig {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Content {
-        private String address;
         private String marketModule;
         private String armModule;
         private String awwModule;

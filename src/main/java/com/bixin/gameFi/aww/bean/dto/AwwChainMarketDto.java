@@ -31,7 +31,7 @@ public class AwwChainMarketDto {
         private Long id;
         private String seller;
         private BigDecimal selling_price;
-        private List<ItemNFT> nft;
+        private ItemNFT nft;
     }
 
     @Data
@@ -55,27 +55,15 @@ public class AwwChainMarketDto {
         private BodyMeta body;
     }
 
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonIgnoreProperties(ignoreUnknown = true)
-//    public static class BaseMeta {
-//        private String name;
-//        private String image;
-//        private String image_data;
-//        private String "description";
-//    }
-
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class TypeMeta {
-        private long rarity;
-        private long stamina;
-        private long win_rate_bonus;
+        private int rarity;
+        private int stamina;
+        private int win_rate_bonus;
     }
 
     @Data
@@ -85,7 +73,7 @@ public class AwwChainMarketDto {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class BodyMeta {
         private long time;
-        private long used_stamina;
+        private int used_stamina;
     }
 
 }
