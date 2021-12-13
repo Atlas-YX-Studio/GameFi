@@ -2,7 +2,7 @@ package com.bixin.gameFi.test.aww;
 
 import com.bixin.gameFi.GameFiApplication;
 import com.bixin.gameFi.aww.service.AWWContractService;
-import com.bixin.gameFi.starcoin.core.service.ContractService;
+import com.bixin.gameFi.aww.service.chain.ContractService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
