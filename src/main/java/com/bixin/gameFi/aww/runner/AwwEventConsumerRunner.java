@@ -2,10 +2,10 @@ package com.bixin.gameFi.aww.runner;
 
 import com.bixin.gameFi.aww.bean.dto.TakeOrderEventDto;
 import com.bixin.gameFi.aww.common.enums.AwwEventType;
-import com.bixin.gameFi.aww.common.function.CaseFun;
+import com.bixin.gameFi.common.function.CaseFun;
 import com.bixin.gameFi.aww.common.queue.AwwEventBlockingQueue;
-import com.bixin.gameFi.aww.core.factory.NamedThreadFactory;
-import com.bixin.gameFi.aww.core.provider.GameFiDispatcher;
+import com.bixin.gameFi.common.factory.NamedThreadFactory;
+import com.bixin.gameFi.core.provider.GameFiDispatcher;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

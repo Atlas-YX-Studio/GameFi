@@ -23,9 +23,7 @@ public class AwwConfig {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Common {
-        private String url;
         private String contractAddress;
-        private int chainId;
     }
 
     @Data

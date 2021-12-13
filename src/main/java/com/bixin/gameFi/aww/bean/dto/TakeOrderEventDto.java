@@ -1,7 +1,7 @@
 package com.bixin.gameFi.aww.bean.dto;
 
 import com.bixin.gameFi.aww.bean.DO.AwwMatchRecords;
-import com.bixin.gameFi.aww.common.utils.LocalDateTimeUtil;
+import com.bixin.gameFi.common.utils.LocalDateTimeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

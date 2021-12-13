@@ -1,6 +1,6 @@
 package com.bixin.gameFi.aww.common.queue;
 
-import com.bixin.gameFi.aww.common.contants.CommonConstant;
+import com.bixin.gameFi.common.contants.CommonConstant;
 import com.bixin.gameFi.aww.common.enums.AwwEventType;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;

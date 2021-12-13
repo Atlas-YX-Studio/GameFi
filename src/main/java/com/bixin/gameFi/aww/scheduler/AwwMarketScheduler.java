@@ -2,12 +2,12 @@ package com.bixin.gameFi.aww.scheduler;
 
 import com.bixin.gameFi.aww.bean.dto.AwwChainMarketDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourceDto;
-import com.bixin.gameFi.aww.common.utils.JacksonUtil;
+import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.aww.config.AwwConfig;
-import com.bixin.gameFi.aww.core.redis.RedisCache;
+import com.bixin.gameFi.core.redis.RedisCache;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import com.bixin.gameFi.aww.service.IAwwStoreService;
-import com.bixin.gameFi.aww.service.chain.ContractService;
+import com.bixin.gameFi.core.contract.ContractService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

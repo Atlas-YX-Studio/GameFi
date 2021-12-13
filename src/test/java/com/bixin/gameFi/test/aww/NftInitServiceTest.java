@@ -1,8 +1,8 @@
 package com.bixin.gameFi.test.aww;
 
 import com.bixin.gameFi.GameFiApplication;
-import com.bixin.gameFi.aww.service.AWWContractService;
-import com.bixin.gameFi.aww.service.chain.ContractService;
+import com.bixin.gameFi.aww.biz.AWWContractBiz;
+import com.bixin.gameFi.core.contract.ContractService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ import java.math.BigInteger;
 @SpringBootTest(classes = GameFiApplication.class)
 class NftInitServiceTest {
     @Resource
-    private AWWContractService awwContractService;
+    private AWWContractBiz awwContractService;
     @Resource
     private ContractService contractService;
 

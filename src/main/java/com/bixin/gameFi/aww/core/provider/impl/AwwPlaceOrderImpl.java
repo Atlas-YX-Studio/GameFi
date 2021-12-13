@@ -1,7 +1,7 @@
 package com.bixin.gameFi.aww.core.provider.impl;
 
 import com.bixin.gameFi.aww.bean.dto.PlaceOrderEventDto;
-import com.bixin.gameFi.aww.core.provider.IGameFiProvider;
+import com.bixin.gameFi.core.provider.IGameFiProvider;
 import org.springframework.stereotype.Component;
 
 /**

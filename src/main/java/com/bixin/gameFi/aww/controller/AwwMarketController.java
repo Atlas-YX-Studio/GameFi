@@ -2,7 +2,7 @@ package com.bixin.gameFi.aww.controller;
 
 import com.bixin.gameFi.aww.bean.DO.AwwMarket;
 import com.bixin.gameFi.aww.common.contants.PathConstant;
-import com.bixin.gameFi.aww.common.response.P;
+import com.bixin.gameFi.common.response.P;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
