@@ -19,6 +19,9 @@ public interface IAwwMarketService {
 
     int deleteById(List<Long>  id);
 
+
+    int updateById(AwwMarket record);
+
     List<AwwMarket> selectByPages(boolean predicateNextPage,  Long startPrice, Long endPrice, Integer rarity,
                                   Long pageSize, Long pageNum, int sort);
 

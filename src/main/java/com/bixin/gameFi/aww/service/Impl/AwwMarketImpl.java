@@ -46,6 +46,11 @@ public class AwwMarketImpl implements IAwwMarketService {
     }
 
     @Override
+    public int updateById(AwwMarket record) {
+        return awwMarketMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
     public List<AwwMarket> selectByPages(boolean predicateNextPage,
                                          Long startPrice,
                                          Long endPrice,

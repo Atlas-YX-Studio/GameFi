@@ -9,6 +9,7 @@ import com.bixin.gameFi.aww.service.IAwwArmInfoService;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import com.bixin.gameFi.aww.service.IAwwStoreService;
 import com.bixin.gameFi.common.utils.JacksonUtil;
+import com.bixin.gameFi.common.utils.LocalDateTimeUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -95,24 +96,77 @@ public class AwwMarketScheduler {
                 log.error("AwwMarketScheduler exception {}, {}", key, value, e);
             }
         });
-        if(CollectionUtils.isEmpty(awwMarketList)){
+
+        updateAwwMarketInfos(awwMarketList);
+
+    }
+
+    private void updateAwwMarketInfos(List<AwwMarket> awwMarketList) {
+        if (CollectionUtils.isEmpty(awwMarketList)) {
             awwMarketService.deleteAll();
             return;
         }
         List<AwwMarket> oldMarkets = awwMarketService.selectAll();
-//        List<AwwArmInfo> awwArmInfos = awwArmInfoService.selectAll();
-
+        if (CollectionUtils.isEmpty(oldMarkets)) {
+            insertArmInfos(awwMarketList);
+            return;
+        }
 
         Map<Long, List<AwwMarket>> newMarketMap = awwMarketList.stream().collect(Collectors.groupingBy(AwwMarket::getChainId));
         Map<Long, List<AwwMarket>> oldMarketMap = oldMarkets.stream().collect(Collectors.groupingBy(AwwMarket::getChainId));
-        Map<Long, List<AwwArmInfo>> armInfos = awwArmInfos.stream().collect(Collectors.groupingBy(AwwArmInfo::getArmId));
 
         List<Long> delIds = new ArrayList<>();
         List<AwwMarket> updates = new ArrayList<>();
         List<AwwMarket> inserts = new ArrayList<>();
 
+        oldMarketMap.entrySet().forEach(entry -> {
+            Long chainId = entry.getKey();
+            List<AwwMarket> oldMarketList = entry.getValue();
+            List<AwwMarket> newMarketList = newMarketMap.get(chainId);
+            if (CollectionUtils.isEmpty(newMarketList)) {
+                delIds.add(chainId);
+            } else {
+                AwwMarket awwNewMarket = newMarketList.get(0);
+                AwwMarket awwOldMarket = oldMarketList.get(0);
+                awwNewMarket.setAwwId(awwOldMarket.getId());
+                awwNewMarket.setAwwId(awwOldMarket.getAwwId());
+                awwNewMarket.setAwwName(awwOldMarket.getAwwName());
+                awwNewMarket.setIcon(awwOldMarket.getIcon());
+                awwNewMarket.setCreateTime(awwOldMarket.getCreateTime());
+                updates.add(awwNewMarket);
+            }
+        });
+        inserts.addAll(awwMarketList.stream()
+                .filter(p -> !oldMarkets.stream().map(market -> market.getChainId()).collect(Collectors.toList()).contains(p.getChainId()))
+                .collect(Collectors.toList()));
 
+        if (!CollectionUtils.isEmpty(delIds)) {
+            awwMarketService.deleteById(delIds);
+        }
+        if (!CollectionUtils.isEmpty(updates)) {
+            updates.forEach(p -> awwMarketService.updateById(p));
+        }
+        if (!CollectionUtils.isEmpty(inserts)) {
+            insertArmInfos(inserts);
+        }
+    }
 
+    private void insertArmInfos(List<AwwMarket> awwMarketList) {
+        List<Long> armIds = awwMarketList.stream().map(AwwMarket::getChainId).collect(Collectors.toList());
+        List<AwwArmInfo> awwArmInfos = awwArmInfoService.selectAll(armIds);
+        Map<Long, List<AwwArmInfo>> armInfoMap = awwArmInfos.stream().collect(Collectors.groupingBy(AwwArmInfo::getArmId));
+        awwMarketList.stream().forEach(p -> {
+            List<AwwArmInfo> awwInfos = armInfoMap.get(p.getChainId());
+            if (CollectionUtils.isEmpty(awwInfos)) {
+                return;
+            }
+            AwwArmInfo awwArmInfo = awwInfos.get(0);
+            p.setAwwId(awwArmInfo.getId());
+            p.setAwwId(awwArmInfo.getArmId());
+            p.setAwwName(awwArmInfo.getName());
+            p.setIcon(awwArmInfo.getImageLink());
+            awwMarketService.insert(p);
+        });
     }
 
 
@@ -120,8 +174,10 @@ public class AwwMarketScheduler {
         AwwChainMarketDto.NFTVec vec = item.getNft().getVec().get(0);
         AwwChainMarketDto.TypeMeta typeMeta = vec.getType_meta();
         AwwChainMarketDto.BodyMeta bodyMeta = vec.getBody();
+        Long currentTime = LocalDateTimeUtil.getMilliByTime(LocalDateTime.now());
         AwwMarket.AwwMarketBuilder marketBuilder = AwwMarket.builder()
                 .chainId(item.getId())
+//                .id()
 //                .awwId()
 //                .awwName()
 //                .icon()
@@ -131,42 +187,10 @@ public class AwwMarketScheduler {
                 .sellPrice(item.getSelling_price())
                 .stamina(typeMeta.getStamina())
                 .usedStamina(bodyMeta.getUsed_stamina())
-                .winRateBonus(typeMeta.getWin_rate_bonus());
+                .winRateBonus(typeMeta.getWin_rate_bonus())
+                .createTime(currentTime)
+                .updateTime(currentTime);
         return marketBuilder.build();
     }
-
-
-//    public class AwwMarket {
-//        private Long id;
-//
-//        private Long chainId;
-//
-//        private Long awwId;
-//
-//        private String awwName;
-//
-//        private String owner;
-//
-//        private String address;
-//
-//        private Integer rarity;
-//
-//        private BigDecimal sellPrice;
-//
-//        private Integer stamina;
-//
-//        private Integer usedStamina;
-//
-//        private Integer winRateBonus;
-//
-//        private String icon;
-//
-//        private Long createTime;
-//
-//        private Long updateTime;
-//
-//
-//    }
-
 
 }
