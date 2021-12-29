@@ -7,7 +7,7 @@ spring:
 ## application name
 spring:
   application:
-    name: gameFi
+    name: GameFi
 
 server:
   port: 8999
