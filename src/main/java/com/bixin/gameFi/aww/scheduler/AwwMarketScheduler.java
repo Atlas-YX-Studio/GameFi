@@ -119,6 +119,7 @@ public class AwwMarketScheduler {
         List<AwwMarket> updates = new ArrayList<>();
         List<AwwMarket> inserts = new ArrayList<>();
 
+        Long currentTime = LocalDateTimeUtil.getMilliByTime(LocalDateTime.now());
         oldMarketMap.entrySet().forEach(entry -> {
             Long chainId = entry.getKey();
             List<AwwMarket> oldMarketList = entry.getValue();
@@ -128,11 +129,12 @@ public class AwwMarketScheduler {
             } else {
                 AwwMarket awwNewMarket = newMarketList.get(0);
                 AwwMarket awwOldMarket = oldMarketList.get(0);
-                awwNewMarket.setAwwId(awwOldMarket.getId());
+                awwNewMarket.setId(awwOldMarket.getId());
                 awwNewMarket.setAwwId(awwOldMarket.getAwwId());
                 awwNewMarket.setAwwName(awwOldMarket.getAwwName());
                 awwNewMarket.setIcon(awwOldMarket.getIcon());
                 awwNewMarket.setCreateTime(awwOldMarket.getCreateTime());
+                awwNewMarket.setUpdateTime(currentTime);
                 updates.add(awwNewMarket);
             }
         });

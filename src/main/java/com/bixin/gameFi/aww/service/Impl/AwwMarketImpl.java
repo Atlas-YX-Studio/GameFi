@@ -47,7 +47,7 @@ public class AwwMarketImpl implements IAwwMarketService {
 
     @Override
     public int updateById(AwwMarket record) {
-        return awwMarketMapper.updateByPrimaryKey(record);
+        return awwMarketMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
