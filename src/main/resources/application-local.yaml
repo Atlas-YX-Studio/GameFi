@@ -46,8 +46,8 @@ gamefi:
     common:
       contract-address: "0x16a8bf4d0c3718518d81f132801e4aaa"
     websocket:
-      websocket-host: 60.205.3.84
-      websocket-port: 8970
+      websocket-host: 13.229.71.62
+      websocket-port: 9870
     content:
       aww-module: "AWW"
       arm-module: "ARM"
