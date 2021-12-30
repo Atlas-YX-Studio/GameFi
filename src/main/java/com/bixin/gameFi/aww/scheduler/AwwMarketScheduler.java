@@ -70,6 +70,7 @@ public class AwwMarketScheduler {
         log.warn("AwwMarketScheduler get chain resource infos: {}", resource);
         ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
         });
+        log.warn("AwwMarketScheduler dto infos: {}", chainResourceDto);
         if (Objects.isNull(chainResourceDto) || Objects.isNull(chainResourceDto.getResult())
                 || Objects.isNull(chainResourceDto.getResult().getResources())) {
             log.warn("AwwMarketScheduler get chain resource is empty {}", chainResourceDto);
@@ -89,6 +90,7 @@ public class AwwMarketScheduler {
                 }
                 AwwChainMarketDto awwChainMarketDto = JacksonUtil.readValue(JacksonUtil.toJson(map.get("json")), new TypeReference<>() {
                 });
+                log.warn("AwwMarketScheduler market infos: {}", awwChainMarketDto);
                 if (CollectionUtils.isEmpty(awwChainMarketDto.getItems())) {
                     return;
                 }
