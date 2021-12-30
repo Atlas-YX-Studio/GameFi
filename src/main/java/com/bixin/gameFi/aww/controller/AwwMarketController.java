@@ -29,11 +29,11 @@ public class AwwMarketController {
                     @RequestParam(value = "endPrice", defaultValue = "0") long endPrice,
                     @RequestParam(value = "rarity", defaultValue = "0") int rarity,
                     @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
-                    @RequestParam(value = "pageNum", defaultValue = "0") long pageNum,
+                    @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
                     @RequestParam(value = "sort", defaultValue = "0") int sort) {
 
-        if (pageNum< 0 || pageSize <= 0 || sort < 0 || rarity < 0
-                || startPrice < 0 || endPrice < 0 || endPrice < startPrice){
+        if (pageNum >= 1 || pageSize <= 0 || sort < 0 || rarity < 0
+                || startPrice < 0 || endPrice < 0 || endPrice < startPrice) {
             return P.failed("parameter is invalid");
         }
 
