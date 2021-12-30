@@ -67,13 +67,12 @@ public class AwwMarketScheduler {
 
     private void pullAwwNftMarketList() {
         String resource = contractService.listResource(awwConfig.getCommon().getContractAddress());
-        log.warn("AwwMarketScheduler get chain resource infos: {}", resource);
         ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
         });
-        log.warn("AwwMarketScheduler dto infos: {}", chainResourceDto);
         if (Objects.isNull(chainResourceDto) || Objects.isNull(chainResourceDto.getResult())
                 || Objects.isNull(chainResourceDto.getResult().getResources())) {
-            log.warn("AwwMarketScheduler get chain resource is empty {}", chainResourceDto);
+            log.error("AwwMarketScheduler get chain resource is empty {}", chainResourceDto);
+            return;
         }
         String awwKey = awwConfig.getCommon().getContractAddress() + awwSuffix;
 
@@ -86,12 +85,13 @@ public class AwwMarketScheduler {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) value;
                 if (CollectionUtils.isEmpty(map) || !map.containsKey("json")) {
+                    log.error("AwwMarketScheduler resource json is empty ");
                     return;
                 }
                 AwwChainMarketDto awwChainMarketDto = JacksonUtil.readValue(JacksonUtil.toJson(map.get("json")), new TypeReference<>() {
                 });
-                log.warn("AwwMarketScheduler market infos: {}", awwChainMarketDto);
                 if (CollectionUtils.isEmpty(awwChainMarketDto.getItems())) {
+                    log.warn("AwwMarketScheduler resource items is empty ");
                     return;
                 }
                 awwChainMarketDto.getItems().forEach(item -> awwMarketList.add(buildAwwMarket(item)));
@@ -106,6 +106,7 @@ public class AwwMarketScheduler {
 
     private void updateAwwMarketInfos(List<AwwMarket> awwMarketList) {
         if (CollectionUtils.isEmpty(awwMarketList)) {
+            log.warn("AwwMarketScheduler market infos is empty ");
             awwMarketService.deleteAll();
             return;
         }
@@ -159,6 +160,10 @@ public class AwwMarketScheduler {
     private void insertArmInfos(List<AwwMarket> awwMarketList) {
         List<Long> armIds = awwMarketList.stream().map(AwwMarket::getChainId).collect(Collectors.toList());
         List<AwwArmInfo> awwArmInfos = awwArmInfoService.selectAll(armIds);
+        if(CollectionUtils.isEmpty(awwArmInfos)){
+            log.error("AwwMarketScheduler awwArmInfo is empty ");
+            return;
+        }
         Map<Long, List<AwwArmInfo>> armInfoMap = awwArmInfos.stream().collect(Collectors.groupingBy(AwwArmInfo::getArmId));
         awwMarketList.stream().forEach(p -> {
             List<AwwArmInfo> awwInfos = armInfoMap.get(p.getChainId());
