@@ -355,13 +355,17 @@
     SELECT
     <include refid="Base_Column_List" />
     FROM
-    aww_match_records
+    aww_market
     <where>
-      <if test="sellAddress != null">
-        AND sell_address = #{sellAddress}
+      <if test="startPrice != null">
+        AND sell_price &gt;=  #{startPrice}
       </if>
-      <if test="buyAddress != null">
-        AND buy_address = #{buyAddress}
+      <if test="endPrice != null">
+        AND sell_price &lt;=  #{endPrice}
+      </if>
+
+      <if test="rarity != null">
+        AND rarity = #{rarity}
       </if>
     </where>
     ORDER BY
