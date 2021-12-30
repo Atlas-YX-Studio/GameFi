@@ -67,6 +67,7 @@ public class AwwMarketScheduler {
 
     private void pullAwwNftMarketList() {
         String resource = contractService.listResource(awwConfig.getCommon().getContractAddress());
+        log.warn("AwwMarketScheduler get chain resource infos: {}", resource);
         ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
         });
         if (Objects.isNull(chainResourceDto) || Objects.isNull(chainResourceDto.getResult())
