@@ -32,7 +32,7 @@ public class AwwMarketController {
                     @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
                     @RequestParam(value = "sort", defaultValue = "0") int sort) {
 
-        if (pageNum >= 1 || pageSize <= 0 || sort < 0 || rarity < 0
+        if (pageNum <= 0 || pageSize <= 0 || sort < 0 || rarity < 0
                 || startPrice < 0 || endPrice < 0 || endPrice < startPrice) {
             return P.failed("parameter is invalid");
         }

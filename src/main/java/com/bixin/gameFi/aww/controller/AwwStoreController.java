@@ -32,9 +32,9 @@ public class AwwStoreController {
     @GetMapping("/getSelling")
     public P getSelling(@RequestParam(value = "address", defaultValue = "") String address,
                         @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
-                        @RequestParam(value = "pageNum", defaultValue = "0") long pageNum) {
+                        @RequestParam(value = "pageNum", defaultValue = "1") long pageNum) {
 
-        if (pageNum < 0 || pageSize <= 0 || StringUtils.isEmpty(address)) {
+        if (pageNum <= 0 || pageSize <= 0 || StringUtils.isEmpty(address)) {
             return P.failed("parameter is invalid");
         }
         List<AwwMarket> awwMarkets = awwMarketService.selectByPages(true, null, null, null,
@@ -55,9 +55,9 @@ public class AwwStoreController {
     @GetMapping("/getSellRecords")
     public P getSellRecords(@RequestParam(value = "address", defaultValue = "") String address,
                             @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
-                            @RequestParam(value = "pageNum", defaultValue = "0") long pageNum) {
+                            @RequestParam(value = "pageNum", defaultValue = "1") long pageNum) {
 
-        if (pageNum < 0 || pageSize <= 0 || StringUtils.isEmpty(address)) {
+        if (pageNum <= 0 || pageSize <= 0 || StringUtils.isEmpty(address)) {
             return P.failed("parameter is invalid");
         }
         List<AwwMatchRecords> matchRecords = awwStoreService.selectByPages(true, address, "", pageSize + 1, pageNum, 0);
