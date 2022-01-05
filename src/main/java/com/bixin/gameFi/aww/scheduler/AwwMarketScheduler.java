@@ -178,8 +178,8 @@ public class AwwMarketScheduler {
                 return;
             }
             AwwArmInfo awwArmInfo = awwInfos.get(0);
-            p.setId(awwArmInfo.getId());
-            p.setAwwId(awwArmInfo.getArmId());
+//            p.setId(awwArmInfo.getId());
+            p.setAwwId(awwArmInfo.getId());
             p.setAwwName(awwArmInfo.getName());
             p.setIcon(awwArmInfo.getImageLink());
             awwMarketService.insert(p);

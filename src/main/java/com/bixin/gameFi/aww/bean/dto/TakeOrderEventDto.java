@@ -33,7 +33,7 @@ public class TakeOrderEventDto {
         AwwMatchRecords.AwwMatchRecordsBuilder builder = AwwMatchRecords.builder()
                 .sellAddress(dto.getSeller())
                 .buyAddress(dto.getBuyer())
-//                .awwId()
+                .awwId(dto.getId())
 //                .groupId()
 //                .icon()  
 //                .groupName()

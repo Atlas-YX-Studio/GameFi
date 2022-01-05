@@ -14,7 +14,7 @@ import java.util.List;
  * create  2021/12/13
  */
 @Service
-public class IAwwArmInfoImpl implements IAwwArmInfoService {
+public class AwwArmInfoImpl implements IAwwArmInfoService {
 
     @Resource
     AwwArmInfoMapper awwArmInfoMapper;
