@@ -142,6 +142,11 @@ public class AwwMarketScheduler {
                 updates.add(awwNewMarket);
             }
         });
+        log.info("AwwMarketScheduler update arm info,insertIds:{}, delIds:{}, updateIds:{}",
+                inserts.stream().map(AwwMarket::getId).collect(Collectors.toList()),
+                delIds,
+                updates.stream().map(AwwMarket::getId).collect(Collectors.toList())
+                );
         inserts.addAll(awwMarketList.stream()
                 .filter(p -> !oldMarkets.stream().map(market -> market.getChainId()).collect(Collectors.toList()).contains(p.getChainId()))
                 .collect(Collectors.toList()));
