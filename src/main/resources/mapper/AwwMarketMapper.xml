@@ -363,7 +363,9 @@
       <if test="endPrice != null">
         AND sell_price &lt;=  #{endPrice}
       </if>
-
+      <if test="owner != null">
+        AND owner = #{owner}
+      </if>
       <if test="rarity != null">
         AND rarity = #{rarity}
       </if>

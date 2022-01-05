@@ -52,6 +52,7 @@ public class AwwMarketImpl implements IAwwMarketService {
 
     @Override
     public List<AwwMarket> selectByPages(boolean predicateNextPage,
+                                         String owner,
                                          Long startPrice,
                                          Long endPrice,
                                          Integer rarity,

@@ -17,12 +17,12 @@ public interface IAwwMarketService {
 
     int deleteAll();
 
-    int deleteById(List<Long>  id);
+    int deleteById(List<Long> id);
 
 
     int updateById(AwwMarket record);
 
-    List<AwwMarket> selectByPages(boolean predicateNextPage,  Long startPrice, Long endPrice, Integer rarity,
+    List<AwwMarket> selectByPages(boolean predicateNextPage, String owner, Long startPrice, Long endPrice, Integer rarity,
                                   Long pageSize, Long pageNum, int sort);
 
 }

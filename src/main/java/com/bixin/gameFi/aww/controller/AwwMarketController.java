@@ -38,6 +38,7 @@ public class AwwMarketController {
         }
 
         List<AwwMarket> awwMarkets = awwMarketService.selectByPages(true,
+                null,
                 startPrice,
                 endPrice,
                 rarity,
