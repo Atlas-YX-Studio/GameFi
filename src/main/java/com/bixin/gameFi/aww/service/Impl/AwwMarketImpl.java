@@ -71,6 +71,7 @@ public class AwwMarketImpl implements IAwwMarketService {
         }
         paramMap.put("pageFrom", predicateNextPage ? (pageNum - 1) * (pageSize - 1) : (pageNum - 1) * pageSize);
         paramMap.put("pageSize", pageSize);
+        paramMap.put("owner", owner);
 
         if (sort == 0) {
             paramMap.put("sort", "create_time desc");
