@@ -74,6 +74,8 @@ public class AwwMarketScheduler {
             log.error("AwwMarketScheduler get chain resource is empty {}", chainResourceDto);
             return;
         }
+        // TODO: 2022/1/5 debug
+        log.info("AwwMarketScheduler resource info: {}", resource);
         String awwKey = awwConfig.getCommon().getContractAddress() + awwSuffix;
 
         List<AwwMarket> awwMarketList = new ArrayList<>();
@@ -146,7 +148,7 @@ public class AwwMarketScheduler {
                 inserts.stream().map(AwwMarket::getId).collect(Collectors.toList()),
                 delIds,
                 updates.stream().map(AwwMarket::getId).collect(Collectors.toList())
-                );
+        );
         inserts.addAll(awwMarketList.stream()
                 .filter(p -> !oldMarkets.stream().map(market -> market.getChainId()).collect(Collectors.toList()).contains(p.getChainId()))
                 .collect(Collectors.toList()));
@@ -165,7 +167,7 @@ public class AwwMarketScheduler {
     private void insertArmInfos(List<AwwMarket> awwMarketList) {
         List<Long> armIds = awwMarketList.stream().map(AwwMarket::getChainId).collect(Collectors.toList());
         List<AwwArmInfo> awwArmInfos = awwArmInfoService.selectAll(armIds);
-        if(CollectionUtils.isEmpty(awwArmInfos)){
+        if (CollectionUtils.isEmpty(awwArmInfos)) {
             log.error("AwwMarketScheduler awwArmInfo is empty ");
             return;
         }
@@ -176,7 +178,7 @@ public class AwwMarketScheduler {
                 return;
             }
             AwwArmInfo awwArmInfo = awwInfos.get(0);
-            p.setAwwId(awwArmInfo.getId());
+            p.setId(awwArmInfo.getId());
             p.setAwwId(awwArmInfo.getArmId());
             p.setAwwName(awwArmInfo.getName());
             p.setIcon(awwArmInfo.getImageLink());
