@@ -127,12 +127,12 @@ public class AwwMarketScheduler {
         oldMarketMap.entrySet().forEach(entry -> {
             Long chainId = entry.getKey();
             List<AwwMarket> oldMarketList = entry.getValue();
+            AwwMarket awwOldMarket = oldMarketList.get(0);
             List<AwwMarket> newMarketList = newMarketMap.get(chainId);
             if (CollectionUtils.isEmpty(newMarketList)) {
-                delIds.add(chainId);
+                delIds.add(awwOldMarket.getId());
             } else {
                 AwwMarket awwNewMarket = newMarketList.get(0);
-                AwwMarket awwOldMarket = oldMarketList.get(0);
                 awwNewMarket.setId(awwOldMarket.getId());
                 awwNewMarket.setAwwId(awwOldMarket.getAwwId());
                 awwNewMarket.setAwwName(awwOldMarket.getAwwName());
