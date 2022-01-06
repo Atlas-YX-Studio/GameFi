@@ -22,7 +22,13 @@ public interface IAwwMarketService {
 
     int updateById(AwwMarket record);
 
-    List<AwwMarket> selectByPages(boolean predicateNextPage, String owner, Long startPrice, Long endPrice, Integer rarity,
-                                  Long pageSize, Long pageNum, int sort);
+    List<AwwMarket> selectByPages(boolean predicateNextPage,
+                                  String owner,
+                                  Long startPrice,
+                                  Long endPrice,
+                                  List<Integer> raritys,
+                                  Long pageSize,
+                                  Long pageNum,
+                                  int sort);
 
 }

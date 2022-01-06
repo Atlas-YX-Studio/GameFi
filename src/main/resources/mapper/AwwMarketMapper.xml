@@ -369,6 +369,11 @@
       <if test="rarity != null">
         AND rarity = #{rarity}
       </if>
+      <if test="raritys != null">
+        <foreach collection="raritys" item="item" separator="," open="(" close=")">
+          and  rarity in #{item}
+        </foreach>
+      </if>
     </where>
     ORDER BY
     <if test="sort != null">

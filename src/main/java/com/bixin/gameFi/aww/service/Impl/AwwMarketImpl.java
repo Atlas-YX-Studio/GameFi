@@ -5,6 +5,7 @@ import com.bixin.gameFi.aww.core.mapper.AwwMarketMapper;
 import com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class AwwMarketImpl implements IAwwMarketService {
                                          String owner,
                                          Long startPrice,
                                          Long endPrice,
-                                         Integer rarity,
+                                         List<Integer> raritys,
                                          Long pageSize,
                                          Long pageNum,
                                          int sort) {
@@ -66,8 +67,8 @@ public class AwwMarketImpl implements IAwwMarketService {
         if (Objects.nonNull(endPrice) && endPrice > 0) {
             paramMap.put("endPrice", endPrice);
         }
-        if (Objects.nonNull(rarity) && rarity > 0) {
-            paramMap.put("rarity", rarity);
+        if(!CollectionUtils.isEmpty(raritys)){
+            paramMap.put("raritys", raritys);
         }
         paramMap.put("pageFrom", predicateNextPage ? (pageNum - 1) * (pageSize - 1) : (pageNum - 1) * pageSize);
         paramMap.put("pageSize", pageSize);
