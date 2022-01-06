@@ -370,8 +370,9 @@
         AND rarity = #{rarity}
       </if>
       <if test="raritys != null">
+        and  rarity in
         <foreach collection="raritys" item="item" separator="," open="(" close=")">
-          and  rarity in #{item}
+           #{item}
         </foreach>
       </if>
     </where>
