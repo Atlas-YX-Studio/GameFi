@@ -29,10 +29,10 @@ public class AwwStoreImpl implements IAwwStoreService {
     @Override
     public List<AwwMatchRecords> selectByPages(boolean predicateNextPage, String sellAddress, String buyAddress, long pageSize, long pageNum, int sort) {
         Map<String, Object> paramMap = new HashMap<>();
-        if (StringUtils.isBlank(sellAddress)) {
+        if (StringUtils.isNotBlank(sellAddress)) {
             paramMap.put("sellAddress", sellAddress);
         }
-        if (StringUtils.isBlank(buyAddress)) {
+        if (StringUtils.isNotBlank(buyAddress)) {
             paramMap.put("buyAddress", buyAddress);
         }
         paramMap.put("pageFrom", predicateNextPage ? (pageNum - 1) * (pageSize - 1) : (pageNum - 1) * pageSize);
