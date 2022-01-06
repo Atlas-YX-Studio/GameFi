@@ -20,11 +20,7 @@ public class AwwMatchRecords {
 
     private Long awwId;
 
-    private Long groupId;
-
     private String icon;
-
-    private String groupName;
 
     private String awwName;
 

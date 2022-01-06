@@ -6,9 +6,7 @@
     <result column="sell_address" jdbcType="VARCHAR" property="sellAddress" />
     <result column="buy_address" jdbcType="VARCHAR" property="buyAddress" />
     <result column="aww_id" jdbcType="BIGINT" property="awwId" />
-    <result column="group_id" jdbcType="BIGINT" property="groupId" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="aww_name" jdbcType="VARCHAR" property="awwName" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
@@ -75,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sell_address, buy_address, aww_id, group_id, icon, group_name, aww_name, price, 
+    id, sell_address, buy_address, aww_id, icon, aww_name, price,
     fee, match_time, create_time, update_time
   </sql>
   <select id="selectByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMatchRecordsDDL" resultMap="BaseResultMap">
@@ -110,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMatchRecords">
     insert into aww_match_records (id, sell_address, buy_address, 
-      aww_id, group_id, icon, 
-      group_name, aww_name, price, 
+      aww_id, icon,
+     aww_name, price,
       fee, match_time, create_time, 
       update_time)
     values (#{id,jdbcType=BIGINT}, #{sellAddress,jdbcType=VARCHAR}, #{buyAddress,jdbcType=VARCHAR}, 
-      #{awwId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{icon,jdbcType=VARCHAR}, 
-      #{groupName,jdbcType=VARCHAR}, #{awwName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{awwId,jdbcType=BIGINT}, #{icon,jdbcType=VARCHAR},
+      #{awwName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
       #{fee,jdbcType=DECIMAL}, #{matchTime,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>
@@ -135,14 +133,8 @@
       <if test="awwId != null">
         aww_id,
       </if>
-      <if test="groupId != null">
-        group_id,
-      </if>
       <if test="icon != null">
         icon,
-      </if>
-      <if test="groupName != null">
-        group_name,
       </if>
       <if test="awwName != null">
         aww_name,
@@ -226,14 +218,8 @@
       <if test="record.awwId != null">
         aww_id = #{record.awwId,jdbcType=BIGINT},
       </if>
-      <if test="record.groupId != null">
-        group_id = #{record.groupId,jdbcType=BIGINT},
-      </if>
       <if test="record.icon != null">
         icon = #{record.icon,jdbcType=VARCHAR},
-      </if>
-      <if test="record.groupName != null">
-        group_name = #{record.groupName,jdbcType=VARCHAR},
       </if>
       <if test="record.awwName != null">
         aww_name = #{record.awwName,jdbcType=VARCHAR},
@@ -264,9 +250,7 @@
       sell_address = #{record.sellAddress,jdbcType=VARCHAR},
       buy_address = #{record.buyAddress,jdbcType=VARCHAR},
       aww_id = #{record.awwId,jdbcType=BIGINT},
-      group_id = #{record.groupId,jdbcType=BIGINT},
       icon = #{record.icon,jdbcType=VARCHAR},
-      group_name = #{record.groupName,jdbcType=VARCHAR},
       aww_name = #{record.awwName,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       fee = #{record.fee,jdbcType=DECIMAL},
@@ -289,14 +273,8 @@
       <if test="awwId != null">
         aww_id = #{awwId,jdbcType=BIGINT},
       </if>
-      <if test="groupId != null">
-        group_id = #{groupId,jdbcType=BIGINT},
-      </if>
       <if test="icon != null">
         icon = #{icon,jdbcType=VARCHAR},
-      </if>
-      <if test="groupName != null">
-        group_name = #{groupName,jdbcType=VARCHAR},
       </if>
       <if test="awwName != null">
         aww_name = #{awwName,jdbcType=VARCHAR},
@@ -324,9 +302,7 @@
     set sell_address = #{sellAddress,jdbcType=VARCHAR},
       buy_address = #{buyAddress,jdbcType=VARCHAR},
       aww_id = #{awwId,jdbcType=BIGINT},
-      group_id = #{groupId,jdbcType=BIGINT},
       icon = #{icon,jdbcType=VARCHAR},
-      group_name = #{groupName,jdbcType=VARCHAR},
       aww_name = #{awwName,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       fee = #{fee,jdbcType=DECIMAL},
