@@ -85,6 +85,8 @@ public class AwwEventConsumerRunner implements ApplicationRunner {
         CaseFun.builder().hasContinue(true).build()
                 .elseCase(type, value -> AwwEventType.TAKE_ORDER_EVENT == value, value -> {
                     TakeOrderEventDto takeOrderEventDto = mapper.convertValue(node, TakeOrderEventDto.class);
+                    // TODO: 2022/1/6 debug
+                    log.info("AwwEventConsumerRunner awwDispatcher info {}", takeOrderEventDto);
                     gameFiDispatcher.dispatch(TakeOrderEventDto.of(takeOrderEventDto));
                 });
 //                .elseCase(type, value -> AwwEventType.LIQUIDITY_EVENT == value, value -> {

@@ -29,9 +29,11 @@ public class AwwPlaceOrderProviderImpl implements IGameFiProvider<AwwMatchRecord
 
     @Override
     public void dispatcher(AwwMatchRecords record) {
+        // TODO: 2022/1/6 debug
+        log.info("AwwPlaceOrderProvider dispatcher record info {}", record);
         List<AwwArmInfo> awwArmInfos = awwArmInfoService.selectAll(Arrays.asList(record.getAwwId()));
-        if(CollectionUtils.isEmpty(awwArmInfos)){
-            log.error("AwwPlaceOrderProvider dispatcher awwArmInfos is empty {}",record.getAwwId());
+        if (CollectionUtils.isEmpty(awwArmInfos)) {
+            log.error("AwwPlaceOrderProvider dispatcher awwArmInfos is empty {}", record.getAwwId());
         }
         AwwArmInfo awwArmInfo = awwArmInfos.get(0);
         record.setAwwId(awwArmInfo.getId());
