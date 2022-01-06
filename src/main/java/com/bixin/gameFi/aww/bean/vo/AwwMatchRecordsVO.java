@@ -26,6 +26,4 @@ public class AwwMatchRecordsVO extends AwwMatchRecords {
 
     private Integer stamina;
 
-    private Integer usedStamina;
-
 }
