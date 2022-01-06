@@ -32,4 +32,12 @@ public class AwwArmInfoImpl implements IAwwArmInfoService {
         return awwArmInfoMapper.selectByDDL(ddl);
     }
 
+    @Override
+    public List<AwwArmInfo> selectAllByIds(List<Long> ids) {
+        AwwArmInfoDDL ddl = new AwwArmInfoDDL();
+        AwwArmInfoDDL.Criteria criteria = ddl.createCriteria();
+        criteria.andIdIn(ids);
+        return awwArmInfoMapper.selectByDDL(ddl);
+    }
+
 }
