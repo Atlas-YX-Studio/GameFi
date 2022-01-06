@@ -27,7 +27,7 @@ public class AwwMarketController {
     @GetMapping("/getALL")
     public P getALL(@RequestParam(value = "startPrice", defaultValue = "0") long startPrice,
                     @RequestParam(value = "endPrice", defaultValue = "0") long endPrice,
-                    @RequestParam(value = "raritys", defaultValue = "0") List<Integer> raritys,
+                    @RequestParam(value = "raritys", defaultValue = "") List<Integer> raritys,
                     @RequestParam(value = "pageSize", defaultValue = "20") long pageSize,
                     @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
                     @RequestParam(value = "sort", defaultValue = "0") int sort) {
