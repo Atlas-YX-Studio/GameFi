@@ -40,4 +40,8 @@ public class AwwArmInfoImpl implements IAwwArmInfoService {
         return awwArmInfoMapper.selectByDDL(ddl);
     }
 
+    @Override
+    public AwwArmInfo selectById(Long id) {
+        return awwArmInfoMapper.selectByPrimaryKey(id);
+    }
 }

@@ -1,7 +1,6 @@
 package com.bixin.gameFi.aww.service;
 
 import com.bixin.gameFi.aww.bean.DO.AwwArmInfo;
-import com.bixin.gameFi.aww.bean.DO.AwwMarket;
 
 import java.util.List;
 
@@ -17,4 +16,5 @@ public interface IAwwArmInfoService {
 
     List<AwwArmInfo> selectAllByIds(List<Long> ids);
 
+    AwwArmInfo selectById(Long id);
 }

@@ -55,6 +55,6 @@ gamefi:
       market-module: "ARMMarket"
       scripts-module: "AWWScripts"
       nft-name: "aww arm"
-      title-page-image: "https://test.kikoswap.com/v1/nft/image/group/1"
+      title-page-image: "https://test.armwrestwar.com/v1/aww/image/title/1"
       description: "aww arms"
-      image-info-api: "https://test.kikoswap.com/v1/nft/image/info/"
+      image-info-api: "https://test.armwrestwar.com/v1/aww/image/arm/"

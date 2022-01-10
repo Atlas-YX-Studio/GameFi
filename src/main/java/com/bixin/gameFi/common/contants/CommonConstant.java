@@ -8,5 +8,12 @@ public interface CommonConstant {
 
     int GAME_EVENT_QUEUE_SIZE = 20000;
 
+    String IMAGE_ARM_URL_PREFIX_KEY = "image_arm_url_";
+
+    // http header
+    String HTTP_X_REQUESTED_WITH = "X-Request-With";
+
+    String HTTP_AJAX_REQUEST_HEADER = "XMLHttpRequest";
+
 
 }

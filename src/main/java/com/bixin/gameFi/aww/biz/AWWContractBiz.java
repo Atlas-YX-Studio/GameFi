@@ -83,13 +83,13 @@ public class AWWContractBiz {
     public void tempCreateNFT() {
 //        initGame();
         initMarket();
-        for (long i = 1; i <= 10; i++) {
+        for (long i = 11; i <= 20; i++) {
             AwwArmInfo armInfoDo = new AwwArmInfo();
             armInfoDo.setId(i);
             armInfoDo.setName("ARM#" + i);
-            armInfoDo.setRarity((byte) 1);
-            armInfoDo.setStamina((byte) 11);
-            armInfoDo.setWinRateBonus((byte) 30);
+            armInfoDo.setRarity((byte) 0);
+            armInfoDo.setStamina((byte) 2);
+            armInfoDo.setWinRateBonus((byte) 0);
             if (!mintKikoCatNFTWithImage(armInfoDo)) {
                 log.error("ARM {} mint失败", armInfoDo.getName());
                 throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
