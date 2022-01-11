@@ -16,5 +16,5 @@ public interface IAwwArmInfoService {
 
     List<AwwArmInfo> selectAllByIds(List<Long> ids);
 
-    AwwArmInfo selectByArmId(Long id);
+    AwwArmInfo selectById(Long id);
 }

@@ -4,7 +4,6 @@ import com.bixin.gameFi.aww.bean.DO.AwwArmInfo;
 import com.bixin.gameFi.aww.core.mapper.AwwArmInfoMapper;
 import com.bixin.gameFi.aww.core.wrapDDL.AwwArmInfoDDL;
 import com.bixin.gameFi.aww.service.IAwwArmInfoService;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,11 +41,7 @@ public class AwwArmInfoImpl implements IAwwArmInfoService {
     }
 
     @Override
-    public AwwArmInfo selectByArmId(Long armId) {
-        AwwArmInfoDDL ddl = new AwwArmInfoDDL();
-        AwwArmInfoDDL.Criteria criteria = ddl.createCriteria();
-        criteria.andArmIdEqualTo(armId);
-        List<AwwArmInfo> awwArmInfos = awwArmInfoMapper.selectByDDL(ddl);
-        return CollectionUtils.isEmpty(awwArmInfos) ? null : awwArmInfos.get(0);
+    public AwwArmInfo selectById(Long id) {
+        return awwArmInfoMapper.selectByPrimaryKey(id);
     }
 }

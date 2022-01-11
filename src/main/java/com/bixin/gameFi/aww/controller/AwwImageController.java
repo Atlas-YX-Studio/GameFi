@@ -32,11 +32,11 @@ public class AwwImageController {
     @Resource
     RedisCache redisCache;
 
-    @GetMapping("/arm/{arm_id}")
-    public R getInfoImage(@PathVariable("arm_id") Long armIId, HttpServletRequest request, HttpServletResponse response) {
-        String url = (String) redisCache.getValue(CommonConstant.IMAGE_ARM_URL_PREFIX_KEY + armIId);
+    @GetMapping("/arm/{id}")
+    public R getInfoImage(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
+        String url = (String) redisCache.getValue(CommonConstant.IMAGE_ARM_URL_PREFIX_KEY + id);
         if (StringUtils.isBlank(url)) {
-            AwwArmInfo armInfo = awwArmInfoService.selectByArmId(armIId);
+            AwwArmInfo armInfo = awwArmInfoService.selectById(id);
             if (armInfo == null) {
                 throw new GameException(GameErrCode.DATA_NOT_EXIST);
             }
@@ -44,7 +44,7 @@ public class AwwImageController {
             if (StringUtils.isBlank(url)) {
                 throw new GameException(GameErrCode.IMAGE_UPLOAD_FAILURE);
             }
-            redisCache.setValue(CommonConstant.IMAGE_ARM_URL_PREFIX_KEY + armIId, url, 1, TimeUnit.HOURS);
+            redisCache.setValue(CommonConstant.IMAGE_ARM_URL_PREFIX_KEY + id, url, 1, TimeUnit.HOURS);
         }
         try {
             if (StringUtils.equalsIgnoreCase(request.getHeader(CommonConstant.HTTP_X_REQUESTED_WITH),
