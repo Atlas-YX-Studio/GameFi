@@ -49,6 +49,7 @@ gamefi:
       arm-module: "ARM"
       aww-game-module: "AWWGame"
       market-module: "ARMMarket"
+      grant-module: "Grant"
       scripts-module: "AWWScripts"
       nft-name: "aww arm"
       title-page-image: "https://test.kikoswap.com/v1/nft/image/group/1"
