@@ -23,6 +23,9 @@ public class AwwEventBlockingQueue {
         put(AwwEventType.PLACE_ORDER_EVENT, new LinkedBlockingQueue<>(CommonConstant.GAME_EVENT_QUEUE_SIZE));
         put(AwwEventType.TAKE_ORDER_EVENT, new LinkedBlockingQueue<>(CommonConstant.GAME_EVENT_QUEUE_SIZE));
         put(AwwEventType.CANCEL_ORDER_EVENT, new LinkedBlockingQueue<>(CommonConstant.GAME_EVENT_QUEUE_SIZE));
+        put(AwwEventType.ARM_GET_EVENT, new LinkedBlockingQueue<>(CommonConstant.GAME_EVENT_QUEUE_SIZE));
+        put(AwwEventType.FIGHT_EVENT, new LinkedBlockingQueue<>(CommonConstant.GAME_EVENT_QUEUE_SIZE));
+        put(AwwEventType.HARVEST_REWARD_EVENT, new LinkedBlockingQueue<>(CommonConstant.GAME_EVENT_QUEUE_SIZE));
     }};
 
 }
