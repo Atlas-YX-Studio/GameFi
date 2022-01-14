@@ -79,7 +79,7 @@ public class AwwEventConsumerRunner implements ApplicationRunner {
                 LinkedBlockingQueue<JsonNode> jsonNodes = entry.getValue();
                 JsonNode node = jsonNodes.poll();
                 if (Objects.nonNull(node)) {
-                    awwEventRecordsMapper.insert(AwwEventRecords.builder().eventType(type.getDesc()).detail(node.toString()).build());
+                    awwEventRecordsMapper.insert(AwwEventRecords.builder().eventType(type.getDesc()).detail(node.toString()).createTime(System.currentTimeMillis()).build());
                     awwDispatcher(type, node);
                 }
             });
