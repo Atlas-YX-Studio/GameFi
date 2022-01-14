@@ -68,6 +68,20 @@ public class ContractBiz {
 
 
     /**
+     * 获取指定Resource
+     *
+     * @param senderAddress
+     * @return
+     */
+    public String getResource(String senderAddress, String resourceKey) {
+        AccountAddress sender = AccountAddressUtils.create(senderAddress);
+        ListResourceOption listResourceOption = new ListResourceOption();
+        listResourceOption.setDecode(true);
+        return starcoinClient.call("state.get_resource", Lists.newArrayList(new Object[]{AccountAddressUtils.hex(sender), resourceKey, listResourceOption}));
+    }
+
+
+    /**
      * 部署合约
      *
      * @param senderAddress
