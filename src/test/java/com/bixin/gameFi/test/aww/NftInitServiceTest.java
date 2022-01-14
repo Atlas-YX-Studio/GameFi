@@ -4,6 +4,8 @@ import com.bixin.gameFi.GameFiApplication;
 import com.bixin.gameFi.aww.biz.AWWContractBiz;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import lombok.SneakyThrows;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,14 +28,8 @@ class NftInitServiceTest {
 
     @Test
     @SneakyThrows
-    void createNFT() {
-//        awwContractService.createNFT();
-    }
-
-    @Test
-    @SneakyThrows
-    void tempCreateNFT() {
-        awwContractService.tempCreateNFT();
+    void createArm() {
+        awwContractService.createArm();
     }
 
     @Test
@@ -45,5 +41,32 @@ class NftInitServiceTest {
     void mintArm() {
         awwContractService.playerMintArm();
     }
+
+    @Test
+    void mintAWW() {
+        Assertions.assertTrue(awwContractService.mintAwwTo());
+    }
+
+    @Test
+    void setGrantAmount() {
+        Assertions.assertTrue(awwContractService.setGrantAmount());
+    }
+
+    @Test
+    void depositGrantAmount() {
+        Assertions.assertTrue(awwContractService.depositGrantAmount());
+    }
+
+    @Test
+    void grantBuyBack() {
+        awwContractService.grantBuyBack();
+    }
+
+    @Test
+    void autoAcceptToken() {
+        awwContractService.autoAcceptToken();
+    }
+
+
 
 }
