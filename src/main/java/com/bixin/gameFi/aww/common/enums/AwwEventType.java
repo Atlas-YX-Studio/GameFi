@@ -17,6 +17,9 @@ public enum AwwEventType {
     PLACE_ORDER_EVENT("ARMPlaceOrderEvent"),
     TAKE_ORDER_EVENT("ARMTakeOrderEvent"),
     CANCEL_ORDER_EVENT("ARMCancelOrderEvent"),
+    ARM_GET_EVENT("ArmGetEvent"),
+    FIGHT_EVENT("FightEvent"),
+    HARVEST_REWARD_EVENT("HarvestRewardEvent"),
 
     ;
 
