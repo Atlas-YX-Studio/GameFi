@@ -18,7 +18,7 @@
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
-  <sql id="Example_Where_Clause">
+  <sql id="DDL_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -47,9 +47,9 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
+  <sql id="Update_By_DDL_Where_Clause">
     <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+      <foreach collection="DDL.oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
           <trim prefix="(" prefixOverrides="and" suffix=")">
             <foreach collection="criteria.criteria" item="criterion">
@@ -80,7 +80,7 @@
     id, chain_id, aww_id, aww_name, owner, address, rarity, sell_price, stamina, used_stamina, 
     win_rate_bonus, icon, aww_time, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultMap="BaseResultMap">
+  <select id="selectByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -88,7 +88,7 @@
     <include refid="Base_Column_List" />
     from aww_market
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="DDL_Where_Clause" />
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -104,10 +104,10 @@
     delete from aww_market
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL">
+  <delete id="deleteByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL">
     delete from aww_market
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="DDL_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
@@ -221,13 +221,13 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultType="java.lang.Long">
+  <select id="countByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultType="java.lang.Long">
     select count(*) from aww_market
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="DDL_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByDDLSelective" parameterType="map">
     update aww_market
     <set>
       <if test="record.id != null">
@@ -277,10 +277,10 @@
       </if>
     </set>
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_DDL_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByDDL" parameterType="map">
     update aww_market
     set id = #{record.id,jdbcType=BIGINT},
       chain_id = #{record.chainId,jdbcType=BIGINT},
@@ -298,7 +298,7 @@
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_DDL_Where_Clause" />
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
