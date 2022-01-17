@@ -14,11 +14,10 @@
     <result column="used_stamina" jdbcType="INTEGER" property="usedStamina" />
     <result column="win_rate_bonus" jdbcType="INTEGER" property="winRateBonus" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="aww_time" jdbcType="BIGINT" property="awwTime" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
-  <sql id="Example_Where_Clause">
+  <sql id="DDL_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -47,9 +46,9 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
+  <sql id="Update_By_DDL_Where_Clause">
     <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+      <foreach collection="DDL.oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
           <trim prefix="(" prefixOverrides="and" suffix=")">
             <foreach collection="criteria.criteria" item="criterion">
@@ -78,9 +77,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, chain_id, aww_id, aww_name, owner, address, rarity, sell_price, stamina, used_stamina, 
-    win_rate_bonus, icon, aww_time, create_time, update_time
+    win_rate_bonus, icon, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultMap="BaseResultMap">
+  <select id="selectByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -88,14 +87,14 @@
     <include refid="Base_Column_List" />
     from aww_market
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="DDL_Where_Clause" />
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from aww_market
     where id = #{id,jdbcType=BIGINT}
@@ -104,25 +103,23 @@
     delete from aww_market
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL">
+  <delete id="deleteByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL">
     delete from aww_market
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="DDL_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
-    insert into aww_market (id, chain_id, aww_id, 
-      aww_name, owner, address, 
-      rarity, sell_price, stamina, 
-      used_stamina, win_rate_bonus, icon, 
-      aww_time, create_time, update_time
-      )
-    values (#{id,jdbcType=BIGINT}, #{chainId,jdbcType=BIGINT}, #{awwId,jdbcType=BIGINT}, 
-      #{awwName,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{rarity,jdbcType=INTEGER}, #{sellPrice,jdbcType=DECIMAL}, #{stamina,jdbcType=INTEGER}, 
-      #{usedStamina,jdbcType=INTEGER}, #{winRateBonus,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
-      #{awwTime,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
-      )
+    insert into aww_market (id, chain_id, aww_id,
+      aww_name, owner, address,
+      rarity, sell_price, stamina,
+      used_stamina, win_rate_bonus, icon,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{chainId,jdbcType=BIGINT}, #{awwId,jdbcType=BIGINT},
+      #{awwName,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{rarity,jdbcType=INTEGER}, #{sellPrice,jdbcType=DECIMAL}, #{stamina,jdbcType=INTEGER},
+      #{usedStamina,jdbcType=INTEGER}, #{winRateBonus,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR},
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
     insert into aww_market
@@ -162,9 +159,6 @@
       </if>
       <if test="icon != null">
         icon,
-      </if>
-      <if test="awwTime != null">
-        aww_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -210,9 +204,6 @@
       <if test="icon != null">
         #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="awwTime != null">
-        #{awwTime,jdbcType=BIGINT},
-      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=BIGINT},
       </if>
@@ -221,13 +212,13 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultType="java.lang.Long">
+  <select id="countByDDL" parameterType="com.bixin.gameFi.aww.core.wrapDDL.AwwMarketDDL" resultType="java.lang.Long">
     select count(*) from aww_market
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="DDL_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByDDLSelective" parameterType="map">
     update aww_market
     <set>
       <if test="record.id != null">
@@ -266,9 +257,6 @@
       <if test="record.icon != null">
         icon = #{record.icon,jdbcType=VARCHAR},
       </if>
-      <if test="record.awwTime != null">
-        aww_time = #{record.awwTime,jdbcType=BIGINT},
-      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=BIGINT},
       </if>
@@ -277,10 +265,10 @@
       </if>
     </set>
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_DDL_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByDDL" parameterType="map">
     update aww_market
     set id = #{record.id,jdbcType=BIGINT},
       chain_id = #{record.chainId,jdbcType=BIGINT},
@@ -294,11 +282,10 @@
       used_stamina = #{record.usedStamina,jdbcType=INTEGER},
       win_rate_bonus = #{record.winRateBonus,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
-      aww_time = #{record.awwTime,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_DDL_Where_Clause" />
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.bixin.gameFi.aww.bean.DO.AwwMarket">
@@ -337,9 +324,6 @@
       <if test="icon != null">
         icon = #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="awwTime != null">
-        aww_time = #{awwTime,jdbcType=BIGINT},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=BIGINT},
       </if>
@@ -362,12 +346,11 @@
       used_stamina = #{usedStamina,jdbcType=INTEGER},
       win_rate_bonus = #{winRateBonus,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
-      aww_time = #{awwTime,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
+
   <select id="selectByPages" parameterType="map" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
@@ -389,7 +372,7 @@
       <if test="raritys != null">
         and  rarity in
         <foreach collection="raritys" item="item" separator="," open="(" close=")">
-          #{item}
+           #{item}
         </foreach>
       </if>
     </where>

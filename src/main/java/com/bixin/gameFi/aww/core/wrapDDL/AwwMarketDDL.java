@@ -865,6 +865,66 @@ public class AwwMarketDDL {
             return (Criteria) this;
         }
 
+        public Criteria andAwwTimeIsNull() {
+            addCriterion("aww_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeIsNotNull() {
+            addCriterion("aww_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeEqualTo(Long value) {
+            addCriterion("aww_time =", value, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeNotEqualTo(Long value) {
+            addCriterion("aww_time <>", value, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeGreaterThan(Long value) {
+            addCriterion("aww_time >", value, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("aww_time >=", value, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeLessThan(Long value) {
+            addCriterion("aww_time <", value, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeLessThanOrEqualTo(Long value) {
+            addCriterion("aww_time <=", value, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeIn(List<Long> values) {
+            addCriterion("aww_time in", values, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeNotIn(List<Long> values) {
+            addCriterion("aww_time not in", values, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeBetween(Long value1, Long value2) {
+            addCriterion("aww_time between", value1, value2, "awwTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwwTimeNotBetween(Long value1, Long value2) {
+            addCriterion("aww_time not between", value1, value2, "awwTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;

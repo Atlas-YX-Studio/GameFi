@@ -205,6 +205,7 @@ public class AwwMarketScheduler {
                 .stamina(typeMeta.getStamina())
                 .usedStamina(bodyMeta.getUsed_stamina())
                 .winRateBonus(typeMeta.getWin_rate_bonus())
+                .awwTime(bodyMeta.getTime())
                 .createTime(currentTime)
                 .updateTime(currentTime);
         return marketBuilder.build();

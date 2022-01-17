@@ -36,6 +36,8 @@ public class AwwMarket {
 
     private String icon;
 
+    private Long awwTime;
+
     private Long createTime;
 
     private Long updateTime;
