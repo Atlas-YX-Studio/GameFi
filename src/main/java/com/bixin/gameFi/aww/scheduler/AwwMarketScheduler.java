@@ -3,7 +3,8 @@ package com.bixin.gameFi.aww.scheduler;
 import com.bixin.gameFi.aww.bean.DO.AwwArmInfo;
 import com.bixin.gameFi.aww.bean.DO.AwwMarket;
 import com.bixin.gameFi.aww.bean.dto.AwwChainMarketDto;
-import com.bixin.gameFi.aww.bean.dto.ChainResourceDto;
+import com.bixin.gameFi.aww.bean.dto.ChainResourcesDto;
+import com.bixin.gameFi.aww.biz.AWWContractBiz;
 import com.bixin.gameFi.aww.config.AwwConfig;
 import com.bixin.gameFi.aww.service.IAwwArmInfoService;
 import com.bixin.gameFi.aww.service.IAwwMarketService;
@@ -43,11 +44,14 @@ public class AwwMarketScheduler {
     IAwwArmInfoService awwArmInfoService;
     @Resource
     ContractBiz contractService;
+    @Resource
+    AWWContractBiz awwContractBiz;
 
 
     private static final long PROCESSING_EXPIRE_TIME = 30 * 1000L;
     private static final long LOCK_EXPIRE_TIME = 0L;
     private static final String GET_NFT_MARKET_LOCK = "aww_nft_market_lock";
+    private static final String GRANT_BUY_BACK_LOCK = "grant_buy_back_lock";
 
 
     private static final String separator = "::";
@@ -65,13 +69,23 @@ public class AwwMarketScheduler {
                 this::pullAwwNftMarketList);
     }
 
+    @Scheduled(cron = "10 0 0/4 * * ?")
+    public void grantBuyBack() {
+        redisCache.tryGetDistributedLock(
+                GRANT_BUY_BACK_LOCK,
+                UUID.randomUUID().toString(),
+                PROCESSING_EXPIRE_TIME,
+                LOCK_EXPIRE_TIME,
+                () -> awwContractBiz.grantBuyBack());
+    }
+
     private void pullAwwNftMarketList() {
         String resource = contractService.listResource(awwConfig.getCommon().getContractAddress());
-        ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
+        ChainResourcesDto chainResourcesDto = JacksonUtil.readValue(resource, new TypeReference<>() {
         });
-        if (Objects.isNull(chainResourceDto) || Objects.isNull(chainResourceDto.getResult())
-                || Objects.isNull(chainResourceDto.getResult().getResources())) {
-            log.error("AwwMarketScheduler get chain resource is empty {}", chainResourceDto);
+        if (Objects.isNull(chainResourcesDto) || Objects.isNull(chainResourcesDto.getResult())
+                || Objects.isNull(chainResourcesDto.getResult().getResources())) {
+            log.error("AwwMarketScheduler get chain resource is empty {}", chainResourcesDto);
             return;
         }
         // TODO: 2022/1/5 debug
@@ -79,7 +93,7 @@ public class AwwMarketScheduler {
         String awwKey = awwConfig.getCommon().getContractAddress() + awwSuffix;
 
         List<AwwMarket> awwMarketList = new ArrayList<>();
-        chainResourceDto.getResult().getResources().forEach((key, value) -> {
+        chainResourcesDto.getResult().getResources().forEach((key, value) -> {
             try {
                 if (!key.startsWith(awwKey)) {
                     return;

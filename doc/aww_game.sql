@@ -68,3 +68,15 @@ CREATE TABLE `aww_arm_info`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 10000
   DEFAULT CHARSET = utf8mb4 COMMENT ='手臂信息记录表';
+
+DROP TABLE IF EXISTS aww_event_records;
+CREATE TABLE `aww_event_records`
+(
+    `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `event_type`   varchar(64)  NOT NULL COMMENT '事件类型',
+    `detail`       varchar(1000)  NOT NULL COMMENT '事件详情',
+    `create_time`  bigint(20)   NOT NULL COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 10000
+  DEFAULT CHARSET = utf8mb4 COMMENT ='aww事件表';

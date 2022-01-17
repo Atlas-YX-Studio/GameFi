@@ -1,7 +1,9 @@
 package com.bixin.gameFi.aww.runner;
 
+import com.bixin.gameFi.aww.bean.DO.AwwEventRecords;
 import com.bixin.gameFi.aww.bean.dto.TakeOrderEventDto;
 import com.bixin.gameFi.aww.common.enums.AwwEventType;
+import com.bixin.gameFi.aww.core.mapper.AwwEventRecordsMapper;
 import com.bixin.gameFi.common.function.CaseFun;
 import com.bixin.gameFi.aww.common.queue.AwwEventBlockingQueue;
 import com.bixin.gameFi.common.factory.NamedThreadFactory;
@@ -33,6 +35,9 @@ public class AwwEventConsumerRunner implements ApplicationRunner {
 
     @Resource
     GameFiDispatcher gameFiDispatcher;
+
+    @Resource
+    AwwEventRecordsMapper awwEventRecordsMapper;
 
     ThreadPoolExecutor poolExecutor;
     ObjectMapper mapper = new ObjectMapper();
@@ -74,6 +79,7 @@ public class AwwEventConsumerRunner implements ApplicationRunner {
                 LinkedBlockingQueue<JsonNode> jsonNodes = entry.getValue();
                 JsonNode node = jsonNodes.poll();
                 if (Objects.nonNull(node)) {
+                    awwEventRecordsMapper.insert(AwwEventRecords.builder().eventType(type.getDesc()).detail(node.toString()).createTime(System.currentTimeMillis()).build());
                     awwDispatcher(type, node);
                 }
             });

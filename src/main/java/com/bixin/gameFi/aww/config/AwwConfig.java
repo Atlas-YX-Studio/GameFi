@@ -42,6 +42,7 @@ public class AwwConfig {
         private String armModule;
         private String awwModule;
         private String awwGameModule;
+        private String grantModule;
         private String scriptsModule;
 
         private String nftName;

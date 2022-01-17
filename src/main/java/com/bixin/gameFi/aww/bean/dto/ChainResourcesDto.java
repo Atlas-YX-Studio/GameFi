@@ -16,7 +16,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ChainResourceDto {
+public class ChainResourcesDto {
     private String jsonrpc;
     private String id;
     private ChainResource result = new ChainResource();
@@ -26,9 +26,7 @@ public class ChainResourceDto {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ChainResource {
-        private String raw;
-
-        private Map<String, Object> json = new HashMap<>();
+        private Map<String, Object> resources = new HashMap<>();
     }
 
 }
