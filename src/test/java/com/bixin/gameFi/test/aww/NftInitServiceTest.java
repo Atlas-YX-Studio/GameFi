@@ -23,7 +23,7 @@ class NftInitServiceTest {
 
     @Test
     void initNFTMarket() {
-        awwContractService.initNFTMarket(new BigInteger("0"), new BigInteger("50"));
+        awwContractService.initNFTMarket(new BigInteger("0"), new BigInteger("80"));
     }
 
     @Test
@@ -60,6 +60,11 @@ class NftInitServiceTest {
     @Test
     void grantBuyBack() {
         awwContractService.grantBuyBack();
+    }
+
+    @Test
+    void updateGameConfig() {
+        Assertions.assertTrue(awwContractService.updateGameConfig());
     }
 
     @Test

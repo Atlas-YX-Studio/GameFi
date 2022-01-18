@@ -40,7 +40,7 @@ gamefi:
     chain-id: 1
   aww:
     common:
-      contract-address: "0xdedc7865659fe0dab662da125bf40b32"
+      contract-address: "0x606723c9a16a26cb85415c98d43f4386"
     websocket:
       websocket-host: 10.13.22.40
       websocket-port: 9870

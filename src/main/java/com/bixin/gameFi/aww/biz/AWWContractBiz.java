@@ -90,7 +90,7 @@ public class AWWContractBiz {
                 .moduleAddress(awwConfig.getCommon().getContractAddress())
                 .moduleName(awwConfig.getContent().getScriptsModule())
                 .functionName("init_game")
-                .args(Lists.newArrayList(BcsSerializeHelper.serializeU64ToBytes(1641980453000L)))
+                .args(Lists.newArrayList(BcsSerializeHelper.serializeU64ToBytes(1642694399000L)))
                 .build();
         if (!contractService.callFunction(awwConfig.getCommon().getContractAddress(), scriptFunctionObj)) {
             log.error("AWW GAME Config初始化失败");
@@ -106,6 +106,18 @@ public class AWWContractBiz {
                 .build();
         if (!contractService.callFunction(awwConfig.getCommon().getContractAddress(), scriptFunctionObj)) {
             log.error("market初始化失败");
+            throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
+        }
+
+        scriptFunctionObj = ScriptFunctionObj
+                .builder()
+                .moduleAddress(awwConfig.getCommon().getContractAddress())
+                .moduleName(awwConfig.getContent().getArmModule())
+                .functionName("update_selling_state")
+                .args(Lists.newArrayList(Bytes.valueOf(BcsSerializeHelper.serializeU8((byte) 0))))
+                .build();
+        if (!contractService.callFunction(awwConfig.getCommon().getContractAddress(), scriptFunctionObj)) {
+            log.error("arm关闭售卖初始化失败");
             throw new GameException(GameErrCode.CONTRACT_CALL_FAILURE);
         }
     }
@@ -282,7 +294,7 @@ public class AWWContractBiz {
                 .functionName("mint_aww_to")
                 .args(Lists.newArrayList(
                         BcsSerializeHelper.serializeU128ToBytes(BigInteger.valueOf(600000_000000000L)),
-                        BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create("0xdedc7865659fe0dab662da125bf40b32"))
+                        BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create("0x15b4f751AFfeE5Edb905fF4c3252f603"))
                 ))
                 .tyArgs(Lists.newArrayList())
                 .build();
@@ -317,6 +329,23 @@ public class AWWContractBiz {
                 .functionName("deposit")
                 .args(Lists.newArrayList(
                         BcsSerializeHelper.serializeU128ToBytes(BigInteger.valueOf(600000_000000000L))
+                ))
+                .tyArgs(Lists.newArrayList())
+                .build();
+        return contractService.callFunction(address, scriptFunctionObj);
+    }
+
+    public boolean updateGameConfig() {
+        String address = awwConfig.getCommon().getContractAddress();
+        String moduleName = awwConfig.getContent().getScriptsModule();
+
+        ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj
+                .builder()
+                .moduleAddress(address)
+                .moduleName(moduleName)
+                .functionName("update_game_config")
+                .args(Lists.newArrayList(
+                        BcsSerializeHelper.serializeU64ToBytes(1642348799000L)
                 ))
                 .tyArgs(Lists.newArrayList())
                 .build();
