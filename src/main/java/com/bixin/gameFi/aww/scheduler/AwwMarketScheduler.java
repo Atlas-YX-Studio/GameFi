@@ -69,7 +69,7 @@ public class AwwMarketScheduler {
                 this::pullAwwNftMarketList);
     }
 
-    @Scheduled(cron = "10 0 0/4 * * ?")
+//    @Scheduled(cron = "10 0 0/4 * * ?")
     public void grantBuyBack() {
         redisCache.tryGetDistributedLock(
                 GRANT_BUY_BACK_LOCK,
