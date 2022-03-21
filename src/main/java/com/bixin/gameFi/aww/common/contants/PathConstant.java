@@ -7,6 +7,7 @@ package com.bixin.gameFi.aww.common.contants;
 public interface PathConstant {
 
     String AWW_REQUEST_PATH_PREFIX = "/v1/aww";
+    String BOB_REQUEST_PATH_PREFIX = "/v3/bob";
 
 
 }
