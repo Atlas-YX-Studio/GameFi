@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date 2022/3/21 11:27
  */
 @RestController
-@RequestMapping(PathConstant.BOB_REQUEST_PATH_PREFIX + "/normal")
+@RequestMapping(PathConstant.AWW_REQUEST_PATH_PREFIX + "/normal")
 public class BOBNormalController {
     @Autowired
     IBOBMarketService bobMarketService;
