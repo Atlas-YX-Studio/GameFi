@@ -8,24 +8,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ *
  * @Author renjian
  * @Date 2022/3/21 11:27
  */
 @RestController
-@RequestMapping(PathConstant.BOB_REQUEST_PATH_PREFIX)
-public class BOBMarketController {
+@RequestMapping(PathConstant.BOB_REQUEST_PATH_PREFIX + "/normal")
+public class BOBNormalController {
     @Autowired
     IBOBMarketService bobMarketService;
 
+    /**
+     * mint时获取单个nft的属性
+     * todo：是否集群?需要加分布式锁?
+     * @param account
+     * @return
+     */
+    @GetMapping("mintInfo")
+    public R getMintInfo(@RequestParam String account) {
+        R r = R.success(bobMarketService.getBOBMintInfo(account));
+        return r;
+    }
+
+    /**
+     * 查询单个用户普通场门票（还未报名的）
+     * @param account
+     * @return
+     */
+    @GetMapping("normalTicket")
+    public R getBOBNormalTicket(@RequestParam String account) {
+        R r = R.success(bobMarketService.getNormalTicket(account));
+        return r;
+    }
+
+    /**
+     * 普通场的场次信息
+     *
+     * @return
+     */
     @GetMapping("text")
     public R getBOBResoruces() {
         R r = R.success(bobMarketService.getBOBConfig());
         return r;
     }
 
+    /**
+     *竞赛信息
+     * @return
+     */
     @GetMapping("raceInfo")
     public R getBOBReceInfo() {
         R r = R.success(bobMarketService.getBOBRaceInfo());
