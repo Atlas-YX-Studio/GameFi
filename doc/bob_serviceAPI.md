@@ -127,6 +127,8 @@
                 "used": false
             }
         ],
+        "name":"name",
+        "img":"https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
         "total_reward": 700,
         "total_reward_token": {
             "addr": "0x00000000000000000000000000000001",
@@ -161,8 +163,8 @@
 
 | 名称                 | 类型          | 描述                                                         |
 | -------------------- | ------------- | ------------------------------------------------------------ |
-| items                | 已报名nft数据 | 报名中和竞赛中（state==1 \|\| state==2）时才返回，返回当前用户的nft数据。其他情况不返回items |
 | total_reward         | int           | 总奖池                                                       |
+| items                | 已报名nft数据 | 报名中和竞赛中（state==1 \|\| state==2）时才返回，返回当前用户的nft数据。其他情况不返回items |
 | total_reward_token   | obj           | 总奖池token                                                  |
 | surplus_reward       | obj           | 剩余奖池                                                     |
 | sign_up_start_ts     | timestamp     | 报名开始时间                                                 |
@@ -182,5 +184,6 @@
 | raceContract         | string        | 合约                                                         |
 | normalTicketMeta     | sting         |                                                              |
 | normalTicketMBody    | string        |                                                              |
-|                      |               |                                                              |
+| name                 | string        | 竞赛名称                                                     |
+| img                  | string        | 竞赛图片                                                     |
 

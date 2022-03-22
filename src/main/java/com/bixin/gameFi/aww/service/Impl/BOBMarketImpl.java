@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.beans.Beans;
@@ -48,7 +49,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     private static final String separator = "::";
     private static final String bobSuffix = separator + "BOBConfigV4" + separator + "Config";
     private static final String bobSuffix_NormalTicket = "BOBNormalTicketV3";
-    private static final String bobSuffix_ReceInfo = separator + "BOBNormalRaceV2" + separator + "RaceInfo";
+    private static final String bobSuffix_ReceInfo = separator + "BOBNormalRaceV3" + separator + "RaceInfo";
 
 //0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Meta, 0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Body>
     @Override
@@ -130,6 +131,17 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (raceInfoMap == null) {
             return raceInfo;
         }
+        //格式化名称和图片
+        String name = String.valueOf(raceInfoMap.get("name"));
+        String image = String.valueOf(raceInfoMap.get("img"));
+        if (!StringUtils.isEmpty(name) && !StringUtils.isEmpty(image)) {
+            image = HexStringUtil.toStringHex(image.replaceAll("0x", ""));
+            name = HexStringUtil.toStringHex(name.replaceAll("0x", ""));
+            raceInfoMap.put("name", name);
+            raceInfoMap.put("img", image);
+        }
+
+
         //添加合约数据
         raceInfoMap.put("raceContract", bobConfig.getCommon().getContractAddress() + bobSuffix_ReceInfo);
         raceInfoMap.put("normalTicketMeta",bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket);
@@ -144,10 +156,10 @@ public class BOBMarketImpl implements IBOBMarketService {
         Map<String, String> total_reward_token = (Map<String, String>) raceInfoMap.get("total_reward_token");
         //将modulename和name由16进制转换为字符串
         String modulName = HexStringUtil.toStringHex(String.valueOf(total_reward_token.get("module_name")).replaceAll("0x", ""));
-        String name = HexStringUtil.toStringHex(String.valueOf(total_reward_token.get("name")).replaceAll("0x", ""));
+        String token_name = HexStringUtil.toStringHex(String.valueOf(total_reward_token.get("name")).replaceAll("0x", ""));
 
         total_reward_token.put("module_name", modulName);
-        total_reward_token.put("name", name);
+        total_reward_token.put("name", token_name);
         //重新赋值total_reward_token
         raceInfoMap.put("total_reward_token", total_reward_token);
 
