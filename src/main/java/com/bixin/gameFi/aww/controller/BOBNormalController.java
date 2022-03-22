@@ -61,8 +61,8 @@ public class BOBNormalController {
      * @return
      */
     @GetMapping("raceInfo")
-    public R getBOBReceInfo() {
-        R r = R.success(bobMarketService.getBOBRaceInfo());
+    public R getBOBReceInfo(@RequestParam String account) {
+        R r = R.success(bobMarketService.getBOBRaceInfo(account));
         return r;
     }
 

@@ -122,7 +122,9 @@ public class BOBMarketImpl implements IBOBMarketService {
     }
 
     @Override
-    public JSONObject getBOBRaceInfo() {
+    public JSONObject getBOBRaceInfo(String account) {
+        account = account.toLowerCase();//转换小写
+
         JSONObject raceInfo = new JSONObject();
         Map raceInfoMap = (Map) pullBOBResource(bobSuffix_ReceInfo, null);
         if (raceInfoMap == null) {
@@ -151,8 +153,9 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         List items = (List) raceInfoMap.get("items");
         Integer state = (Integer) raceInfoMap.get("state");
-        if (state == 2) {//如果是竞赛开始状态，返回已报名的nft
-            JSONArray itemArry = buildRaceInfoItems(items);
+
+        if (state == 1 || state == 2) {//如果是报名状态或者竞赛开始状态，返回当前用户的nft
+            JSONArray itemArry = buildRaceInfoItems(items, account);
             raceInfoMap.put("items",itemArry);
         }else {
             raceInfoMap.remove("items");
@@ -197,10 +200,14 @@ public class BOBMarketImpl implements IBOBMarketService {
      * @param items
      * @return
      */
-    private JSONArray buildRaceInfoItems(List items) {
+    private JSONArray buildRaceInfoItems(List items, String account) {
         JSONArray itemArr = new JSONArray();
         items.forEach(item -> {
             JSONObject itemObj = JSONObject.parseObject(JSONObject.toJSONString(item));
+            String owner = itemObj.getString("owner").toLowerCase();
+            if (!owner.equalsIgnoreCase(account)) {
+                return;
+            }
             JSONObject nft = itemObj.getJSONObject("nft");
 
             JSONArray vec = nft.getJSONArray("vec");

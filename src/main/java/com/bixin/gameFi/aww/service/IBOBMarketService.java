@@ -17,5 +17,5 @@ public interface IBOBMarketService {
 
     Map getBOBConfig();
 
-    JSONObject getBOBRaceInfo();
+    JSONObject getBOBRaceInfo(String account);
 }
