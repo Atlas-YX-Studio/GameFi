@@ -80,7 +80,15 @@
 
 ### 查询普通场竞赛信息接口
 
-【GET】http://ip:port/v1/aww/normal/raceInfo
+【GET】http://ip:port/v1/aww/normal/raceInfo?account={account}
+
+请求参数说明：
+
+| 名称    | 类型   | 描述         |
+| ------- | ------ | ------------ |
+| account | String | 当前用户地址 |
+
+
 
 返回示例：
 
@@ -153,7 +161,7 @@
 
 | 名称                 | 类型          | 描述                                                         |
 | -------------------- | ------------- | ------------------------------------------------------------ |
-| items                | 已报名nft数据 | 报名中和竞赛中（state==2 \|\| state==2）时才返回，返回当前用户的nft数据。其他情况不返回items |
+| items                | 已报名nft数据 | 报名中和竞赛中（state==1 \|\| state==2）时才返回，返回当前用户的nft数据。其他情况不返回items |
 | total_reward         | int           | 总奖池                                                       |
 | total_reward_token   | obj           | 总奖池token                                                  |
 | surplus_reward       | obj           | 剩余奖池                                                     |
