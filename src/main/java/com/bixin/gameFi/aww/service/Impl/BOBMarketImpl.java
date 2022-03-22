@@ -78,14 +78,21 @@ public class BOBMarketImpl implements IBOBMarketService {
         JSONArray result = new JSONArray();
         for (int i = 0; i < normalTickets.size();i++) {
             JSONObject item = normalTickets.getJSONObject(i);
+
+            //解析base_meta
             JSONObject meta = item.getJSONObject("base_meta");
             String image = HexStringUtil.toStringHex(meta.getString("image").replaceAll("0x", ""));
             String name = HexStringUtil.toStringHex(meta.getString("name").replaceAll("0x", ""));
             String description = HexStringUtil.toStringHex(meta.getString("description").replaceAll("0x", ""));
-            meta.put("image", image);
-            meta.put("name", name);
-            meta.put("description", description);
-            item.put("base_meta", meta);
+            item.put("image", image);
+            item.put("name", name);
+            item.put("description", description);
+            item.remove("base_meta");
+            JSONObject type_meta = item.getJSONObject("type_meta");
+            item.put("used",type_meta.getBoolean("used"));
+            item.remove("base_meta");
+            item.remove("type_meta");
+            item.remove("body");
             result.add(item);
         }
 

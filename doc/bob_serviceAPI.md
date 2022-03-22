@@ -47,24 +47,20 @@
     "detailMsg": "",
     "data": [
         {
+            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
             "creator": "0x88637dda61b276f8170de63f6422f7c5",
+            "name": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
+            "description": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
             "id": 4,
-            "base_meta": {
-                "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
-                "image_data": "0x",
-                "name": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
-                "description": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42"
-            }
+            "used": false
         },
         {
+            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
             "creator": "0x88637dda61b276f8170de63f6422f7c5",
+            "name": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
+            "description": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
             "id": 5,
-            "base_meta": {
-                "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
-                "image_data": "0x",
-                "name": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
-                "description": "c63edaeb-8340-4c80-ad1e-b641595b7b78"
-            }
+            "used": false
         }
     ]
 }
@@ -155,28 +151,28 @@
 
 参数说明：
 
-| 名称                 | 类型          | 描述                                         |
-| -------------------- | ------------- | -------------------------------------------- |
-| items                | 已报名nft数据 | 只有state等于2时才返回，其他情况不返回items  |
-| total_reward         | int           | 总奖池                                       |
-| total_reward_token   | obj           | 总奖池token                                  |
-| surplus_reward       | obj           | 剩余奖池                                     |
-| sign_up_start_ts     | timestamp     | 报名开始时间                                 |
-| sign_up_end_ts       | timestamp     | 报名截止时间                                 |
-| race_start_ts        | int           | 竞赛开始时间                                 |
-| total_round          | int           | 总轮次                                       |
-| current_round        | int           | 当前轮次                                     |
-| sign_up_count        | int           | 报名人数                                     |
-| exit_count           | int           | 主动退出人数                                 |
-| die_count            | int           | 累计淘汰人数                                 |
-| actual_surplus_count | int           | 实际剩余人数                                 |
-| target_surplus_count | int           | 目标剩余人数                                 |
-| eliminate_interval   | int           | 淘汰间隔（ms）                               |
-| next_eliminate_ts    | timestamp     | 下次淘汰事件                                 |
-| eliminate_rate       | int           | 淘汰率                                       |
-| state                | int           | 状态：0：未知；1：报名中；2：竞赛中；3已结束 |
-| contract             | string        | 合约                                         |
-| meta                 | sting         |                                              |
-| body                 | string        |                                              |
-|                      |               |                                              |
+| 名称                 | 类型          | 描述                                                      |
+| -------------------- | ------------- | --------------------------------------------------------- |
+| items                | 已报名nft数据 | 只有竞赛开始时（state等于2）时才返回，其他情况不返回items |
+| total_reward         | int           | 总奖池                                                    |
+| total_reward_token   | obj           | 总奖池token                                               |
+| surplus_reward       | obj           | 剩余奖池                                                  |
+| sign_up_start_ts     | timestamp     | 报名开始时间                                              |
+| sign_up_end_ts       | timestamp     | 报名截止时间                                              |
+| race_start_ts        | int           | 竞赛开始时间                                              |
+| total_round          | int           | 总轮次                                                    |
+| current_round        | int           | 当前轮次                                                  |
+| sign_up_count        | int           | 报名人数                                                  |
+| exit_count           | int           | 主动退出人数                                              |
+| die_count            | int           | 累计淘汰人数                                              |
+| actual_surplus_count | int           | 实际剩余人数                                              |
+| target_surplus_count | int           | 目标剩余人数                                              |
+| eliminate_interval   | int           | 淘汰间隔（ms）                                            |
+| next_eliminate_ts    | timestamp     | 下次淘汰事件                                              |
+| eliminate_rate       | int           | 淘汰率                                                    |
+| state                | int           | 状态：0：未知；1：报名中；2：竞赛中；3已结束              |
+| contract             | string        | 合约                                                      |
+| meta                 | sting         |                                                           |
+| body                 | string        |                                                           |
+|                      |               |                                                           |
 
