@@ -152,7 +152,7 @@
         "next_eliminate_ts": 1647873094989,
         "eliminate_rate": 10,
         "state": 3,
-        "raceContract": "0x9b996121ea29b50c6213558e34120e5c::BOBNormalRaceV2::RaceInfo",
+        "normalRaceContract": "0x9b996121ea29b50c6213558e34120e5c::BOBNormalRaceV2::RaceInfo",
         "normalTicketMeta": "0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3",
         "normalTicketMBody": "0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3"
     }
@@ -181,7 +181,7 @@
 | next_eliminate_ts    | timestamp     | 下次淘汰事件                                                 |
 | eliminate_rate       | int           | 淘汰率                                                       |
 | state                | int           | 状态：0：未知；1：报名中；2：竞赛中；3已结束                 |
-| raceContract         | string        | 合约                                                         |
+| normalRaceContract   | string        | 合约                                                         |
 | normalTicketMeta     | sting         |                                                              |
 | normalTicketMBody    | string        |                                                              |
 | name                 | string        | 竞赛名称                                                     |

@@ -13,15 +13,12 @@ import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.beans.Beans;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,7 +46,8 @@ public class BOBMarketImpl implements IBOBMarketService {
     private static final String separator = "::";
     private static final String bobSuffix = separator + "BOBConfigV4" + separator + "Config";
     private static final String bobSuffix_NormalTicket = "BOBNormalTicketV3";
-    private static final String bobSuffix_ReceInfo = separator + "BOBNormalRaceV3" + separator + "RaceInfo";
+    private static final String bobSuffix_NormalRace = "BOBNormalRaceV3";
+    private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
 
 //0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Meta, 0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Body>
     @Override
@@ -127,7 +125,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         account = account.toLowerCase();//转换小写
 
         JSONObject raceInfo = new JSONObject();
-        Map raceInfoMap = (Map) pullBOBResource(bobSuffix_ReceInfo, null);
+        Map raceInfoMap = (Map) pullBOBResource(bobSuffix_NormalRaceInfo, null);
         if (raceInfoMap == null) {
             return raceInfo;
         }
@@ -143,7 +141,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
 
         //添加合约数据
-        raceInfoMap.put("raceContract", bobConfig.getCommon().getContractAddress() + bobSuffix_ReceInfo);
+        raceInfoMap.put("normalRaceContract", bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalRace);
         raceInfoMap.put("normalTicketMeta",bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket);
         raceInfoMap.put("normalTicketMBody",bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket);
 
