@@ -7,6 +7,7 @@ import com.bixin.gameFi.common.factory.NamedThreadFactory;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.novi.serde.Bytes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -79,7 +80,7 @@ public class BOBRacentRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        poolExecutor.execute(() -> process(args));
+        poolExecutor.execute(() -> process(args));
     }
 
     public void process(ApplicationArguments args) {
@@ -129,10 +130,10 @@ public class BOBRacentRunner implements ApplicationRunner {
         switch (state) {
             case 0://代表当前竞赛为初始状态，判断是否到达报名开始时间，如果到达报名开始时间，调用合约，更新状态为报名中
                 Long signUpStart = raceInfo.getLong("sign_up_start_ts");//报名开始时间
-                if (currentTime >= signUpStart) {
+                if (currentTime >= signUpStart) {//todo:要改成大于等于-------------------
                     //todo：表示已经到达报名开始时间，需要调用合约,修改竞赛状态
                     List funArgs = Lists.newArrayList(
-                            BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create(senderAddress))
+
                     );
                     boolean executed = callFunction("f_set_state", funArgs);
                     if (!executed) {
@@ -151,7 +152,7 @@ public class BOBRacentRunner implements ApplicationRunner {
                 if (currentTime >= signUpEnd) {
                     //todo：表示已经到达截止开始时间，需要调用合约，修改竞赛状态
                     List funArgs = Lists.newArrayList(
-                            BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create(senderAddress))
+
                     );
                     boolean executed = callFunction("f_set_state", funArgs);
                     if (!executed) {
@@ -172,7 +173,7 @@ public class BOBRacentRunner implements ApplicationRunner {
                 if (currentTime > nextEliminate) {
                     //todo:表示已经到达下次淘汰时间，需要调用淘汰合约
                     List funArgs = Lists.newArrayList(
-                            BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create(senderAddress))
+
                     );
                     boolean executed = callFunction("f_eliminate", funArgs);
                     if (!executed) {
@@ -186,8 +187,7 @@ public class BOBRacentRunner implements ApplicationRunner {
                     if (actualSurplus > targetSuperplus) {
                         //调用合约，清理存活人数
                         List funArgs = Lists.newArrayList(
-                                BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create(senderAddress)),
-                                BcsSerializeHelper.serializeU64ToBytes(currentTime)
+                                Bytes.valueOf(BcsSerializeHelper.serializeString(String.valueOf(currentTime)))
                         );
                         boolean executed = callFunction("f_clear", funArgs);
                         if (!executed) {
@@ -207,8 +207,7 @@ public class BOBRacentRunner implements ApplicationRunner {
                 if (actualSurplus > targetSuperplus) {
                     //调用合约，清理存活人数
                     List funArgs = Lists.newArrayList(
-                            BcsSerializeHelper.serializeAddressToBytes(AccountAddressUtils.create(senderAddress)),
-                            BcsSerializeHelper.serializeU64ToBytes(currentTime)
+                            Bytes.valueOf(BcsSerializeHelper.serializeString(String.valueOf(currentTime)))
                     );
                     boolean executed = callFunction("f_clear", funArgs);
                     if (!executed) {

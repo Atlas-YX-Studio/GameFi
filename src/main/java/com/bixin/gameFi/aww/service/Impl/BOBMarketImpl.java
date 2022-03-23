@@ -45,9 +45,9 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV4" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV3";
-    private static final String bobSuffix_NormalRace = "BOBNormalRaceV3";
+    private static final String bobSuffix = separator + "BOBConfigV5" + separator + "Config";
+    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV5";
+    private static final String bobSuffix_NormalRace = "BOBNormalRaceV5";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
 
 //0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Meta, 0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Body>

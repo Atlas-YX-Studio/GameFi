@@ -45,6 +45,7 @@ public class ContractBiz {
     private Map<String, String> keyMap = new HashMap<>() {
         {
             put("address", "privateKey");
+            put("0x9b996121ea29b50c6213558e34120e5c","006d5a54667f64921b509719dedeac6638c9cda9cda30c26dc2c25a27d24d376");
         }
     };
 
