@@ -4,8 +4,8 @@
 
 请求参数说明：
 
-| 名称    | 类型   | 描述     |
-| ------- | ------ | -------- |
+| 名称      | 类型     | 描述   |
+| ------- | ------ | ---- |
 | account | String | 用户地址 |
 
 返回示例：
@@ -16,12 +16,12 @@
 
 返回参数说明：
 
-| 名称        | 类型   | 描述     |
-| ----------- | ------ | -------- |
+| 名称          | 类型     | 描述   |
+| ----------- | ------ | ---- |
 | imageLink   | String | 图片地址 |
-| name        | String | 名称     |
-| id          | String | id       |
-| description | String | 描述     |
+| name        | String | 名称   |
+| id          | String | id   |
+| description | String | 描述   |
 | account     | String | 用户地址 |
 
 
@@ -32,8 +32,8 @@
 
 请求参数说明：
 
-| 名称    | 类型   | 描述     |
-| ------- | ------ | -------- |
+| 名称      | 类型     | 描述   |
+| ------- | ------ | ---- |
 | account | String | 用户地址 |
 
 
@@ -68,13 +68,13 @@
 
 返回参数说明：
 
-| 名称        | 类型   | 描述     |
-| ----------- | ------ | -------- |
+| 名称          | 类型     | 描述   |
+| ----------- | ------ | ---- |
 | data        | arry   | 门票列表 |
-| id          | String | 门票id   |
+| id          | String | 门票id |
 | image       | String | 图片地址 |
 | name        | String | 门票名称 |
-| description | String | 描述     |
+| description | String | 描述   |
 
 
 
@@ -84,8 +84,8 @@
 
 请求参数说明：
 
-| 名称    | 类型   | 描述         |
-| ------- | ------ | ------------ |
+| 名称      | 类型     | 描述     |
+| ------- | ------ | ------ |
 | account | String | 当前用户地址 |
 
 
@@ -161,29 +161,29 @@
 
 参数说明：
 
-| 名称                 | 类型          | 描述                                                         |
-| -------------------- | ------------- | ------------------------------------------------------------ |
-| total_reward         | int           | 总奖池                                                       |
-| items                | 已报名nft数据 | 报名中和竞赛中（state==1 \|\| state==2）时才返回，返回当前用户的nft数据。其他情况不返回items |
-| total_reward_token   | obj           | 总奖池token                                                  |
-| surplus_reward       | obj           | 剩余奖池                                                     |
-| sign_up_start_ts     | timestamp     | 报名开始时间                                                 |
-| sign_up_end_ts       | timestamp     | 报名截止时间                                                 |
-| race_start_ts        | int           | 竞赛开始时间                                                 |
-| total_round          | int           | 总轮次                                                       |
-| current_round        | int           | 当前轮次                                                     |
-| sign_up_count        | int           | 报名人数                                                     |
-| exit_count           | int           | 主动退出人数                                                 |
-| die_count            | int           | 累计淘汰人数                                                 |
-| actual_surplus_count | int           | 实际剩余人数                                                 |
-| target_surplus_count | int           | 目标剩余人数                                                 |
-| eliminate_interval   | int           | 淘汰间隔（ms）                                               |
-| next_eliminate_ts    | timestamp     | 下次淘汰事件                                                 |
-| eliminate_rate       | int           | 淘汰率                                                       |
-| state                | int           | 状态：0：未知；1：报名中；2：竞赛中；3已结束                 |
-| normalRaceContract   | string        | 合约                                                         |
-| normalTicketMeta     | sting         |                                                              |
-| normalTicketMBody    | string        |                                                              |
-| name                 | string        | 竞赛名称                                                     |
-| img                  | string        | 竞赛图片                                                     |
+| 名称                   | 类型        | 描述                                       |
+| -------------------- | --------- | ---------------------------------------- |
+| total_reward         | int       | 总奖池                                      |
+| items                | 已报名nft数据  | 报名中和竞赛中（state==1 \|\| state==2）时才返回，返回当前用户的nft数据。其他情况不返回items |
+| total_reward_token   | obj       | 总奖池token                                 |
+| surplus_reward       | obj       | 剩余奖池                                     |
+| sign_up_start_ts     | timestamp | 报名开始时间                                   |
+| sign_up_end_ts       | timestamp | 报名截止时间                                   |
+| race_start_ts        | int       | 竞赛开始时间                                   |
+| total_round          | int       | 总轮次                                      |
+| current_round        | int       | 当前轮次                                     |
+| sign_up_count        | int       | 报名人数                                     |
+| exit_count           | int       | 主动退出人数                                   |
+| die_count            | int       | 累计淘汰人数                                   |
+| actual_surplus_count | int       | 实际剩余人数                                   |
+| target_surplus_count | int       | 目标剩余人数                                   |
+| eliminate_interval   | int       | 淘汰间隔（ms）                                 |
+| next_eliminate_ts    | timestamp | 下次淘汰时间                                   |
+| eliminate_rate       | int       | 淘汰率                                      |
+| state                | int       | 状态：0：未知；1：报名中；2：竞赛中；3已结束                 |
+| normalRaceContract   | string    | 合约                                       |
+| normalTicketMeta     | sting     |                                          |
+| normalTicketMBody    | string    |                                          |
+| name                 | string    | 竞赛名称                                     |
+| img                  | string    | 竞赛图片                                     |
 

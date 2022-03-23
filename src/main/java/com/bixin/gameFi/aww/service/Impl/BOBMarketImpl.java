@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -122,7 +123,9 @@ public class BOBMarketImpl implements IBOBMarketService {
 
     @Override
     public JSONObject getBOBRaceInfo(String account) {
-        account = account.toLowerCase();//转换小写
+        if (!StringUtils.isEmpty(account)) {
+           account = account.toLowerCase();//转换小写
+        }
 
         JSONObject raceInfo = new JSONObject();
         Map raceInfoMap = (Map) pullBOBResource(bobSuffix_NormalRaceInfo, null);

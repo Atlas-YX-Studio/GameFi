@@ -38,7 +38,7 @@ public class BOBConfig {
     @AllArgsConstructor
     public static class Content {
         private String marketModule;
-        private String armModule;
+        private String normalRaceModule;
         private String awwModule;
         private String awwGameModule;
         private String grantModule;
