@@ -46,10 +46,11 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV6" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV7";
-    private static final String bobSuffix_NormalRace = "BOBNormalRaceV8";
+    private static final String bobSuffix = separator + "BOBConfigV13" + separator + "Config";
+    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV13";
+    private static final String bobSuffix_NormalRace = "BOBNormalRaceV13";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
+    private static String bobSuffix_Burn = "";
 
 //0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Meta, 0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Body>
     @Override
@@ -109,15 +110,15 @@ public class BOBMarketImpl implements IBOBMarketService {
             return configInfo;
         }
 
-        Map<String, String> normal_ticket_fee_token = (Map<String, String>) configInfoMap.get("normal_ticket_fee_token");
-        //将modulename和name由16进制转换为字符串
-        String modulName = HexStringUtil.toStringHex(String.valueOf(normal_ticket_fee_token.get("module_name")).replaceAll("0x", ""));
-        String name = HexStringUtil.toStringHex(String.valueOf(normal_ticket_fee_token.get("name")).replaceAll("0x", ""));
-
-        normal_ticket_fee_token.put("module_name", modulName);
-        normal_ticket_fee_token.put("name", name);
-        //重新赋值total_reward_token
-        configInfoMap.put("normal_ticket_fee_token", normal_ticket_fee_token);
+//        Map<String, String> normal_ticket_fee_token = (Map<String, String>) configInfoMap.get("normal_ticket_fee_token");
+//        //将modulename和name由16进制转换为字符串
+//        String modulName = HexStringUtil.toStringHex(String.valueOf(normal_ticket_fee_token.get("module_name")).replaceAll("0x", ""));
+//        String name = HexStringUtil.toStringHex(String.valueOf(normal_ticket_fee_token.get("name")).replaceAll("0x", ""));
+//
+//        normal_ticket_fee_token.put("module_name", modulName);
+//        normal_ticket_fee_token.put("name", name);
+//        //重新赋值total_reward_token
+//        configInfoMap.put("normal_ticket_fee_token", normal_ticket_fee_token);
         configInfo = new JSONObject(configInfoMap);
         return configInfo;
     }
@@ -174,17 +175,36 @@ public class BOBMarketImpl implements IBOBMarketService {
         }else {
             raceInfoMap.remove("items");
         }
+
+        //处理冠军信息
+        String championNFtId = String.valueOf(raceInfoMap.get("champion_nft_id"));
+        String chappionNftImage = String.valueOf(raceInfoMap.get("champion_nft_img"));
+
+        championNFtId = HexStringUtil.toStringHex(championNFtId.replaceAll("0x", ""));
+        chappionNftImage = HexStringUtil.toStringHex(chappionNftImage.replaceAll("0x", ""));
+        raceInfoMap.put("champion_nft_id", championNFtId);
+        raceInfoMap.put("champion_nft_img", chappionNftImage);
+
         raceInfo = new JSONObject(raceInfoMap);
         return raceInfo;
     }
 
     @Override
     public JSONArray getBOBFallenInfo(String account) {
-        Map resourceMap = pullResource(account);
+        account = account.toLowerCase();
+        if (StringUtils.isEmpty(bobSuffix_Burn)) {
+            Map configMap = getBOBConfig();
+            bobSuffix_Burn = String.valueOf(configMap.get("normal_burn_address"));
+        }
+        Map resourceMap = pullResource(bobSuffix_Burn);
         JSONArray items = JSON.parseArray(JSONObject.toJSONString(resourceMap.get("items")));
         JSONArray result = new JSONArray();
         for (int i = 0; i < items.size();i++) {
             JSONObject item = items.getJSONObject(i);
+            String creator = item.getString("creator");
+            if (!account.equalsIgnoreCase(creator)) {
+                continue;
+            }
 
             //解析base_meta
             JSONObject meta = item.getJSONObject("base_meta");
