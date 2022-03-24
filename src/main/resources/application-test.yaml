@@ -63,7 +63,7 @@ gamefi:
       websocket-port: 8970
     content:
       aww-module: "AWW"
-      normal-race-module: "BOBNormalRaceV13"
+      normal-race-module: "BOBNormalRaceV20"
       aww-game-module: "AWWGame"
       market-module: "ARMMarket"
       scripts-module: "AWWScripts"

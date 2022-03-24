@@ -46,9 +46,9 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV13" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV13";
-    private static final String bobSuffix_NormalRace = "BOBNormalRaceV13";
+    private static final String bobSuffix = separator + "BOBConfigV20" + separator + "Config";
+    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV20";
+    private static final String bobSuffix_NormalRace = "BOBNormalRaceV20";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
     private static String bobSuffix_Burn = "";
 
@@ -177,12 +177,12 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
 
         //处理冠军信息
-        String championNFtId = String.valueOf(raceInfoMap.get("champion_nft_id"));
+//        String championNFtId = String.valueOf(raceInfoMap.get("champion_nft_id"));
         String chappionNftImage = String.valueOf(raceInfoMap.get("champion_nft_img"));
 
-        championNFtId = HexStringUtil.toStringHex(championNFtId.replaceAll("0x", ""));
+//        championNFtId = HexStringUtil.toStringHex(championNFtId.replaceAll("0x", ""));
         chappionNftImage = HexStringUtil.toStringHex(chappionNftImage.replaceAll("0x", ""));
-        raceInfoMap.put("champion_nft_id", championNFtId);
+//        raceInfoMap.put("champion_nft_id", championNFtId);
         raceInfoMap.put("champion_nft_img", chappionNftImage);
 
         raceInfo = new JSONObject(raceInfoMap);
@@ -191,7 +191,9 @@ public class BOBMarketImpl implements IBOBMarketService {
 
     @Override
     public JSONArray getBOBFallenInfo(String account) {
-        account = account.toLowerCase();
+        if (!StringUtils.isEmpty(account)) {
+            account = account.toLowerCase();
+        }
         if (StringUtils.isEmpty(bobSuffix_Burn)) {
             Map configMap = getBOBConfig();
             bobSuffix_Burn = String.valueOf(configMap.get("normal_burn_address"));
@@ -202,7 +204,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         for (int i = 0; i < items.size();i++) {
             JSONObject item = items.getJSONObject(i);
             String creator = item.getString("creator");
-            if (!account.equalsIgnoreCase(creator)) {
+            if (!StringUtils.isEmpty(account) && !account.equalsIgnoreCase(creator)) {
                 continue;
             }
 

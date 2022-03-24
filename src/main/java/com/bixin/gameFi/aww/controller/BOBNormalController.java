@@ -29,7 +29,7 @@ public class BOBNormalController {
      * @return
      */
     @GetMapping("mintInfo")
-    public R getMintInfo(@RequestParam String account) {
+    public R getMintInfo(@RequestParam(required = false) String account) {
         R r = R.success(bobMarketService.getBOBMintInfo(account));
         return r;
     }
@@ -71,7 +71,7 @@ public class BOBNormalController {
      * @return
      */
     @GetMapping("fallen")
-    public R getBOBFallenInfo(@RequestParam String account) {
+    public R getBOBFallenInfo(@RequestParam(required = false) String account) {
         R r = R.success(bobMarketService.getBOBFallenInfo(account));
         return r;
     }
