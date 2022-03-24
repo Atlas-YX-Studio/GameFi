@@ -66,5 +66,15 @@ public class BOBNormalController {
         return r;
     }
 
+    /**
+     *被淘汰NFT列表
+     * @return
+     */
+    @GetMapping("fallen")
+    public R getBOBFallenInfo(@RequestParam String account) {
+        R r = R.success(bobMarketService.getBOBFallenInfo(account));
+        return r;
+    }
+
 
 }

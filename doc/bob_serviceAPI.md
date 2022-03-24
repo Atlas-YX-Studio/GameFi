@@ -187,3 +187,52 @@
 | name                 | string    | 竞赛名称                                     |
 | img                  | string    | 竞赛图片                                     |
 
+### 查询被淘汰的NFT列表
+
+【GET】http://ip:port/v1/aww/normal/fallen?account={account}
+
+请求参数说明：
+
+| 名称      | 类型     | 描述   |
+| ------- | ------ | ---- |
+| account | String | 用户地址 |
+
+
+
+返回示例：
+
+```
+{
+    "code": 0,
+    "msg": "",
+    "detailMsg": "",
+    "data": [
+        {
+            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
+            "creator": "0x88637dda61b276f8170de63f6422f7c5",
+            "name": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
+            "description": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
+            "id": 4,
+            "used": false
+        },
+        {
+            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
+            "creator": "0x88637dda61b276f8170de63f6422f7c5",
+            "name": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
+            "description": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
+            "id": 5,
+            "used": false
+        }
+    ]
+}
+```
+
+返回参数说明：
+
+| 名称          | 类型     | 描述   |
+| ----------- | ------ | ---- |
+| data        | arry   | 门票列表 |
+| id          | String | 门票id |
+| image       | String | 图片地址 |
+| name        | String | 门票名称 |
+| description | String | 描述   |

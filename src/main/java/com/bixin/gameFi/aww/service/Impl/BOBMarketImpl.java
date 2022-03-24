@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bixin.gameFi.aww.bean.DO.BOBMintInfo;
+import com.bixin.gameFi.aww.bean.dto.ChainResourceDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourcesDto;
 import com.bixin.gameFi.aww.config.BOBConfig;
 import com.bixin.gameFi.aww.core.mapper.BobMintInfoMapper;
@@ -177,6 +178,51 @@ public class BOBMarketImpl implements IBOBMarketService {
         return raceInfo;
     }
 
+    @Override
+    public JSONArray getBOBFallenInfo(String account) {
+        Map resourceMap = pullResource(account);
+        JSONArray items = JSON.parseArray(JSONObject.toJSONString(resourceMap.get("items")));
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < items.size();i++) {
+            JSONObject item = items.getJSONObject(i);
+
+            //解析base_meta
+            JSONObject meta = item.getJSONObject("base_meta");
+            String image = HexStringUtil.toStringHex(meta.getString("image").replaceAll("0x", ""));
+            String name = HexStringUtil.toStringHex(meta.getString("name").replaceAll("0x", ""));
+            String description = HexStringUtil.toStringHex(meta.getString("description").replaceAll("0x", ""));
+            item.put("image", image);
+            item.put("name", name);
+            item.put("description", description);
+            item.remove("base_meta");
+            JSONObject type_meta = item.getJSONObject("type_meta");
+            item.put("used",type_meta.getBoolean("used"));
+            item.remove("base_meta");
+            item.remove("type_meta");
+            item.remove("body");
+            result.add(item);
+        }
+        return result;
+    }
+
+
+
+    private Map pullResource(String currentAccount) {
+//        String senderAddress = bobConfig.getCommon().getContractAddress();
+        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
+        String resource = contractService.getResource(currentAccount, key);
+        ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
+        });
+
+        if (Objects.isNull(chainResourceDto) || Objects.isNull(chainResourceDto.getResult())
+                || CollectionUtils.isEmpty(chainResourceDto.getResult().getJson())) {
+            log.error("grantBuyBack get chain resource is empty {}", chainResourceDto);
+            return null;
+        }
+        Map value = chainResourceDto.getResult().getJson();
+        return value;
+    }
+
     //调用stat.list_resource公共方法
     private Object pullBOBResource(String key, String account) {
         if (account == null) {
@@ -224,6 +270,9 @@ public class BOBMarketImpl implements IBOBMarketService {
             JSONObject nft = itemObj.getJSONObject("nft");
 
             JSONArray vec = nft.getJSONArray("vec");
+            if (vec == null || vec.isEmpty()) {
+                return;
+            }
             JSONObject vecItem = vec.getJSONObject(0);
             itemObj.put("creator",vecItem.getString("creator"));
             itemObj.put("id",vecItem.getString("id"));
