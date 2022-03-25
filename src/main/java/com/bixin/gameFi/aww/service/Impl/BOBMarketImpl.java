@@ -15,16 +15,14 @@ import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
+import jnr.ffi.annotations.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Author renjian
@@ -263,15 +261,32 @@ public class BOBMarketImpl implements IBOBMarketService {
      * @return
      */
     @Override
-    public JSONArray getMySignedNFT(String account) {
-        //查询冠军
-        //查询存活中的，需要放在前面
+    public JSONObject getMySignedNFT(String account) {
+        //查询冠军、退赛的，到个人账户下查询
+        int[] states = {2,4};//2:已退赛，4:冠军
+        Map endAndChampionMap = getNormalTicket1(account, states);
+        JSONArray endArry = new JSONArray();
+        if (endAndChampionMap.containsKey(2)) {
+            endArry = (JSONArray) endAndChampionMap.get(2);
+        }
+        JSONArray championArry = new JSONArray();
+        if (endAndChampionMap.containsKey(4)) {
+            championArry = (JSONArray) endAndChampionMap.get(4);
+        }
+
+        //查询存活中的，需要放在前面,从race中查
         JSONArray aliveArry = getMyRaceNFT(account);
-        //查询被淘汰的,被淘汰的里面可能包含冠军，需要特殊处理
+        //查询被淘汰的，从burn中查
         JSONArray fallenArry = getBOBFallenInfo(account);
         log.debug("aliveSize:{},fallenSize:{}", aliveArry.size(), fallenArry.size());
-        aliveArry.addAll(fallenArry);//合并
-        return aliveArry;
+
+        JSONObject result = new JSONObject();
+        championArry.addAll(fallenArry);
+        aliveArry.addAll(championArry);
+        result.put("signArry", aliveArry); //已报名的包含存活中的，冠军、已淘汰三种
+        result.put("endArry", endArry);
+        result.put("fallenArry", fallenArry);
+        return result;
     }
 
     //查询已参赛但是还没有被淘汰的NFT列表
@@ -294,7 +309,10 @@ public class BOBMarketImpl implements IBOBMarketService {
         return aliveArry;
     }
 
-    private JSONArray getNormalTicket1(String account) {
+    private Map<Integer, JSONArray> getNormalTicket1(String account, int... targetState) {
+        Map result = new HashMap();
+
+        //个人账户下包含未使用的，已退回的，冠军三种状态的数据,
         account = account.toLowerCase();
         String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
         Map normalTicketMap = (Map) pullBOBResource(key, account);
@@ -303,7 +321,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 //        JSONArray itemArry = buildRaceInfoItems(items);
 
         JSONArray normalTickets = JSON.parseArray(JSONObject.toJSONString(normalTicketMap.get("items")));
-        JSONArray result = new JSONArray();
+
         for (int i = 0; i < normalTickets.size();i++) {
             JSONObject item = normalTickets.getJSONObject(i);
 
@@ -319,13 +337,23 @@ public class BOBMarketImpl implements IBOBMarketService {
             JSONObject type_meta = item.getJSONObject("type_meta");
             int ticketState = type_meta.getInteger("state");
             item.put("state",ticketState);
-            if (ticketState != 0) { //只查询未使用状态的，还可能包含冠军和已退回
+            boolean match = Arrays.stream(targetState).anyMatch(e -> e == ticketState);
+            if (!match) {
                 continue;
             }
             item.remove("base_meta");
             item.remove("type_meta");
             item.remove("body");
-            result.add(item);
+            JSONArray itemArry = new JSONArray();
+            if (result.containsKey(ticketState)) {
+                itemArry = (JSONArray) result.get(ticketState);
+                itemArry.add(item);
+            }else {
+                itemArry.add(item);
+            }
+
+            result.put(ticketState, itemArry);
+
         }
         return result;
     }
@@ -391,7 +419,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         ChainResourceDto.ChainResource chainResourceDtoResult = chainResourceDto.getResult();
 
-        Map <String, Object> resutJson = chainResourceDtoResult.getJson();;
+        Map <String, Object> resutJson = chainResourceDtoResult.getJson();
         return resutJson;
     }
 
@@ -425,7 +453,7 @@ public class BOBMarketImpl implements IBOBMarketService {
             itemObj.put("description",HexStringUtil.toStringHex(base_meta.getString("description").replaceAll("0x", "")));
 
             JSONObject type_meta = vecItem.getJSONObject("type_meta");
-            itemObj.put("used",type_meta.getBooleanValue("used"));
+            itemObj.put("state",type_meta.getInteger("state"));
 
             //去掉原有的nft结构
             itemObj.remove("nft");
