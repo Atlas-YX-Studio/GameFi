@@ -77,4 +77,14 @@ public class BOBNormalController {
     }
 
 
+    /**
+     *查询当前轮次我的已参赛NFT列表
+     * @return
+     */
+    @GetMapping("mySignedNFT")
+    public R getMySignedNFT(@RequestParam(required = false) String account) {
+        R r = R.success(bobMarketService.getMySignedNFT(account));
+        return r;
+    }
+
 }

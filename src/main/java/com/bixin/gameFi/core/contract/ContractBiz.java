@@ -55,6 +55,17 @@ public class ContractBiz {
     }
 
     /**
+     * 获取所有当前链信息
+     *
+     * @param
+     * @return
+     */
+    public String getChainInfo() {
+        return starcoinClient.call("chain.info", Lists.newArrayList());
+    }
+
+
+    /**
      * 获取所有Resource
      *
      * @param senderAddress

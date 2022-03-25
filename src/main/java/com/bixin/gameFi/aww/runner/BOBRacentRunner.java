@@ -1,10 +1,14 @@
 package com.bixin.gameFi.aww.runner;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bixin.gameFi.aww.bean.dto.ChainDto;
+import com.bixin.gameFi.aww.bean.dto.ChainResourcesDto;
 import com.bixin.gameFi.aww.config.BOBConfig;
 import com.bixin.gameFi.aww.service.Impl.BOBMarketImpl;
 import com.bixin.gameFi.common.factory.NamedThreadFactory;
+import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.novi.serde.Bytes;
@@ -25,6 +29,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -110,9 +115,11 @@ public class BOBRacentRunner implements ApplicationRunner {
     }
 
     private int dealRaceInfo(String senderAddress) throws Exception{
+        Long blockNum = getBlockNum();//获取当前区块高度
+        log.info("current bolckNum：{}", blockNum);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Long currentTime = timestamp.getTime();
-        //1、获取state.list_resource数据，todo：并更新缓存
+
+        //1、获取state.list_resource数据，todo：更新缓存？
         JSONObject raceInfo = bobMarketService.getBOBRaceInfo(null);
         int actualSurplus = raceInfo.getInteger("actual_surplus_count");//实际剩余人数
         int targetSuperplus = raceInfo.getInteger("target_surplus_count");//目标剩余人数
@@ -129,8 +136,8 @@ public class BOBRacentRunner implements ApplicationRunner {
 
         switch (state) {
             case 0://代表当前竞赛为初始状态，判断是否到达报名开始时间，如果到达报名开始时间，调用合约，更新状态为报名中
-                Long signUpStart = raceInfo.getLong("sign_up_start_ts");//报名开始时间
-                if (currentTime >= signUpStart) {//todo:要改成大于等于-------------------
+                Long signUpStart = raceInfo.getLong("sign_up_start_block");//报名开始时间
+                if (blockNum >= signUpStart) {//todo:要改成大于等于-------------------
                     //todo：表示已经到达报名开始时间，需要调用合约,修改竞赛状态
                     List funArgs = Lists.newArrayList(
 
@@ -148,8 +155,8 @@ public class BOBRacentRunner implements ApplicationRunner {
                 }
                 break;
             case 1://代表当前竞赛为报名状态，判断是否到达报名截止时间，如果到达报名截止时间，调用合约，更新状态为竞赛中
-                Long signUpEnd = raceInfo.getLong("sign_up_end_ts");//报名截止时间
-                if (currentTime >= signUpEnd) {
+                Long signUpEnd = raceInfo.getLong("sign_up_end_block");//报名截止时间
+                if (blockNum >= signUpEnd) {
                     //todo：表示已经到达截止开始时间，需要调用合约，修改竞赛状态
                     List funArgs = Lists.newArrayList(
 
@@ -168,10 +175,10 @@ public class BOBRacentRunner implements ApplicationRunner {
                 }
                 break;
             case 2://标识当前状态为竞赛中
-                Long nextEliminate = raceInfo.getLong("next_eliminate_ts");
+                Long nextEliminate = raceInfo.getLong("next_eliminate_block");
                 //判断是否到达下次淘汰时间，如果到达则调用淘汰合约
-                if (currentTime > nextEliminate) {
-                    //todo:表示已经到达下次淘汰时间，需要调用淘汰合约
+                if (blockNum > nextEliminate) {
+                    //表示已经到达下次淘汰时间，需要调用淘汰合约
                     List funArgs = Lists.newArrayList(
 
                     );
@@ -186,8 +193,9 @@ public class BOBRacentRunner implements ApplicationRunner {
                 }else {//没有到达下次淘汰时间，则要判断当前存活人数是否大于应该存活人数，如果大于则进行人数清理
                     if (actualSurplus > targetSuperplus) {
                         //调用合约，清理存活人数
+                        Long currentTime = timestamp.getTime();//todo：是否需要修改？？
                         List funArgs = Lists.newArrayList(
-                                Bytes.valueOf(BcsSerializeHelper.serializeString(String.valueOf(currentTime)))
+                                Bytes.valueOf(BcsSerializeHelper.serializeU64(currentTime))
                         );
                         boolean executed = callFunction("f_clear", funArgs);
                         if (!executed) {
@@ -205,9 +213,10 @@ public class BOBRacentRunner implements ApplicationRunner {
             case 3://表示当前竞赛已结束，但有可能存活人数还未清理完
                 //判断当前存活人数是否大于应该存活人数，如果大于则进行人数清理
                 if (actualSurplus > targetSuperplus) {
+                    Long currentTime = timestamp.getTime();//todo：是否需要修改？？
                     //调用合约，清理存活人数
                     List funArgs = Lists.newArrayList(
-                            Bytes.valueOf(BcsSerializeHelper.serializeString(String.valueOf(currentTime)))
+                            Bytes.valueOf(BcsSerializeHelper.serializeU64(currentTime))
                     );
                     boolean executed = callFunction("f_clear", funArgs);
                     if (!executed) {
@@ -243,5 +252,16 @@ public class BOBRacentRunner implements ApplicationRunner {
                 .build();
 
         return contractService.callFunction(address, scriptFunctionObj);
+    }
+
+    private Long getBlockNum( ) {
+        String ChainInfoString = contractService.getChainInfo();
+        ChainDto chainDto = JacksonUtil.readValue(ChainInfoString, new TypeReference<>() {
+        });
+
+        Map<String, Object>  chainResult = chainDto.getResult();
+        Map headMap = (Map) chainResult.get("head");
+        Long number = Long.parseLong(String.valueOf(headMap.get("number")));
+        return number;
     }
 }

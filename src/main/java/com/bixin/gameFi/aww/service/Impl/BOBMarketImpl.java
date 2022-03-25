@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bixin.gameFi.aww.bean.DO.BOBMintInfo;
+import com.bixin.gameFi.aww.bean.dto.ChainDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourceDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourcesDto;
 import com.bixin.gameFi.aww.config.BOBConfig;
@@ -46,9 +47,9 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV20" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV20";
-    private static final String bobSuffix_NormalRace = "BOBNormalRaceV20";
+    private static final String bobSuffix = separator + "BOBConfigV1003" + separator + "Config";
+    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1003";
+    private static final String bobSuffix_NormalRace = "BOBNormalRaceV101010";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
     private static String bobSuffix_Burn = "";
 
@@ -91,7 +92,11 @@ public class BOBMarketImpl implements IBOBMarketService {
             item.put("description", description);
             item.remove("base_meta");
             JSONObject type_meta = item.getJSONObject("type_meta");
-            item.put("used",type_meta.getBoolean("used"));
+            int ticketState = type_meta.getInteger("state");
+            item.put("state",ticketState);
+            if (ticketState != 0) { //只查询未使用状态的，还可能包含冠军和已退回
+                continue;
+            }
             item.remove("base_meta");
             item.remove("type_meta");
             item.remove("body");
@@ -105,7 +110,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     public Map getBOBConfig() {
         //todo:需要放到redis中
         JSONObject configInfo = new JSONObject();
-        Map configInfoMap = (Map) pullBOBResource(bobSuffix, null);
+        Map configInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobSuffix, null);
         if (configInfoMap == null) {
             return configInfo;
         }
@@ -123,14 +128,20 @@ public class BOBMarketImpl implements IBOBMarketService {
         return configInfo;
     }
 
+    /**
+     * 查询竞赛信息
+     * @param account
+     * @return
+     */
     @Override
     public JSONObject getBOBRaceInfo(String account) {
+        //这个account是为了过滤当前用户已参赛的nft列表，所以pullresource的时候不需要传,使用manager的address
         if (!StringUtils.isEmpty(account)) {
            account = account.toLowerCase();//转换小写
         }
 
         JSONObject raceInfo = new JSONObject();
-        Map raceInfoMap = (Map) pullBOBResource(bobSuffix_NormalRaceInfo, null);
+        Map raceInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobSuffix_NormalRaceInfo, null);
         if (raceInfoMap == null) {
             return raceInfo;
         }
@@ -168,6 +179,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         List items = (List) raceInfoMap.get("items");
         Integer state = (Integer) raceInfoMap.get("state");
+        raceInfoMap.put("actual_surplus_count", items.size());
 
         if (state == 1 || state == 2) {//如果是报名状态或者竞赛开始状态，返回当前用户的nft
             JSONArray itemArry = buildRaceInfoItems(items, account);
@@ -185,6 +197,21 @@ public class BOBMarketImpl implements IBOBMarketService {
 //        raceInfoMap.put("champion_nft_id", championNFtId);
         raceInfoMap.put("champion_nft_img", chappionNftImage);
 
+        Long signUpStartBlock = Long.parseLong(String.valueOf(raceInfoMap.get("sign_up_start_block")));
+        Long signUpEndBlock = Long.parseLong(String.valueOf(raceInfoMap.get("sign_up_end_block")));
+        Long signUpStartInterval = -1L;
+        Long signUpEndInterval = -1L;
+        //查询当前区块
+        Long currentBlock = getBlockNum();
+        if (currentBlock < signUpStartBlock ) {//当前还没到报名开始时间
+            signUpStartInterval = (signUpStartBlock - currentBlock)* 5000L;//按每块5s计算
+        }
+
+        if (currentBlock < signUpEndBlock ) {//当前还没到报名开始时间
+            signUpEndInterval = (signUpEndBlock - currentBlock)* 5000L;
+        }
+        raceInfoMap.put("signUpStartInterval", signUpStartInterval);
+        raceInfoMap.put("signUpEndInterval", signUpEndInterval);
         raceInfo = new JSONObject(raceInfoMap);
         return raceInfo;
     }
@@ -194,11 +221,14 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (!StringUtils.isEmpty(account)) {
             account = account.toLowerCase();
         }
+        //查询burn地址
         if (StringUtils.isEmpty(bobSuffix_Burn)) {
             Map configMap = getBOBConfig();
             bobSuffix_Burn = String.valueOf(configMap.get("normal_burn_address"));
         }
-        Map resourceMap = pullResource(bobSuffix_Burn);
+
+        String burnKey = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
+        Map resourceMap = (Map) pullBOBResource(burnKey, bobSuffix_Burn);
         JSONArray items = JSON.parseArray(JSONObject.toJSONString(resourceMap.get("items")));
         JSONArray result = new JSONArray();
         for (int i = 0; i < items.size();i++) {
@@ -218,7 +248,80 @@ public class BOBMarketImpl implements IBOBMarketService {
             item.put("description", description);
             item.remove("base_meta");
             JSONObject type_meta = item.getJSONObject("type_meta");
-            item.put("used",type_meta.getBoolean("used"));
+            item.put("state",type_meta.getInteger("state"));
+            item.remove("base_meta");
+            item.remove("type_meta");
+            item.remove("body");
+            result.add(item);
+        }
+        return result;
+    }
+
+    /**
+     * 查询我的已报名列表，包含三部分，冠军、存活中的和被淘汰的
+     * @param account
+     * @return
+     */
+    @Override
+    public JSONArray getMySignedNFT(String account) {
+        //查询冠军
+        //查询存活中的，需要放在前面
+        JSONArray aliveArry = getMyRaceNFT(account);
+        //查询被淘汰的,被淘汰的里面可能包含冠军，需要特殊处理
+        JSONArray fallenArry = getBOBFallenInfo(account);
+        log.debug("aliveSize:{},fallenSize:{}", aliveArry.size(), fallenArry.size());
+        aliveArry.addAll(fallenArry);//合并
+        return aliveArry;
+    }
+
+    //查询已参赛但是还没有被淘汰的NFT列表
+    private JSONArray getMyRaceNFT(String account) {
+        JSONArray aliveArry = new JSONArray();
+        //这个account是为了过滤当前用户已参赛的nft列表，所以pullresource的时候不需要传
+        if (!StringUtils.isEmpty(account)) {
+            account = account.toLowerCase();//转换小写
+        }
+
+        Map raceInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobSuffix_NormalRaceInfo, null);
+        if (raceInfoMap == null) {
+            return aliveArry;
+        }
+        List items = (List) raceInfoMap.get("items");
+        if (items == null || items.size() == 0) {
+            return aliveArry;
+        }
+        aliveArry = buildRaceInfoItems(items, account);
+        return aliveArry;
+    }
+
+    private JSONArray getNormalTicket1(String account) {
+        account = account.toLowerCase();
+        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
+        Map normalTicketMap = (Map) pullBOBResource(key, account);
+
+//        List items = (List) normalTicketMap.get("items");
+//        JSONArray itemArry = buildRaceInfoItems(items);
+
+        JSONArray normalTickets = JSON.parseArray(JSONObject.toJSONString(normalTicketMap.get("items")));
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < normalTickets.size();i++) {
+            JSONObject item = normalTickets.getJSONObject(i);
+
+            //解析base_meta
+            JSONObject meta = item.getJSONObject("base_meta");
+            String image = HexStringUtil.toStringHex(meta.getString("image").replaceAll("0x", ""));
+            String name = HexStringUtil.toStringHex(meta.getString("name").replaceAll("0x", ""));
+            String description = HexStringUtil.toStringHex(meta.getString("description").replaceAll("0x", ""));
+            item.put("image", image);
+            item.put("name", name);
+            item.put("description", description);
+            item.remove("base_meta");
+            JSONObject type_meta = item.getJSONObject("type_meta");
+            int ticketState = type_meta.getInteger("state");
+            item.put("state",ticketState);
+            if (ticketState != 0) { //只查询未使用状态的，还可能包含冠军和已退回
+                continue;
+            }
             item.remove("base_meta");
             item.remove("type_meta");
             item.remove("body");
@@ -246,7 +349,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     }
 
     //调用stat.list_resource公共方法
-    private Object pullBOBResource(String key, String account) {
+    private Object pullBOBResourceList(String key, String account) {
         if (account == null) {
             account = bobConfig.getCommon().getContractAddress();
         }
@@ -276,6 +379,22 @@ public class BOBMarketImpl implements IBOBMarketService {
         return map.get("json");
     }
 
+
+
+    private Object pullBOBResource(String key, String account) {
+        if (StringUtils.isEmpty(account)){
+            account = bobConfig.getCommon().getContractAddress(); //默认查询manager中的数据,否则查询传入地址的数据
+        }
+        String resource = contractService.getResource(account, key);
+        ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
+        });
+
+        ChainResourceDto.ChainResource chainResourceDtoResult = chainResourceDto.getResult();
+
+        Map <String, Object> resutJson = chainResourceDtoResult.getJson();;
+        return resutJson;
+    }
+
     /**
      * 构建items返回体
      * @param items
@@ -292,7 +411,7 @@ public class BOBMarketImpl implements IBOBMarketService {
             JSONObject nft = itemObj.getJSONObject("nft");
 
             JSONArray vec = nft.getJSONArray("vec");
-            if (vec == null || vec.isEmpty()) {
+            if (vec == null || vec.isEmpty()) {//处理垃圾数据
                 return;
             }
             JSONObject vecItem = vec.getJSONObject(0);
@@ -315,5 +434,16 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         });
         return itemArr;
+    }
+
+    private Long getBlockNum( ) {
+        String ChainInfoString = contractService.getChainInfo();
+        ChainDto chainDto = JacksonUtil.readValue(ChainInfoString, new TypeReference<>() {
+        });
+
+        Map<String, Object>  chainResult = chainDto.getResult();
+        Map headMap = (Map) chainResult.get("head");
+        Long number = Long.parseLong(String.valueOf(headMap.get("number")));
+        return number;
     }
 }

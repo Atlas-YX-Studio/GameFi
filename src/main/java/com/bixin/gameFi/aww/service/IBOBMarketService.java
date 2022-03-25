@@ -20,4 +20,6 @@ public interface IBOBMarketService {
     JSONObject getBOBRaceInfo(String account);
 
     JSONArray getBOBFallenInfo(String account);
+
+    JSONArray getMySignedNFT(String account);
 }
