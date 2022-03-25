@@ -116,6 +116,8 @@
         },
         "sign_up_start_block": 4880989,
         "sign_up_end_block": 49790280,
+        "signUpStartInterval":5000,
+        "signUpEndInterval":5000,
         "race_start_block": 49790280,
         "total_round": 0,
         "current_round": 0,
@@ -184,6 +186,8 @@
 | normalTicketMBody        | string    |                                          |
 | name                     | string    | 竞赛名称                                     |
 | img                      | string    | 竞赛图片                                     |
+| signUpStartInterval      | Int       | 距离报名开始时间间隔（ms）,如果是超过了开始时间返回-1            |
+| signUpStartInterval      | Int       | 距离报名结束时间间隔（ms）,如果是超过了结束时间返回-1            |
 
 ### 查询被淘汰的NFT列表
 
