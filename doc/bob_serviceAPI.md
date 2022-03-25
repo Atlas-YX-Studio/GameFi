@@ -241,7 +241,7 @@
 
 
 
-### 查询已报名NFT列表（MyNFT页面）
+### 查询已报名、已退赛、已淘汰NFT列表（MyNFT页面）
 
 【GET】http://ip:port/v1/aww/normal/mySignedNFT?account={account}
 
@@ -260,24 +260,30 @@
     "code": 0,
     "msg": "",
     "detailMsg": "",
-    "data": [
-        {
-            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
-            "creator": "0x88637dda61b276f8170de63f6422f7c5",
-            "name": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
-            "description": "5ace91b7-7bf0-4bb2-8f16-5f79ac62cb42",
-            "id": 4,
-            "used": false
-        },
-        {
-            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
-            "creator": "0x88637dda61b276f8170de63f6422f7c5",
-            "name": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
-            "description": "c63edaeb-8340-4c80-ad1e-b641595b7b78",
-            "id": 5,
-            "used": false
-        }
-    ]
+    "data": {
+        "signArry": [
+            {
+                "owner": "0x93bfd6328ca4d77211c3103bf94275e6",
+                "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/c763e501-110b-4717-ba75-fde6569fb100/public",
+                "creator": "0x93bfd6328ca4d77211c3103bf94275e6",
+                "name": "\u0005\u0016",
+                "description": "\u0005\u0016",
+                "id": "4",
+                "state": 1
+            }
+        ],
+        "endArry": [],
+        "fallenArry": [
+            {
+                "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
+                "creator": "0x93bfd6328ca4d77211c3103bf94275e6",
+                "name": "c76b79d0-17bf-4fdd-ab84-d89b72d8d74c",
+                "description": "c76b79d0-17bf-4fdd-ab84-d89b72d8d74c",
+                "id": 2,
+                "state": 3
+            }
+        ]
+    }
 }
 ```
 
@@ -290,3 +296,6 @@
 | image       | String | 图片地址 |
 | name        | String | 门票名称 |
 | description | String | 描述   |
+| Signarry    | Arry   | 已报名  |
+| endarry     | arry   | 已退出  |
+| fallenarry  | arry   | 已淘汰  |
