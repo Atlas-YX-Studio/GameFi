@@ -49,7 +49,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     private static final String separator = "::";
     private static final String bobSuffix = separator + "BOBConfigV1003" + separator + "Config";
     private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1003";
-    private static final String bobSuffix_NormalRace = "BOBNormalRaceV101010";
+    private static final String bobSuffix_NormalRace = "BOBNormalRaceV1010";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
     private static String bobSuffix_Burn = "";
 
