@@ -15,6 +15,7 @@ import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
+import kotlin.jvm.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -242,7 +243,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         //判断竞赛类型普通or高级
         String ticket = bobSuffix_NormalTicket;
-        if (bobSuffix_NormalRace.contains("senior")) {
+        if (bobSuffix_NormalRace.contains("Senior")) {
             ticket = bobSuffix_SeniorTicket;
         }
 
@@ -347,7 +348,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         //判断竞赛类型普通or高级
         String ticket = bobSuffix_NormalTicket;
-        if (bobSuffix_NormalRace.contains("senior")) {
+        if (bobSuffix_NormalRace.contains("Senior")) {
             ticket = bobSuffix_SeniorTicket;
         }
 
