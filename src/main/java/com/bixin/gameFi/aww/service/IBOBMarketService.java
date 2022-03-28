@@ -22,4 +22,6 @@ public interface IBOBMarketService {
     JSONArray getBOBFallenInfo(String account);
 
     JSONObject getMySignedNFT(String account);
+
+    JSONArray getOtherNFT(String account);
 }

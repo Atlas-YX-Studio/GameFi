@@ -426,6 +426,30 @@ public class BOBMarketImpl implements IBOBMarketService {
         return result;
     }
 
+    public JSONArray getOtherNFT(String account) {
+        String key = bobConfig.getContent().getNftName();
+        Map NFTInfoMap = (Map) pullBOBResource(key, account);
+        if (NFTInfoMap.isEmpty()) {
+            return new JSONArray();
+        }
+
+        JSONArray nftArry = JSON.parseArray(JSONObject.toJSONString(NFTInfoMap.get("items")));
+        for (int i = 0; i< nftArry.size(); i++) {
+            JSONObject nftItem = nftArry.getJSONObject(i);
+            //todo：
+            nftItem.put("ARMMEeta", "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta");
+            nftItem.put("ARMBody", "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta");
+            nftItem.put("payToken", "0x1::STC::STC");
+            //解析base_meta信息
+            JSONObject base_meta = nftItem.getJSONObject("base_meta");
+            nftItem.put("name",HexStringUtil.toStringHex(base_meta.getString("name").replaceAll("0x", "")));
+            nftItem.put("image",HexStringUtil.toStringHex(base_meta.getString("image").replaceAll("0x", "")));
+            nftItem.put("description",HexStringUtil.toStringHex(base_meta.getString("description").replaceAll("0x", "")));
+            nftItem.remove("base_meta");
+        }
+        return nftArry;
+    }
+
 
 
     private Map pullResource(String currentAccount) {

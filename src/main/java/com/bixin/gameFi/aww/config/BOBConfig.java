@@ -42,6 +42,7 @@ public class BOBConfig {
         private String ss;
         private String bobSuffixNormalTicket;
         private String bobSuffixSeniorTicket;
+        private String nftName;
     }
 
 }

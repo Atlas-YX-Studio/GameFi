@@ -66,5 +66,7 @@ gamefi:
       race-module: "BOBSeniorRaceV1043"
       bobSuffix-normal-ticket: "BOBNormalTicketV1043"
       bobSuffix-senior-ticket: "BOBSeniorTicketV1043"
+      nft-name: "0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta, 0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMBody>"
+
 
 

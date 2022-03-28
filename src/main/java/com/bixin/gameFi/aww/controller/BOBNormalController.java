@@ -87,4 +87,14 @@ public class BOBNormalController {
         return r;
     }
 
+    /**
+     *查询当前轮次我的已参赛NFT列表
+     * @return
+     */
+    @GetMapping("otherNFT")
+    public R getOtherNFT(@RequestParam String account) {
+        R r = R.success(bobMarketService.getOtherNFT(account));
+        return r;
+    }
+
 }
