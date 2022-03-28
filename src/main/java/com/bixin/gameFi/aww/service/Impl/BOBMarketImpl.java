@@ -331,6 +331,10 @@ public class BOBMarketImpl implements IBOBMarketService {
         String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
         Map normalTicketMap = (Map) pullBOBResource(key, account);
 
+        if (normalTicketMap.isEmpty()) {
+            return result;
+        }
+
 //        List items = (List) normalTicketMap.get("items");
 //        JSONArray itemArry = buildRaceInfoItems(items);
 
@@ -433,7 +437,11 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         ChainResourceDto.ChainResource chainResourceDtoResult = chainResourceDto.getResult();
 
-        Map <String, Object> resutJson = chainResourceDtoResult.getJson();
+        Map <String, Object> resutJson = new HashMap<>();
+        if (chainResourceDtoResult != null) {
+            resutJson = chainResourceDtoResult.getJson();
+        }
+
         return resutJson;
     }
 
