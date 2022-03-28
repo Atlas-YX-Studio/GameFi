@@ -62,14 +62,9 @@ gamefi:
       websocket-host: 60.205.3.84
       websocket-port: 8970
     content:
-      aww-module: "AWW"
-      normal-race-module: "BOBSeniorRaceV1043"
-      aww-game-module: "AWWGame"
-      market-module: "ARMMarket"
-      scripts-module: "AWWScripts"
-      nft-name: "aww arm"
-      title-page-image: "https://test.kikoswap.com/v1/nft/image/group/1"
-      description: "aww arms"
-      image-info-api: "https://test.kikoswap.com/v1/nft/image/info/"
+      bob-suffix: "::BOBConfigV1043::Config"
+      race-module: "BOBSeniorRaceV1043"
+      bobSuffix-normal-ticket: "BOBNormalTicketV1043"
+      bobSuffix-senior-ticket: "BOBSeniorTicketV1043"
 
 

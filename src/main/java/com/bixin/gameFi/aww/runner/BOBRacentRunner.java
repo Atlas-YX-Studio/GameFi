@@ -144,10 +144,10 @@ public class BOBRacentRunner implements ApplicationRunner {
                     );
                     boolean executed = callFunction("f_set_state", funArgs);
                     if (!executed) {
-                        log.error("当前普通场竞赛修改状态为报名开始失败。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_set_state");
+                        log.error("当前普通场竞赛修改状态为报名开始失败。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_set_state");
                         break;
                     }
-                    log.info("当前普通场竞赛修改状态为报名开始成功。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_set_state");
+                    log.info("当前普通场竞赛修改状态为报名开始成功。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_set_state");
                     break;
                 }else{
                     //线程等待2s后执行
@@ -163,10 +163,10 @@ public class BOBRacentRunner implements ApplicationRunner {
                     );
                     boolean executed = callFunction("f_set_state", funArgs);
                     if (!executed) {
-                        log.error("当前普通场竞赛修改状态为竞赛开始失败。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_set_state");
+                        log.error("当前普通场竞赛修改状态为竞赛开始失败。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_set_state");
                         break;
                     }
-                    log.info("当前普通场竞赛修改状态为竞赛开始成功。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_set_state");
+                    log.info("当前普通场竞赛修改状态为竞赛开始成功。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_set_state");
 
                     break;
                 }else {
@@ -184,10 +184,10 @@ public class BOBRacentRunner implements ApplicationRunner {
                     );
                     boolean executed = callFunction("f_eliminate", funArgs);
                     if (!executed) {
-                        log.error("当前普通场竞赛进入下一个淘汰轮次，调用合约失败。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_eliminate");
+                        log.error("当前普通场竞赛进入下一个淘汰轮次，调用合约失败。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_eliminate");
                         break;
                     }
-                    log.info("当前普通场竞赛进入下一个淘汰轮次，调用合约成功。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_eliminate");
+                    log.info("当前普通场竞赛进入下一个淘汰轮次，调用合约成功。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_eliminate");
 
 
                 }else {//没有到达下次淘汰时间，则要判断当前存活人数是否大于应该存活人数，如果大于则进行人数清理
@@ -199,10 +199,10 @@ public class BOBRacentRunner implements ApplicationRunner {
                         );
                         boolean executed = callFunction("f_clear", funArgs);
                         if (!executed) {
-                            log.error("当前普通场竞赛轮次淘汰参赛者，调用合约失败。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_clear");
+                            log.error("当前普通场竞赛轮次淘汰参赛者，调用合约失败。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_clear");
                             break;
                         }
-                        log.info("当前普通场竞赛轮次淘汰参赛者，调用合约成功。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_clear");
+                        log.info("当前普通场竞赛轮次淘汰参赛者，调用合约成功。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_clear");
 
                     }else {
                         //线程等待2s后执行
@@ -220,10 +220,10 @@ public class BOBRacentRunner implements ApplicationRunner {
                     );
                     boolean executed = callFunction("f_clear", funArgs);
                     if (!executed) {
-                        log.error("当前普通场竞赛轮次淘汰参赛者，调用合约失败。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_clear");
+                        log.error("当前普通场竞赛轮次淘汰参赛者，调用合约失败。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_clear");
                         break;
                     }
-                    log.info("当前普通场竞赛轮次淘汰参赛者，调用合约成功。modulename：" + bobConfig.getContent().getNormalRaceModule() + "，function：f_clear");
+                    log.info("当前普通场竞赛轮次淘汰参赛者，调用合约成功。modulename：" + bobConfig.getContent().getRaceModule() + "，function：f_clear");
 
                 }else {
                     //结束线程
@@ -239,7 +239,7 @@ public class BOBRacentRunner implements ApplicationRunner {
 
     private boolean callFunction(String functionName, List funArgs) {
 
-        String moduleName = bobConfig.getContent().getNormalRaceModule();
+        String moduleName = bobConfig.getContent().getRaceModule();
         String address = bobConfig.getCommon().getContractAddress();
 
         ScriptFunctionObj scriptFunctionObj = ScriptFunctionObj

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import kotlin.jvm.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -45,30 +46,37 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV1043" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1043";
-    private static final String bobSuffix_SeniorTicket = "BOBSeniorTicketV1043";
-    private static final String bobSuffix_NormalRace = "BOBSeniorRaceV1043";
-    private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
+//    private static final String bobSuffix = separator + "BOBConfigV1043" + separator + "Config";
+//    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1043";
+//    private static final String bobSuffix_SeniorTicket = "BOBSeniorTicketV1043";
+//    private static final String bobSuffix_NormalRace = "BOBSeniorRaceV1043";
+//    private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
     private static String bobSuffix_Burn = "";
 
 //0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Meta, 0x9b996121ea29b50c6213558e34120e5c::BOBNormalTicketV3::Body>
     @Override
+    @Transactional
     public JSONObject getBOBMintInfo(String account) {
-        account = account.toLowerCase();
-        BOBMintInfo bobMintInfo = bobMintInfoMapper.selectByState();
-        if (bobMintInfo == null)  {
-            return null;
+        synchronized (this) {
+            account = account.toLowerCase();
+            BOBMintInfo bobMintInfo = bobMintInfoMapper.selectByState();
+            if (bobMintInfo == null)  {
+                return null;
+            }
+            //todo:判空并且加锁
+            bobMintInfo.setState(1);
+            bobMintInfo.setAccount(account);
+            bobMintInfoMapper.updateByPrimaryKeySelective(bobMintInfo);
+            return JSONObject.parseObject(JacksonUtil.toJson(bobMintInfo));
         }
-        //todo:判空并且加锁
-        bobMintInfo.setState(1);
-        bobMintInfo.setAccount(account);
-        bobMintInfoMapper.updateByPrimaryKeySelective(bobMintInfo);
-        return JSONObject.parseObject(JacksonUtil.toJson(bobMintInfo));
     }
 
     @Override
     public JSONArray getNormalTicket(String account, String raceType) {
+
+        if (!(raceType.equalsIgnoreCase("normal") && bobConfig.getContent().getRaceModule().contains("Normal") || raceType.equalsIgnoreCase("senior") && bobConfig.getContent().getRaceModule().contains("Senior")) ) {
+            return new JSONArray();
+        }
 
         account = account.toLowerCase();
 
@@ -110,7 +118,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     public Map getBOBConfig() {
         //todo:需要放到redis中
         JSONObject configInfo = new JSONObject();
-        Map configInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobSuffix, null);
+        Map configInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobConfig.getContent().getBobSuffix(), null);
         if (configInfoMap == null) {
             return configInfo;
         }
@@ -141,14 +149,15 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
 
         JSONObject raceInfo = new JSONObject();
-        Map raceInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobSuffix_NormalRaceInfo, null);
+        String raceKey = bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getRaceModule() + separator + "RaceInfo";
+        Map raceInfoMap = (Map) pullBOBResource(raceKey, null);
         if (raceInfoMap == null) {
             return raceInfo;
         }
 
         String raceType = "normal";
         //区分是普通场还是高级场
-        if (bobSuffix_NormalRaceInfo.contains("Senior")) {
+        if (bobConfig.getContent().getRaceModule().contains("Senior")) {
             raceType = "senior";
         }
         raceInfoMap.put("raceType", raceType);
@@ -166,12 +175,12 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
 
 
-        String ticket = bobSuffix_NormalTicket;
+        String ticket = bobConfig.getContent().getBobSuffixNormalTicket();
         if (raceType.equalsIgnoreCase("senior")) { // 高级场
-            ticket = bobSuffix_SeniorTicket;
+            ticket = bobConfig.getContent().getBobSuffixSeniorTicket();
         }
         //添加合约数据
-        raceInfoMap.put("normalRaceContract", bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalRace);
+        raceInfoMap.put("normalRaceContract", bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getRaceModule());
         raceInfoMap.put("normalTicketMeta",bobConfig.getCommon().getContractAddress() + separator + ticket);
         raceInfoMap.put("normalTicketMBody",bobConfig.getCommon().getContractAddress() + separator + ticket);
 
@@ -242,9 +251,9 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
 
         //判断竞赛类型普通or高级
-        String ticket = bobSuffix_NormalTicket;
-        if (bobSuffix_NormalRace.contains("Senior")) {
-            ticket = bobSuffix_SeniorTicket;
+        String ticket = bobConfig.getContent().getBobSuffixNormalTicket();
+        if (bobConfig.getContent().getRaceModule().contains("Senior")) {
+            ticket = bobConfig.getContent().getBobSuffixSeniorTicket();
         }
 
         String burnKey = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Body>";
@@ -324,7 +333,8 @@ public class BOBMarketImpl implements IBOBMarketService {
             account = account.toLowerCase();//转换小写
         }
 
-        Map raceInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobSuffix_NormalRaceInfo, null);
+        String raceKey = bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getRaceModule() + separator + "RaceInfo";
+        Map raceInfoMap = (Map) pullBOBResource(raceKey, null);
         if (raceInfoMap == null) {
             return aliveArry;
         }
@@ -347,9 +357,9 @@ public class BOBMarketImpl implements IBOBMarketService {
         Map result = new HashMap();
 
         //判断竞赛类型普通or高级
-        String ticket = bobSuffix_NormalTicket;
-        if (bobSuffix_NormalRace.contains("Senior")) {
-            ticket = bobSuffix_SeniorTicket;
+        String ticket = bobConfig.getContent().getBobSuffixNormalTicket();
+        if (bobConfig.getContent().getRaceModule().contains("Senior")) {
+            ticket = bobConfig.getContent().getBobSuffixSeniorTicket();
         }
 
         JSONArray personTickets = new JSONArray();
@@ -362,8 +372,8 @@ public class BOBMarketImpl implements IBOBMarketService {
             personTickets = JSON.parseArray(JSONObject.toJSONString(firstTicketMap.get("items")));
         }
 
-        if (getType == 1) {
-            ticket = ticket.equals(bobSuffix_NormalTicket) ? bobSuffix_SeniorTicket : bobSuffix_NormalTicket;
+        if (getType == 1) {//取另一种竞赛数据
+            ticket = ticket.equals(bobConfig.getContent().getBobSuffixNormalTicket()) ? bobConfig.getContent().getBobSuffixSeniorTicket() : bobConfig.getContent().getBobSuffixNormalTicket();
             //个人账户下包含未使用的，已退回的，冠军三种状态的数据,
             key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Body>";
             Map secondTicketMap = (Map) pullBOBResource(key, account);
@@ -420,7 +430,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
     private Map pullResource(String currentAccount) {
 //        String senderAddress = bobConfig.getCommon().getContractAddress();
-        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
+        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getBobSuffixNormalTicket() + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getBobSuffixNormalTicket() + separator + "Body>";
         String resource = contractService.getResource(currentAccount, key);
         ChainResourceDto chainResourceDto = JacksonUtil.readValue(resource, new TypeReference<>() {
         });

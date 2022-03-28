@@ -37,24 +37,11 @@ public class BOBConfig {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Content {
-        private String marketModule;
-        private String normalRaceModule;
-        private String awwModule;
-        private String awwGameModule;
-        private String grantModule;
-        private String scriptsModule;
-
-        private String nftName;
-        private String titlePageImage;
-        private String description;
-
-        private Long imageId;
-        private String imageData;
-        private String nftMeta;
-        private String nftBody;
-        private String scripts;
-        //        image-info-api: "https://test.kikoswap.com/v1/nft/image/group/1"
-        private String imageInfoApi;
+        private String bobSuffix;
+        private String raceModule;
+        private String ss;
+        private String bobSuffixNormalTicket;
+        private String bobSuffixSeniorTicket;
     }
 
 }

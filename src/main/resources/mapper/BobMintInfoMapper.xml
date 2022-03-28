@@ -80,7 +80,7 @@
   <select id="selectByState" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from bob_mint_info where state = 0 ORDER BY id asc limit 0,1
+    from bob_mint_info where state = 0 ORDER BY id asc limit 0,1 for update
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from bob_mint_info
