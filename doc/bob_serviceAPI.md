@@ -301,4 +301,4 @@
 | description | String | 描述   |
 | Signarry    | Arry   | 已报名  |
 | endarry     | arry   | 已退出  |
-| ticketArry  | arry   | 已淘汰  |
+| ticketArry  | arry   | 未报名  |
