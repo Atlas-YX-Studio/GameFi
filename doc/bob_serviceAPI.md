@@ -28,13 +28,14 @@
 
 ### 查询普通门票列表
 
-【GET】http://ip:port/v1/aww/normal/normalTicket?account={account}
+【GET】http://ip:port/v1/aww/normal/normalTicket?account={account}&raceType=normal
 
 请求参数说明：
 
-| 名称      | 类型     | 描述   |
-| ------- | ------ | ---- |
-| account | String | 用户地址 |
+| 名称       | 类型     | 描述                           |
+| -------- | ------ | ---------------------------- |
+| account  | String | 用户地址                         |
+| raceType | String | 当前竞赛类型：普通场：normal；高级场：senior |
 
 
 
