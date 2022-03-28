@@ -15,7 +15,6 @@ import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
-import jnr.ffi.annotations.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,9 +44,9 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV1003" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1003";
-    private static final String bobSuffix_NormalRace = "BOBNormalRaceV1010";
+    private static final String bobSuffix = separator + "BOBConfigV1020" + separator + "Config";
+    private static final String bobSuffix_NormalTicket = "BOBSeniorTicketV1020";
+    private static final String bobSuffix_NormalRace = "BOBSeniorRaceV1020";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
     private static String bobSuffix_Burn = "";
 
@@ -70,36 +69,37 @@ public class BOBMarketImpl implements IBOBMarketService {
     public JSONArray getNormalTicket(String account) {
         account = account.toLowerCase();
         String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
-        Map normalTicketMap = (Map) pullBOBResource(key, account);
 
-//        List items = (List) normalTicketMap.get("items");
-//        JSONArray itemArry = buildRaceInfoItems(items);
+        Map normalTicketMap = getMyTickets(account,0);
+        JSONArray result = (JSONArray) normalTicketMap.get(0);
 
-        JSONArray normalTickets = JSON.parseArray(JSONObject.toJSONString(normalTicketMap.get("items")));
-        JSONArray result = new JSONArray();
-        for (int i = 0; i < normalTickets.size();i++) {
-            JSONObject item = normalTickets.getJSONObject(i);
-
-            //解析base_meta
-            JSONObject meta = item.getJSONObject("base_meta");
-            String image = HexStringUtil.toStringHex(meta.getString("image").replaceAll("0x", ""));
-            String name = HexStringUtil.toStringHex(meta.getString("name").replaceAll("0x", ""));
-            String description = HexStringUtil.toStringHex(meta.getString("description").replaceAll("0x", ""));
-            item.put("image", image);
-            item.put("name", name);
-            item.put("description", description);
-            item.remove("base_meta");
-            JSONObject type_meta = item.getJSONObject("type_meta");
-            int ticketState = type_meta.getInteger("state");
-            item.put("state",ticketState);
-            if (ticketState != 0) { //只查询未使用状态的，还可能包含冠军和已退回
-                continue;
-            }
-            item.remove("base_meta");
-            item.remove("type_meta");
-            item.remove("body");
-            result.add(item);
-        }
+//        Map normalTicketMap = (Map) pullBOBResource(key, account);
+//
+//        JSONArray normalTickets = JSON.parseArray(JSONObject.toJSONString(normalTicketMap.get("items")));
+//        JSONArray result = new JSONArray();
+//        for (int i = 0; i < normalTickets.size();i++) {
+//            JSONObject item = normalTickets.getJSONObject(i);
+//
+//            //解析base_meta
+//            JSONObject meta = item.getJSONObject("base_meta");
+//            String image = HexStringUtil.toStringHex(meta.getString("image").replaceAll("0x", ""));
+//            String name = HexStringUtil.toStringHex(meta.getString("name").replaceAll("0x", ""));
+//            String description = HexStringUtil.toStringHex(meta.getString("description").replaceAll("0x", ""));
+//            item.put("image", image);
+//            item.put("name", name);
+//            item.put("description", description);
+//            item.remove("base_meta");
+//            JSONObject type_meta = item.getJSONObject("type_meta");
+//            int ticketState = type_meta.getInteger("state");
+//            item.put("state",ticketState);
+//            if (ticketState != 0) { //只查询未使用状态的，还可能包含冠军和已退回
+//                continue;
+//            }
+//            item.remove("base_meta");
+//            item.remove("type_meta");
+//            item.remove("body");
+//            result.add(item);
+//        }
 
         return result;
     }
@@ -143,6 +143,14 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (raceInfoMap == null) {
             return raceInfo;
         }
+
+        String raceType = "normal";
+        //区分是普通场还是高级场
+        if (bobSuffix_NormalRaceInfo.contains("Senior")) {
+            raceType = "senior";
+        }
+        raceInfoMap.put("raceType", raceType);
+
         //格式化名称和图片
         String name = String.valueOf(raceInfoMap.get("name"));
         String image = String.valueOf(raceInfoMap.get("img"));
@@ -264,7 +272,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     public JSONObject getMySignedNFT(String account) {
         //查询冠军、退赛的，到个人账户下查询
         int[] states = {2,4};//2:已退赛，4:冠军
-        Map endAndChampionMap = getNormalTicket1(account, states);
+        Map endAndChampionMap = getMyTickets(account, states);
         JSONArray endArry = new JSONArray();
         if (endAndChampionMap.containsKey(2)) {
             endArry = (JSONArray) endAndChampionMap.get(2);
@@ -309,7 +317,13 @@ public class BOBMarketImpl implements IBOBMarketService {
         return aliveArry;
     }
 
-    private Map<Integer, JSONArray> getNormalTicket1(String account, int... targetState) {
+    /**
+     * 查询个人账户下nft数据
+     * @param account
+     * @param targetState
+     * @return
+     */
+    private Map<Integer, JSONArray> getMyTickets(String account, int... targetState) {
         Map result = new HashMap();
 
         //个人账户下包含未使用的，已退回的，冠军三种状态的数据,
