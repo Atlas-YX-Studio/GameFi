@@ -276,7 +276,7 @@
             }
         ],
         "endArry": [],
-        "fallenArry": [
+        "ticketArry": [
             {
                 "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/b49293ea-daed-401e-8ee6-27fa5e147d00/public",
                 "creator": "0x93bfd6328ca4d77211c3103bf94275e6",
@@ -301,4 +301,4 @@
 | description | String | 描述   |
 | Signarry    | Arry   | 已报名  |
 | endarry     | arry   | 已退出  |
-| fallenarry  | arry   | 已淘汰  |
+| ticketArry  | arry   | 已淘汰  |

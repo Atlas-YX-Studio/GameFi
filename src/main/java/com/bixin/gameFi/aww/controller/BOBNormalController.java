@@ -40,8 +40,8 @@ public class BOBNormalController {
      * @return
      */
     @GetMapping("normalTicket")
-    public R getBOBNormalTicket(@RequestParam String account) {
-        R r = R.success(bobMarketService.getNormalTicket(account));
+    public R getBOBNormalTicket(@RequestParam String account, @RequestParam String raceType ) {
+        R r = R.success(bobMarketService.getNormalTicket(account, raceType));
         return r;
     }
 

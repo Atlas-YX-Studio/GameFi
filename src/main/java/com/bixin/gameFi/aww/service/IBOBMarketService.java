@@ -13,7 +13,7 @@ public interface IBOBMarketService {
 
     JSONObject getBOBMintInfo(String account);
 
-    JSONArray getNormalTicket(String account);
+    JSONArray getNormalTicket(String account, String raceType);
 
     Map getBOBConfig();
 

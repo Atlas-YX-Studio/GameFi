@@ -44,9 +44,10 @@ public class BOBMarketImpl implements IBOBMarketService {
     BobMintInfoMapper bobMintInfoMapper;
 
     private static final String separator = "::";
-    private static final String bobSuffix = separator + "BOBConfigV1020" + separator + "Config";
-    private static final String bobSuffix_NormalTicket = "BOBSeniorTicketV1020";
-    private static final String bobSuffix_NormalRace = "BOBSeniorRaceV1020";
+    private static final String bobSuffix = separator + "BOBConfigV1043" + separator + "Config";
+    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1043";
+    private static final String bobSuffix_SeniorTicket = "BOBSeniorTicketV1043";
+    private static final String bobSuffix_NormalRace = "BOBSeniorRaceV1043";
     private static final String bobSuffix_NormalRaceInfo = separator + bobSuffix_NormalRace + separator + "RaceInfo";
     private static String bobSuffix_Burn = "";
 
@@ -66,11 +67,11 @@ public class BOBMarketImpl implements IBOBMarketService {
     }
 
     @Override
-    public JSONArray getNormalTicket(String account) {
-        account = account.toLowerCase();
-        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
+    public JSONArray getNormalTicket(String account, String raceType) {
 
-        Map normalTicketMap = getMyTickets(account,0);
+        account = account.toLowerCase();
+
+        Map normalTicketMap = getMyTickets(account,0, 0);
         JSONArray result = (JSONArray) normalTicketMap.get(0);
 
 //        Map normalTicketMap = (Map) pullBOBResource(key, account);
@@ -151,6 +152,8 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
         raceInfoMap.put("raceType", raceType);
 
+        log.info("receType:{}", raceType);
+
         //格式化名称和图片
         String name = String.valueOf(raceInfoMap.get("name"));
         String image = String.valueOf(raceInfoMap.get("img"));
@@ -162,10 +165,14 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
 
 
+        String ticket = bobSuffix_NormalTicket;
+        if (raceType.equalsIgnoreCase("senior")) { // 高级场
+            ticket = bobSuffix_SeniorTicket;
+        }
         //添加合约数据
         raceInfoMap.put("normalRaceContract", bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalRace);
-        raceInfoMap.put("normalTicketMeta",bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket);
-        raceInfoMap.put("normalTicketMBody",bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket);
+        raceInfoMap.put("normalTicketMeta",bobConfig.getCommon().getContractAddress() + separator + ticket);
+        raceInfoMap.put("normalTicketMBody",bobConfig.getCommon().getContractAddress() + separator + ticket);
 
 
         //去掉event数据
@@ -233,7 +240,13 @@ public class BOBMarketImpl implements IBOBMarketService {
             bobSuffix_Burn = String.valueOf(configMap.get("normal_burn_address"));
         }
 
-        String burnKey = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
+        //判断竞赛类型普通or高级
+        String ticket = bobSuffix_NormalTicket;
+        if (bobSuffix_NormalRace.contains("senior")) {
+            ticket = bobSuffix_SeniorTicket;
+        }
+
+        String burnKey = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Body>";
         Map resourceMap = (Map) pullBOBResource(burnKey, bobSuffix_Burn);
         JSONArray items = JSON.parseArray(JSONObject.toJSONString(resourceMap.get("items")));
         JSONArray result = new JSONArray();
@@ -271,8 +284,8 @@ public class BOBMarketImpl implements IBOBMarketService {
     @Override
     public JSONObject getMySignedNFT(String account) {
         //查询冠军、退赛的，到个人账户下查询
-        int[] states = {2,4};//2:已退赛，4:冠军
-        Map endAndChampionMap = getMyTickets(account, states);
+        int[] states = {0,2,4};//2:已退赛，4:冠军
+        Map endAndChampionMap = getMyTickets(account, 1, states);
         JSONArray endArry = new JSONArray();
         if (endAndChampionMap.containsKey(2)) {
             endArry = (JSONArray) endAndChampionMap.get(2);
@@ -281,23 +294,28 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (endAndChampionMap.containsKey(4)) {
             championArry = (JSONArray) endAndChampionMap.get(4);
         }
+        //未报名的
+        JSONArray ticketArry = new JSONArray();
+        if (endAndChampionMap.containsKey(0)) {
+            ticketArry = (JSONArray) endAndChampionMap.get(0);
+        }
+
 
         //查询存活中的，需要放在前面,从race中查
         JSONArray aliveArry = getMyRaceNFT(account);
-        //查询被淘汰的，从burn中查
-        JSONArray fallenArry = getBOBFallenInfo(account);
-        log.debug("aliveSize:{},fallenSize:{}", aliveArry.size(), fallenArry.size());
+
+        log.debug("aliveSize:{},ticketSize:{}", aliveArry.size(), ticketArry.size());
 
         JSONObject result = new JSONObject();
-        championArry.addAll(fallenArry);
+//        championArry.addAll(fallenArry);
         aliveArry.addAll(championArry);
-        result.put("signArry", aliveArry); //已报名的包含存活中的，冠军、已淘汰三种
+        result.put("signArry", aliveArry); //已报名的包含存活中的，冠军，包含普通场和高级场
         result.put("endArry", endArry);
-        result.put("fallenArry", fallenArry);
+        result.put("ticketArry", ticketArry);
         return result;
     }
 
-    //查询已参赛但是还没有被淘汰的NFT列表
+    //查询已参赛但是还没有被淘汰的NFT列表，race只能是普通或者高级，不可能同时存在，所以根据race配置的哪个，就查哪个里面的数据就行了
     private JSONArray getMyRaceNFT(String account) {
         JSONArray aliveArry = new JSONArray();
         //这个account是为了过滤当前用户已参赛的nft列表，所以pullresource的时候不需要传
@@ -321,27 +339,48 @@ public class BOBMarketImpl implements IBOBMarketService {
      * 查询个人账户下nft数据
      * @param account
      * @param targetState
+     * @param getType 查询类型  0：只查当前场次，普通或者高级，1:查询所有场次，包含普通和高级的
      * @return
      */
-    private Map<Integer, JSONArray> getMyTickets(String account, int... targetState) {
+    private Map<Integer, JSONArray> getMyTickets(String account, int getType, int... targetState) {
         Map result = new HashMap();
 
-        //个人账户下包含未使用的，已退回的，冠军三种状态的数据,
-        account = account.toLowerCase();
-        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + bobSuffix_NormalTicket + separator + "Body>";
-        Map normalTicketMap = (Map) pullBOBResource(key, account);
-
-        if (normalTicketMap.isEmpty()) {
-            return result;
+        //判断竞赛类型普通or高级
+        String ticket = bobSuffix_NormalTicket;
+        if (bobSuffix_NormalRace.contains("senior")) {
+            ticket = bobSuffix_SeniorTicket;
         }
 
+        JSONArray personTickets = new JSONArray();
+        //个人账户下包含未使用的，已退回的，冠军三种状态的数据,
+        account = account.toLowerCase();
+        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Body>";
+        Map firstTicketMap = (Map) pullBOBResource(key, account);
+
+        if (!firstTicketMap.isEmpty()) {
+            personTickets = JSON.parseArray(JSONObject.toJSONString(firstTicketMap.get("items")));
+        }
+
+        if (getType == 1) {
+            ticket = ticket.equals(bobSuffix_NormalTicket) ? bobSuffix_SeniorTicket : bobSuffix_NormalTicket;
+            //个人账户下包含未使用的，已退回的，冠军三种状态的数据,
+            key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Body>";
+            Map secondTicketMap = (Map) pullBOBResource(key, account);
+
+            if (!secondTicketMap.isEmpty()) {
+                personTickets.addAll(JSON.parseArray(JSONObject.toJSONString(secondTicketMap.get("items"))));
+            }
+
+        }
+        if (personTickets.size() == 0) {
+            return result;
+        }
 //        List items = (List) normalTicketMap.get("items");
 //        JSONArray itemArry = buildRaceInfoItems(items);
 
-        JSONArray normalTickets = JSON.parseArray(JSONObject.toJSONString(normalTicketMap.get("items")));
 
-        for (int i = 0; i < normalTickets.size();i++) {
-            JSONObject item = normalTickets.getJSONObject(i);
+        for (int i = 0; i < personTickets.size();i++) {
+            JSONObject item = personTickets.getJSONObject(i);
 
             //解析base_meta
             JSONObject meta = item.getJSONObject("base_meta");
