@@ -98,6 +98,7 @@
     "msg": "",
     "detailMsg": "",
     "data": {
+    	"raceInfo":"normal",
         "name": "name",
         "img": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/0659d41a-26c5-474d-88a3-491575c00700/public",
         "sign_up_limit": 50,
@@ -188,6 +189,7 @@
 | img                      | string    | 竞赛图片                                     |
 | signUpStartInterval      | Int       | 距离报名开始时间间隔（ms）,如果是超过了开始时间返回-1            |
 | signUpStartInterval      | Int       | 距离报名结束时间间隔（ms）,如果是超过了结束时间返回-1            |
+| raceInfo                 | String    | 当前竞赛类型：“normal”：普通场；“Senior”:高级场         |
 
 ### 查询被淘汰的NFT列表
 
