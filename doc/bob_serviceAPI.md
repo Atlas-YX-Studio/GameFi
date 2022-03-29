@@ -302,3 +302,59 @@
 | Signarry    | Arry   | 已报名  |
 | endarry     | arry   | 已退出  |
 | ticketArry  | arry   | 未报名  |
+
+### 查询其他类型NFT列表
+
+【GET】http://ip:port/v1/aww/normal/otherNFT?account={account}
+
+请求参数说明：
+
+| 名称      | 类型     | 描述   |
+| ------- | ------ | ---- |
+| account | String | 用户地址 |
+
+
+
+返回示例：
+
+```
+{
+    "code": 0,
+    "msg": "",
+    "detailMsg": "",
+    "data": [
+        {
+            "NFTMEeta": "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta",
+            "NFTBody": "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta",
+            "image": "https://imagedelivery.net/3mRLd_IbBrrQFSP57PNsVw/0659d41a-26c5-474d-88a3-491575c00700/public",
+            "creator": "0x7d6409b9974e68f969c92554422ca19b",
+            "name": "2",
+            "description": "2",
+            "id": 2,
+            "type_meta": {
+                "stamina": 1,
+                "win_rate_bonus": 1,
+                "rarity": 1
+            },
+            "body": {
+                "used_stamina": 0,
+                "time": 0
+            },
+            "payToken": "0x1::STC::STC"
+        }
+    ]
+}
+```
+
+返回参数说明：
+
+| 名称          | 类型     | 描述   |
+| ----------- | ------ | ---- |
+| data        | arry   | 门票列表 |
+| id          | String | 门票id |
+| image       | String | 图片地址 |
+| name        | String | 门票名称 |
+| description | String | 描述   |
+|             | Arry   | 已报名  |
+|             | arry   | 已退出  |
+|             | arry   | 未报名  |
