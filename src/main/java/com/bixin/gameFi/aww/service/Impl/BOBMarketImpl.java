@@ -259,7 +259,7 @@ public class BOBMarketImpl implements IBOBMarketService {
      */
     @Override
     public JSONObject getMySignedNFT(String account) {
-        account = "0x0474BA6aaD9bed0017F60578d1B7c4E3".toLowerCase(); //todo:测试数据
+//        account = "0x0474BA6aaD9bed0017F60578d1B7c4E3".toLowerCase(); //todo:测试数据
         //查询冠军、退赛的，到个人账户下查询
         int[] states = {0,2,4};//2:已退赛，4:冠军
         Map endAndChampionMap = getMyTickets(account, 1, states);
