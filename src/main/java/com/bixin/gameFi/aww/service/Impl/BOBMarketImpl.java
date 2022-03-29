@@ -63,7 +63,7 @@ public class BOBMarketImpl implements IBOBMarketService {
             if (bobMintInfo == null)  {
                 return null;
             }
-            //todo:判空并且加锁
+
             bobMintInfo.setState(1);
             bobMintInfo.setAccount(account);
             bobMintInfoMapper.updateByPrimaryKeySelective(bobMintInfo);
@@ -83,34 +83,6 @@ public class BOBMarketImpl implements IBOBMarketService {
         Map normalTicketMap = getMyTickets(account,0, 0);
         JSONArray result = (JSONArray) normalTicketMap.get(0);
 
-//        Map normalTicketMap = (Map) pullBOBResource(key, account);
-//
-//        JSONArray normalTickets = JSON.parseArray(JSONObject.toJSONString(normalTicketMap.get("items")));
-//        JSONArray result = new JSONArray();
-//        for (int i = 0; i < normalTickets.size();i++) {
-//            JSONObject item = normalTickets.getJSONObject(i);
-//
-//            //解析base_meta
-//            JSONObject meta = item.getJSONObject("base_meta");
-//            String image = HexStringUtil.toStringHex(meta.getString("image").replaceAll("0x", ""));
-//            String name = HexStringUtil.toStringHex(meta.getString("name").replaceAll("0x", ""));
-//            String description = HexStringUtil.toStringHex(meta.getString("description").replaceAll("0x", ""));
-//            item.put("image", image);
-//            item.put("name", name);
-//            item.put("description", description);
-//            item.remove("base_meta");
-//            JSONObject type_meta = item.getJSONObject("type_meta");
-//            int ticketState = type_meta.getInteger("state");
-//            item.put("state",ticketState);
-//            if (ticketState != 0) { //只查询未使用状态的，还可能包含冠军和已退回
-//                continue;
-//            }
-//            item.remove("base_meta");
-//            item.remove("type_meta");
-//            item.remove("body");
-//            result.add(item);
-//        }
-
         return result;
     }
 
@@ -123,15 +95,6 @@ public class BOBMarketImpl implements IBOBMarketService {
             return configInfo;
         }
 
-//        Map<String, String> normal_ticket_fee_token = (Map<String, String>) configInfoMap.get("normal_ticket_fee_token");
-//        //将modulename和name由16进制转换为字符串
-//        String modulName = HexStringUtil.toStringHex(String.valueOf(normal_ticket_fee_token.get("module_name")).replaceAll("0x", ""));
-//        String name = HexStringUtil.toStringHex(String.valueOf(normal_ticket_fee_token.get("name")).replaceAll("0x", ""));
-//
-//        normal_ticket_fee_token.put("module_name", modulName);
-//        normal_ticket_fee_token.put("name", name);
-//        //重新赋值total_reward_token
-//        configInfoMap.put("normal_ticket_fee_token", normal_ticket_fee_token);
         configInfo = new JSONObject(configInfoMap);
         return configInfo;
     }
@@ -143,6 +106,7 @@ public class BOBMarketImpl implements IBOBMarketService {
      */
     @Override
     public JSONObject getBOBRaceInfo(String account) {
+        log.info("getBOBRaceInfo start.account:{}" + account);
         //这个account是为了过滤当前用户已参赛的nft列表，所以pullresource的时候不需要传,使用manager的address
         if (!StringUtils.isEmpty(account)) {
            account = account.toLowerCase();//转换小写
@@ -203,7 +167,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         List items = (List) raceInfoMap.get("items");
         Integer state = (Integer) raceInfoMap.get("state");
         raceInfoMap.put("actual_surplus_count", items.size());
-
+        log.info("state:{}", state);
         if (state == 1 || state == 2) {//如果是报名状态或者竞赛开始状态，返回当前用户的nft
             JSONArray itemArry = buildRaceInfoItems(items, account);
             raceInfoMap.put("items",itemArry);
@@ -241,6 +205,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
     @Override
     public JSONArray getBOBFallenInfo(String account) {
+        log.info("getBOBFallenInfo, account:{}", account);
         if (!StringUtils.isEmpty(account)) {
             account = account.toLowerCase();
         }
@@ -249,6 +214,7 @@ public class BOBMarketImpl implements IBOBMarketService {
             Map configMap = getBOBConfig();
             bobSuffix_Burn = String.valueOf(configMap.get("normal_burn_address"));
         }
+        log.info("burn address:{}" + bobSuffix_Burn );
 
         //判断竞赛类型普通or高级
         String ticket = bobConfig.getContent().getBobSuffixNormalTicket();
@@ -287,12 +253,13 @@ public class BOBMarketImpl implements IBOBMarketService {
     }
 
     /**
-     * 查询我的已报名列表，包含三部分，冠军、存活中的和被淘汰的
+     * 查询我的已报名列表，包含冠军、存活中的
      * @param account
      * @return
      */
     @Override
     public JSONObject getMySignedNFT(String account) {
+        account = "0x0474BA6aaD9bed0017F60578d1B7c4E3".toLowerCase(); //todo:测试数据
         //查询冠军、退赛的，到个人账户下查询
         int[] states = {0,2,4};//2:已退赛，4:冠军
         Map endAndChampionMap = getMyTickets(account, 1, states);
@@ -317,7 +284,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         log.debug("aliveSize:{},ticketSize:{}", aliveArry.size(), ticketArry.size());
 
         JSONObject result = new JSONObject();
-//        championArry.addAll(fallenArry);
+
         aliveArry.addAll(championArry);
         result.put("signArry", aliveArry); //已报名的包含存活中的，冠军，包含普通场和高级场
         result.put("endArry", endArry);
@@ -386,9 +353,6 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (personTickets.size() == 0) {
             return result;
         }
-//        List items = (List) normalTicketMap.get("items");
-//        JSONArray itemArry = buildRaceInfoItems(items);
-
 
         for (int i = 0; i < personTickets.size();i++) {
             JSONObject item = personTickets.getJSONObject(i);
@@ -426,7 +390,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         return result;
     }
 
-    public JSONArray getOtherNFT(String account) {
+    public JSONArray getOtherNFT1(String account) {
         String key = bobConfig.getContent().getNftName();
         Map NFTInfoMap = (Map) pullBOBResource(key, account);
         if (NFTInfoMap.isEmpty()) {
@@ -437,8 +401,8 @@ public class BOBMarketImpl implements IBOBMarketService {
         for (int i = 0; i< nftArry.size(); i++) {
             JSONObject nftItem = nftArry.getJSONObject(i);
             //todo：
-            nftItem.put("ARMMEeta", "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta");
-            nftItem.put("ARMBody", "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta");
+            nftItem.put("NFTMeta", "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta");
+            nftItem.put("NFTBody", "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta");
             nftItem.put("payToken", "0x1::STC::STC");
             //解析base_meta信息
             JSONObject base_meta = nftItem.getJSONObject("base_meta");
@@ -450,6 +414,47 @@ public class BOBMarketImpl implements IBOBMarketService {
         return nftArry;
     }
 
+    public JSONArray getOtherNFT(String account) {
+        String nftConfig = bobConfig.getContent().getNftName();
+        String[] nftArr = nftConfig.split("/");
+        if (nftArr == null || nftArr.length < 1) {
+            return new JSONArray();
+        }
+        JSONArray result = new JSONArray();
+        //遍历每个类型的nft，查询当前账户下的数据
+        for (int i= 0; i < nftArr.length; i++) {
+            String[] nftItem = nftArr[i].split(",");
+            String NFTMeta = nftItem[0];
+            String NFTBody = nftItem[1];
+            String playToken = nftItem[2];
+            result.addAll(getOtherNFTList(NFTMeta, NFTBody, playToken, account));
+        }
+        return result;
+    }
+
+    private JSONArray getOtherNFTList(String meta, String body, String playToken, String account) {
+        String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + meta + ", " + body + ">";
+        Map NFTInfoMap = (Map) pullBOBResource(key, account);
+        if (NFTInfoMap.isEmpty()) {
+            return new JSONArray();
+        }
+
+        JSONArray nftArry = JSON.parseArray(JSONObject.toJSONString(NFTInfoMap.get("items")));
+        for (int i = 0; i< nftArry.size(); i++) {
+            JSONObject nftItem = nftArry.getJSONObject(i);
+
+            nftItem.put("NFTMeta", meta);
+            nftItem.put("NFTBody", body);
+            nftItem.put("payToken", playToken);
+            //解析base_meta信息
+            JSONObject base_meta = nftItem.getJSONObject("base_meta");
+            nftItem.put("name",HexStringUtil.toStringHex(base_meta.getString("name").replaceAll("0x", "")));
+            nftItem.put("image",HexStringUtil.toStringHex(base_meta.getString("image").replaceAll("0x", "")));
+            nftItem.put("description",HexStringUtil.toStringHex(base_meta.getString("description").replaceAll("0x", "")));
+            nftItem.remove("base_meta");
+        }
+        return nftArry;
+    }
 
 
     private Map pullResource(String currentAccount) {
@@ -502,6 +507,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
 
     private Object pullBOBResource(String key, String account) {
+        log.info("pullBOBRasource, key:{}, account:{}", key, account);
         if (StringUtils.isEmpty(account)){
             account = bobConfig.getCommon().getContractAddress(); //默认查询manager中的数据,否则查询传入地址的数据
         }

@@ -62,11 +62,11 @@ gamefi:
       websocket-host: 60.205.3.84
       websocket-port: 8970
     content:
-      bob-suffix: "::BOBConfigV1043::Config"
-      race-module: "BOBSeniorRaceV1043"
-      bobSuffix-normal-ticket: "BOBNormalTicketV1043"
-      bobSuffix-senior-ticket: "BOBSeniorTicketV1043"
-      nft-name: "0x00000000000000000000000000000001::NFTGallery::NFTGallery<0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta, 0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMBody>"
+      bob-suffix: "::BOBConfigV1045::Config"
+      race-module: "BOBSeniorRaceV1045"
+      bobSuffix-normal-ticket: "BOBNormalTicketV1045"
+      bobSuffix-senior-ticket: "BOBSeniorTicketV1045"
+      nft-name: "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta,0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMBody,0x00000000000000000000000000000001::STC::STC/"
 
 
 
