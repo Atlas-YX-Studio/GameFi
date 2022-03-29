@@ -194,11 +194,12 @@ public class BOBMarketImpl implements IBOBMarketService {
             signUpStartInterval = (signUpStartBlock - currentBlock)* 5000L;//按每块5s计算
         }
 
-        if (currentBlock < signUpEndBlock ) {//当前还没到报名开始时间
+        if (currentBlock < signUpEndBlock ) {//当前还没到报名结束时间
             signUpEndInterval = (signUpEndBlock - currentBlock)* 5000L;
         }
         raceInfoMap.put("signUpStartInterval", signUpStartInterval);
         raceInfoMap.put("signUpEndInterval", signUpEndInterval);
+        raceInfoMap.put("currentBlock", currentBlock);
         raceInfo = new JSONObject(raceInfoMap);
         return raceInfo;
     }
