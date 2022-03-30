@@ -298,11 +298,11 @@ public class BOBMarketImpl implements IBOBMarketService {
             String[] historyRaces = historyRace.split(",");
             for (int i = 0; i < historyRaces.length; i++) {
                 //查询竞赛信息，查询竞赛冠军
-                String raceKey = bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getRaceModule() + separator + "RaceInfo";
+                String raceKey = bobConfig.getCommon().getContractAddress() + separator + historyRaces[i] + separator + "RaceInfo";
                 Map raceInfoMap = (Map) pullBOBResource(raceKey, null);
 
                 String image = HexStringUtil.toStringHex(String.valueOf(raceInfoMap.get("champion_nft_img")).replaceAll("0x", ""));
-                String nftId = HexStringUtil.toStringHex(String.valueOf(raceInfoMap.get("champion_nft_id")).replaceAll("0x", ""));
+                String nftId = String.valueOf(raceInfoMap.get("champion_nft_id"));
                 String address = String.valueOf(raceInfoMap.get("champion_address"));
 
                 JSONObject championObj = new JSONObject();
@@ -317,8 +317,8 @@ public class BOBMarketImpl implements IBOBMarketService {
         JSONObject result = new JSONObject();
         for (int i = 0; i < championList.size(); i++) {
             String championId = String.valueOf(championList.get(i));
-            for (int j = 0; j < historyRaceChampion.size(); i++) {
-                JSONObject championObj = historyRaceChampion.get(i);
+            for (int j = 0; j < historyRaceChampion.size(); j++) {
+                JSONObject championObj = historyRaceChampion.get(j);
                 if (account.equalsIgnoreCase(championObj.getString("address")) &&  championId.equalsIgnoreCase(championObj.getString("address"))) {
                     result = championObj;
                     break;

@@ -63,7 +63,7 @@ gamefi:
       websocket-port: 8970
     content:
       bob-suffix: "::BOBConfigV1120::Config"
-      race-module: "BOBSeniorRaceV1121"
+      race-module: "BOBSeniorRaceV1122"
       bobSuffix-normal-ticket: "BOBNormalTicketV1120"
       bobSuffix-senior-ticket: "BOBSeniorTicketV1120"
       nft-name: "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta,0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMBody,0x00000000000000000000000000000001::STC::STC/"
