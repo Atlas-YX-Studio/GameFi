@@ -6,10 +6,11 @@ import com.bixin.gameFi.aww.service.Impl.BOBMarketImpl;
 import com.bixin.gameFi.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  *
@@ -32,6 +33,22 @@ public class BOBNormalController {
     public R getMintInfo(@RequestParam(required = false) String account) {
         R r = R.success(bobMarketService.getBOBMintInfo(account));
         return r;
+    }
+
+    /**
+     * 获取nft封面链接
+     * @param id
+     * @return
+     */
+    @GetMapping("getImage/{id}")
+    public R getImage(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response)  {
+        String imageURL = bobMarketService.getNFTImage(id);
+        try {
+            response.sendRedirect(imageURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return R.success();
     }
 
     /**

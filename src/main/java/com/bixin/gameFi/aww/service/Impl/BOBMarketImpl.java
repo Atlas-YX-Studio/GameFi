@@ -7,6 +7,7 @@ import com.bixin.gameFi.aww.bean.DO.BOBMintInfo;
 import com.bixin.gameFi.aww.bean.dto.ChainDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourceDto;
 import com.bixin.gameFi.aww.bean.dto.ChainResourcesDto;
+import com.bixin.gameFi.aww.common.contants.PathConstant;
 import com.bixin.gameFi.aww.config.BOBConfig;
 import com.bixin.gameFi.aww.core.mapper.BobMintInfoMapper;
 import com.bixin.gameFi.aww.service.IBOBMarketService;
@@ -45,6 +46,8 @@ public class BOBMarketImpl implements IBOBMarketService {
     @Resource
     BobMintInfoMapper bobMintInfoMapper;
 
+    private static String NFTImageURL = PathConstant.AWW_REQUEST_PATH_PREFIX + "/normal/getImage/";
+
     private static final String separator = "::";
 //    private static final String bobSuffix = separator + "BOBConfigV1043" + separator + "Config";
 //    private static final String bobSuffix_NormalTicket = "BOBNormalTicketV1043";
@@ -67,8 +70,18 @@ public class BOBMarketImpl implements IBOBMarketService {
             bobMintInfo.setState(1);
             bobMintInfo.setAccount(account);
             bobMintInfoMapper.updateByPrimaryKeySelective(bobMintInfo);
+            bobMintInfo.setImageLink(bobConfig.getContent().getImageInfoApi() + bobMintInfo.getId());
             return JSONObject.parseObject(JacksonUtil.toJson(bobMintInfo));
         }
+    }
+
+    @Override
+    public String getNFTImage(Long id) {
+        BOBMintInfo bobMintInfo = bobMintInfoMapper.selectByPrimaryKey(id);
+        if (bobMintInfo == null) {
+            return "";
+        }
+        return bobMintInfo.getImageLink();
     }
 
     @Override
@@ -207,6 +220,7 @@ public class BOBMarketImpl implements IBOBMarketService {
     @Override
     public JSONArray getBOBFallenInfo(String account) {
         log.info("getBOBFallenInfo, account:{}", account);
+        //如果传了用户，查询当前账户被淘汰的，如果没传，查询所有被淘汰的
         if (!StringUtils.isEmpty(account)) {
             account = account.toLowerCase();
         }
@@ -214,6 +228,9 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (StringUtils.isEmpty(bobSuffix_Burn)) {
             Map configMap = getBOBConfig();
             bobSuffix_Burn = String.valueOf(configMap.get("normal_burn_address"));
+            if (bobConfig.getContent().getRaceModule().contains("Senior")) {
+                bobSuffix_Burn = String.valueOf(configMap.get("senior_burn_address"));
+            }
         }
         log.info("burn address:{}" + bobSuffix_Burn );
 
@@ -222,6 +239,11 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (bobConfig.getContent().getRaceModule().contains("Senior")) {
             ticket = bobConfig.getContent().getBobSuffixSeniorTicket();
         }
+
+        //查询当前竞赛信息，获取竞赛times标志，为了判断是当前场次比赛被淘汰的
+        String raceKey = bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getRaceModule() + separator + "RaceInfo";
+        Map raceInfoMap = (Map) pullBOBResource(raceKey, null);
+        String raceUseTimes = String.valueOf(raceInfoMap.get("usage_times"));
 
         String burnKey = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Meta, " + bobConfig.getCommon().getContractAddress() + separator + ticket + separator + "Body>";
         Map resourceMap = (Map) pullBOBResource(burnKey, bobSuffix_Burn);
@@ -245,6 +267,12 @@ public class BOBMarketImpl implements IBOBMarketService {
             item.remove("base_meta");
             JSONObject type_meta = item.getJSONObject("type_meta");
             item.put("state",type_meta.getInteger("state"));
+            //根据usageTime 判断是否是当前场次的淘汰数据
+            String usageTime = type_meta.getString("usage_times");
+            if (StringUtils.isEmpty(usageTime) || !usageTime.equalsIgnoreCase(raceUseTimes)) {
+                continue;
+            }
+
             item.remove("base_meta");
             item.remove("type_meta");
             item.remove("body");

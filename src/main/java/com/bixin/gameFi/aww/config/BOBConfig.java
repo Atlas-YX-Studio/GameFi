@@ -39,10 +39,11 @@ public class BOBConfig {
     public static class Content {
         private String bobSuffix;
         private String raceModule;
-        private String ss;
         private String bobSuffixNormalTicket;
         private String bobSuffixSeniorTicket;
         private String nftName;
+        private String imageInfoApi;
+
     }
 
 }
