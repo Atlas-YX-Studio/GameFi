@@ -244,7 +244,7 @@
 
 
 
-### 查询已报名、已退赛、已淘汰NFT列表（MyNFT页面）
+### 查询已报名、已退赛、未参赛NFT列表（MyNFT页面）
 
 【GET】http://ip:port/v1/aww/normal/mySignedNFT?account={account}
 
@@ -264,6 +264,11 @@
     "msg": "",
     "detailMsg": "",
     "data": {
+    	"champion": {
+            "image": "https://test.armwrestwar.com/v1/aww/normal/getImage/1382",
+            "address": "0x0474ba6aad9bed0017f60578d1b7c4e3",
+            "nftId": "5"
+        }
         "signArry": [
             {
                 "owner": "0x93bfd6328ca4d77211c3103bf94275e6",
@@ -302,6 +307,8 @@
 | Signarry    | Arry   | 已报名  |
 | endarry     | arry   | 已退出  |
 | ticketArry  | arry   | 未报名  |
+| champion    | object | 冠军数据 |
+|             |        |      |
 
 ### 查询其他类型NFT列表
 
