@@ -60,6 +60,11 @@ public class BOBMarketImpl implements IBOBMarketService {
     @Override
     @Transactional
     public JSONObject getBOBMintInfo(String account) {
+        if (!checkAccount(account)) {
+            JSONObject error = new JSONObject();
+            error.put("errorAccount", 1);
+            return error;
+        }
         synchronized (this) {
             account = account.toLowerCase();
             BOBMintInfo bobMintInfo = bobMintInfoMapper.selectByState();
@@ -69,10 +74,19 @@ public class BOBMarketImpl implements IBOBMarketService {
 
             bobMintInfo.setState(1);
             bobMintInfo.setAccount(account);
+            bobMintInfo.setName(String.valueOf(bobMintInfo.getId()));
+            bobMintInfo.setDescription(String.valueOf(bobMintInfo.getId()));
             bobMintInfoMapper.updateByPrimaryKeySelective(bobMintInfo);
             bobMintInfo.setImageLink(bobConfig.getContent().getImageInfoApi() + bobMintInfo.getId());
             return JSONObject.parseObject(JacksonUtil.toJson(bobMintInfo));
         }
+    }
+
+    private boolean checkAccount(String account) {
+        if (!account.startsWith("0x")) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -308,6 +322,7 @@ public class BOBMarketImpl implements IBOBMarketService {
                 JSONObject championObj = new JSONObject();
                 championObj.put("image", image);
                 championObj.put("nftId", nftId);
+                championObj.put("nft", nftId);
                 championObj.put("address", address);
                 historyRaceChampion.add(championObj);
             }

@@ -1,5 +1,6 @@
 package com.bixin.gameFi.aww.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bixin.gameFi.aww.common.contants.PathConstant;
 import com.bixin.gameFi.aww.service.IBOBMarketService;
 import com.bixin.gameFi.aww.service.Impl.BOBMarketImpl;
@@ -25,13 +26,16 @@ public class BOBNormalController {
 
     /**
      * mint时获取单个nft的属性
-     * todo：是否集群?需要加分布式锁?
      * @param account
      * @return
      */
     @GetMapping("mintInfo")
     public R getMintInfo(@RequestParam(required = false) String account) {
-        R r = R.success(bobMarketService.getBOBMintInfo(account));
+        JSONObject result = bobMarketService.getBOBMintInfo(account);
+        if (result.containsKey("errorAccount")) {
+            return R.failure("account format is error");
+        }
+        R r = R.success(result);
         return r;
     }
 
