@@ -217,7 +217,7 @@ public class ContractBiz {
                     JSONObject jsonObject = JSON.parseObject(rst);
                     JSONObject result = jsonObject.getJSONObject("result");
                     if (result == null) {
-                        throw new RuntimeException("合约执行中... " + "txn:" + txn);
+                        throw new RuntimeException("");
                     } else {
                         if ("Executed".equalsIgnoreCase(result.getString("status"))) {
                             log.info("合约执行成功，result: {}", result);

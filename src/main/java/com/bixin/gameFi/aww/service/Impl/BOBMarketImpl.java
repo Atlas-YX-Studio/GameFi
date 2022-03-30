@@ -344,7 +344,9 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         if (isSenior) {
             JSONObject champion = getHistoryChampion(account);
-            result.put("champion", champion);
+            if (!champion.isEmpty()) {
+                result.put("champion", champion);
+            }
         }
         //查询冠军、退赛的，到个人账户下查询
         int[] states = {0,2,4};//2:已退赛，4:冠军

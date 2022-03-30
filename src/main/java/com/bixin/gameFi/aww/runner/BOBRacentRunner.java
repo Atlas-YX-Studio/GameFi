@@ -193,9 +193,9 @@ public class BOBRacentRunner implements ApplicationRunner {
                 }else {//没有到达下次淘汰时间，则要判断当前存活人数是否大于应该存活人数，如果大于则进行人数清理
                     if (actualSurplus > targetSuperplus) {
                         //调用合约，清理存活人数
-                        Long currentTime = timestamp.getTime();//todo：是否需要修改？？
+//                        Long currentTime = timestamp.getTime();//todo：是否需要修改？？
                         List funArgs = Lists.newArrayList(
-                                Bytes.valueOf(BcsSerializeHelper.serializeU64(currentTime))
+                                Bytes.valueOf(BcsSerializeHelper.serializeU64(50L))
                         );
                         boolean executed = callFunction("f_clear", funArgs);
                         if (!executed) {
