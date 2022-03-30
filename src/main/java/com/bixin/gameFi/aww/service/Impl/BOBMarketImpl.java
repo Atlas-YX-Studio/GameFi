@@ -281,6 +281,53 @@ public class BOBMarketImpl implements IBOBMarketService {
         return result;
     }
 
+
+
+    private JSONObject getHistoryChampion(String account) {
+        //先去获取config中冠军的address列表
+        Map configMap = getBOBConfig();
+        List championList = (List) configMap.get("normal_champion");
+        if (championList.size() <= 0) {
+            return new JSONObject();
+        }
+
+        //获取历史场次的冠军
+        String historyRace = bobConfig.getContent().getHistoryRace();
+        List<JSONObject> historyRaceChampion = new ArrayList();
+        if (!StringUtils.isEmpty(historyRace)) {
+            String[] historyRaces = historyRace.split(",");
+            for (int i = 0; i < historyRaces.length; i++) {
+                //查询竞赛信息，查询竞赛冠军
+                String raceKey = bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getRaceModule() + separator + "RaceInfo";
+                Map raceInfoMap = (Map) pullBOBResource(raceKey, null);
+
+                String image = HexStringUtil.toStringHex(String.valueOf(raceInfoMap.get("champion_nft_img")).replaceAll("0x", ""));
+                String nftId = HexStringUtil.toStringHex(String.valueOf(raceInfoMap.get("champion_nft_id")).replaceAll("0x", ""));
+                String address = String.valueOf(raceInfoMap.get("champion_address"));
+
+                JSONObject championObj = new JSONObject();
+                championObj.put("image", image);
+                championObj.put("nftId", nftId);
+                championObj.put("address", address);
+                historyRaceChampion.add(championObj);
+            }
+        }
+
+        //用链上的冠军列表跟历史竞赛的冠军匹配，匹配上就返回
+        JSONObject result = new JSONObject();
+        for (int i = 0; i < championList.size(); i++) {
+            String championId = String.valueOf(championList.get(i));
+            for (int j = 0; j < historyRaceChampion.size(); i++) {
+                JSONObject championObj = historyRaceChampion.get(i);
+                if (account.equalsIgnoreCase(championObj.getString("address")) &&  championId.equalsIgnoreCase(championObj.getString("address"))) {
+                    result = championObj;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * 查询我的已报名列表，包含冠军、存活中的
      * @param account
@@ -288,7 +335,17 @@ public class BOBMarketImpl implements IBOBMarketService {
      */
     @Override
     public JSONObject getMySignedNFT(String account) {
+        JSONObject result = new JSONObject();
 //        account = "0x0474BA6aaD9bed0017F60578d1B7c4E3".toLowerCase(); //todo:测试数据
+        boolean isSenior = false;
+        if (bobConfig.getContent().getRaceModule().contains("Senior")) {
+            isSenior = true;
+        }
+
+        if (isSenior) {
+            JSONObject champion = getHistoryChampion(account);
+            result.put("champion", champion);
+        }
         //查询冠军、退赛的，到个人账户下查询
         int[] states = {0,2,4};//2:已退赛，4:冠军
         Map endAndChampionMap = getMyTickets(account, 1, states);
@@ -312,7 +369,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
         log.debug("aliveSize:{},ticketSize:{}", aliveArry.size(), ticketArry.size());
 
-        JSONObject result = new JSONObject();
+
 
         aliveArry.addAll(championArry);
         result.put("signArry", aliveArry); //已报名的包含存活中的，冠军，包含普通场和高级场

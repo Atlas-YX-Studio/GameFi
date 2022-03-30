@@ -43,6 +43,7 @@ public class BOBConfig {
         private String bobSuffixSeniorTicket;
         private String nftName;
         private String imageInfoApi;
+        private String historyRace;
 
     }
 
