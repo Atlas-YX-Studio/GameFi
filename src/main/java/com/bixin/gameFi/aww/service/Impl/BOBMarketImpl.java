@@ -99,6 +99,36 @@ public class BOBMarketImpl implements IBOBMarketService {
     }
 
     @Override
+    public JSONObject getMintFee() {
+        JSONObject fee = new JSONObject();
+        Map configInfoMap = (Map) pullBOBResource(bobConfig.getCommon().getContractAddress() + bobConfig.getContent().getBobSuffix(), null);
+        if (configInfoMap == null) {
+            return fee;
+        }
+
+        Long ticketFee = 0L;
+        JSONObject tickentToken = new JSONObject();
+        //当前是高级场，取高级场的费用配置
+        if (bobConfig.getContent().getRaceModule().contains("Senior")) {
+            Integer feeInt = (Integer) ((List)configInfoMap.get("senior_ticket_fee")).get(0);
+            ticketFee = feeInt.longValue();;
+            List tokenList = (List) configInfoMap.get("senior_ticket_fee_token");tickentToken = JSONObject.parseObject(JSON.toJSONString(tokenList.get(0)));
+            tickentToken.put("name", HexStringUtil.toStringHex(tickentToken.getString("name").replaceAll("0x", "")));
+            tickentToken.put("module_name", HexStringUtil.toStringHex(tickentToken.getString("module_name").replaceAll("0x", "")));
+        }else {
+            Integer feeInt = (Integer) ((List)configInfoMap.get("normal_ticket_fee")).get(0);
+            ticketFee = feeInt.longValue();;
+            List tokenList = (List) configInfoMap.get("normal_ticket_fee_token");
+            tickentToken = JSONObject.parseObject(JSON.toJSONString(tokenList.get(0)));
+            tickentToken.put("name", HexStringUtil.toStringHex(tickentToken.getString("name").replaceAll("0x", "")));
+            tickentToken.put("module_name", HexStringUtil.toStringHex(tickentToken.getString("module_name").replaceAll("0x", "")));
+        }
+        fee.put("fee", ticketFee);
+        fee.put("token", tickentToken);
+        return fee;
+    }
+
+    @Override
     public JSONArray getNormalTicket(String account, String raceType) {
 
         if (!(raceType.equalsIgnoreCase("normal") && bobConfig.getContent().getRaceModule().contains("Normal") || raceType.equalsIgnoreCase("senior") && bobConfig.getContent().getRaceModule().contains("Senior")) ) {

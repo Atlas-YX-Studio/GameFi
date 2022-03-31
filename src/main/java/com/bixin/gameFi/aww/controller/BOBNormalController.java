@@ -55,6 +55,13 @@ public class BOBNormalController {
         return R.success();
     }
 
+
+    @GetMapping("mintFee")
+    public R getMintFee() {
+        R r = R.success(bobMarketService.getMintFee());
+        return r;
+    }
+
     /**
      * 查询单个用户普通场门票（还未报名的）
      * @param account

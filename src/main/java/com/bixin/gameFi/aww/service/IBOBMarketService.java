@@ -15,6 +15,8 @@ public interface IBOBMarketService {
 
     String getNFTImage(Long id);
 
+    JSONObject getMintFee();
+
     JSONArray getNormalTicket(String account, String raceType);
 
     Map getBOBConfig();

@@ -79,6 +79,43 @@
 
 
 
+### 查询mint门票价格
+
+【GET】http://ip:port/v1/aww/normal/mintFee
+
+
+
+|      |      |      |
+| ---- | ---- | ---- |
+|      |      |      |
+
+返回示例：
+
+```
+{
+    "code": 0,
+    "msg": "",
+    "detailMsg": "",
+    "data": {
+        "fee": 1000000000,
+        "token": {
+            "name": "STC",
+            "addr": "0x00000000000000000000000000000001",
+            "module_name": "STC"
+        }
+    }
+}
+```
+
+返回参数说明：
+
+| 名称    | 类型   | 描述   |
+| ----- | ---- | ---- |
+| fee   | int  | 门票价格 |
+| token | obj  | 门票类型 |
+
+
+
 ### 查询普通场竞赛信息接口
 
 【GET】http://ip:port/v1/aww/normal/raceInfo?account={account}
@@ -267,7 +304,8 @@
     	"champion": {
             "image": "https://test.armwrestwar.com/v1/aww/normal/getImage/1382",
             "address": "0x0474ba6aad9bed0017f60578d1b7c4e3",
-            "nftId": "5"
+            "nftId": "5",
+            "seniorRaceModule":"0x9b996121ea29b50c6213558e34120e5c::BOBSeniorRaceV1003"
         }
         "signArry": [
             {
