@@ -360,6 +360,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         if (isSenior) {
             JSONObject champion = getHistoryChampion(account);
             if (!champion.isEmpty()) {
+                result.put("seniorRaceModule", bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getSeniorRaceModule()); //高级场合约地址
                 result.put("champion", champion);
             }
         }

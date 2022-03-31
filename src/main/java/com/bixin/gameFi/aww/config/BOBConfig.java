@@ -44,6 +44,7 @@ public class BOBConfig {
         private String nftName;
         private String imageInfoApi;
         private String historyRace;
+        private String seniorRaceModule;
 
     }
 
