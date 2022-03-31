@@ -627,7 +627,7 @@ public class BOBMarketImpl implements IBOBMarketService {
 
     private String desAddress(String address) {
         try {
-            String startAdd = address.substring(0, 3);
+            String startAdd = address.substring(0, 4);
             String endAdd = address.substring(address.length() - 3, address.length());
             address = startAdd + "..." + endAdd;
         }catch (Exception e) {
