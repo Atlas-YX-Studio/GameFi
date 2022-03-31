@@ -406,6 +406,7 @@ public class BOBMarketImpl implements IBOBMarketService {
      */
     @Override
     public JSONObject getMySignedNFT(String account) {
+        account = account.toLowerCase();
         JSONObject result = new JSONObject();
 
         JSONObject champion = getHistoryChampion(account);

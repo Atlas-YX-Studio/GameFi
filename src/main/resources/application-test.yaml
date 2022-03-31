@@ -68,7 +68,7 @@ gamefi:
       bobSuffix-senior-ticket: "BOBSeniorTicketV1200"
       nft-name: "0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMMeta,0x7D6409B9974e68f969c92554422cA19b::ARM2::ARMBody,0x00000000000000000000000000000001::STC::STC/"
       image-info-api: "https://test.armwrestwar.com/v1/aww/normal/getImage/"
-      history-race: "BOBNormalRaceV1200"
+      history-race: "BOBNormalRaceV1200,BOBSeniorRaceV1201"
       senior-race-module: "BOBSeniorRaceV1200"
 
 
