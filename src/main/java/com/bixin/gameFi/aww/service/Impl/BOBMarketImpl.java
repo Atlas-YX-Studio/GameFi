@@ -46,6 +46,8 @@ public class BOBMarketImpl implements IBOBMarketService {
     @Resource
     BobMintInfoMapper bobMintInfoMapper;
 
+    private static JSONObject mintTicketFee = new JSONObject();
+
     private static String NFTImageURL = PathConstant.AWW_REQUEST_PATH_PREFIX + "/normal/getImage/";
 
     private static final String separator = "::";
@@ -106,6 +108,10 @@ public class BOBMarketImpl implements IBOBMarketService {
             return fee;
         }
 
+        if (!mintTicketFee.isEmpty()) {//放到缓存中，避免多次查询
+            return mintTicketFee;
+        }
+
         Long ticketFee = 0L;
         JSONObject tickentToken = new JSONObject();
         //当前是高级场，取高级场的费用配置
@@ -125,6 +131,7 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
         fee.put("fee", ticketFee);
         fee.put("token", tickentToken);
+        mintTicketFee = fee;
         return fee;
     }
 
@@ -548,12 +555,16 @@ public class BOBMarketImpl implements IBOBMarketService {
         return nftArry;
     }
 
-    public JSONArray getOtherNFT(String account) {
+    public JSONArray getOtherNFT(String account) throws Exception {
         String nftConfig = bobConfig.getContent().getNftName();
         String[] nftArr = nftConfig.split("/");
         if (nftArr == null || nftArr.length < 1) {
             return new JSONArray();
         }
+        String bobSuffix = bobConfig.getContent().getBobSuffix();
+        String SeniorAWWTicket = bobSuffix.substring(0, bobSuffix.length() - 6) + "SeniorAWWTicket";
+
+        Map<String, Long> rateMap = new HashMap();
         JSONArray result = new JSONArray();
         //遍历每个类型的nft，查询当前账户下的数据
         for (int i= 0; i < nftArr.length; i++) {
@@ -561,12 +572,25 @@ public class BOBMarketImpl implements IBOBMarketService {
             String NFTMeta = nftItem[0];
             String NFTBody = nftItem[1];
             String playToken = nftItem[2];
-            result.addAll(getOtherNFTList(NFTMeta, NFTBody, playToken, account));
+            String otherNFTKey = bobConfig.getCommon().getContractAddress() + SeniorAWWTicket + "<" + NFTMeta + " ," + NFTBody + " ," + playToken + ">";
+            //查询体力值兑换STC的比率
+            Long feeRate = 0L;
+            if (rateMap.isEmpty() || !rateMap.containsKey(otherNFTKey)) {
+                Map configInfoMap = (Map) pullBOBResource(otherNFTKey, null);
+                if (configInfoMap.isEmpty() || !configInfoMap.containsKey("fee_rate")) {
+                    throw new Exception();
+                }
+                feeRate = ((Integer) configInfoMap.get("fee_rate")).longValue();
+                rateMap.put(otherNFTKey, feeRate);
+            }else {
+                feeRate = rateMap.get("otherNFTKey");
+            }
+            result.addAll(getOtherNFTList(NFTMeta, NFTBody, playToken, account, feeRate));
         }
         return result;
     }
 
-    private JSONArray getOtherNFTList(String meta, String body, String playToken, String account) {
+    private JSONArray getOtherNFTList(String meta, String body, String playToken, String account, Long feeRate) {
         String key = "0x00000000000000000000000000000001::NFTGallery::NFTGallery<" + meta + ", " + body + ">";
         Map NFTInfoMap = (Map) pullBOBResource(key, account);
         if (NFTInfoMap.isEmpty()) {
@@ -586,6 +610,11 @@ public class BOBMarketImpl implements IBOBMarketService {
             nftItem.put("image",HexStringUtil.toStringHex(base_meta.getString("image").replaceAll("0x", "")));
             nftItem.put("description",HexStringUtil.toStringHex(base_meta.getString("description").replaceAll("0x", "")));
             nftItem.remove("base_meta");
+
+            //解析type_meta信息
+            JSONObject type_meta = nftItem.getJSONObject("type_meta");
+            nftItem.put("stamina", type_meta.getInteger("stamina"));
+            nftItem.put("feeRate", feeRate);
         }
         return nftArry;
     }

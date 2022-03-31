@@ -5,6 +5,7 @@ import com.bixin.gameFi.aww.common.contants.PathConstant;
 import com.bixin.gameFi.aww.service.IBOBMarketService;
 import com.bixin.gameFi.aww.service.Impl.BOBMarketImpl;
 import com.bixin.gameFi.common.response.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @Author renjian
  * @Date 2022/3/21 11:27
  */
+@Slf4j
 @RestController
 @RequestMapping(PathConstant.AWW_REQUEST_PATH_PREFIX + "/normal")
 public class BOBNormalController {
@@ -34,6 +36,9 @@ public class BOBNormalController {
         JSONObject result = bobMarketService.getBOBMintInfo(account);
         if (result.containsKey("errorAccount")) {
             return R.failure("account format is error");
+        }
+        if (result == null || result.isEmpty()) {
+            return R.failure("no data");
         }
         R r = R.success(result);
         return r;
@@ -121,8 +126,15 @@ public class BOBNormalController {
      */
     @GetMapping("otherNFT")
     public R getOtherNFT(@RequestParam String account) {
-        R r = R.success(bobMarketService.getOtherNFT(account));
-        return r;
+        try {
+            R r = R.success(bobMarketService.getOtherNFT(account));
+            return r;
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error("error:" + e.getMessage());
+            return R.failure("get other nft error.");
+        }
+
     }
 
 }

@@ -27,5 +27,5 @@ public interface IBOBMarketService {
 
     JSONObject getMySignedNFT(String account);
 
-    JSONArray getOtherNFT(String account);
+    JSONArray getOtherNFT(String account) throws Exception;
 }
