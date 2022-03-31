@@ -385,6 +385,8 @@ public class BOBMarketImpl implements IBOBMarketService {
             for (int j = 0; j < historyRaceChampion.size(); j++) {
                 JSONObject championObj = historyRaceChampion.get(j);
                 if (account.equalsIgnoreCase(championObj.getString("address")) &&  championId.equalsIgnoreCase(championObj.getString("address"))) {
+                    String address = championObj.getString("address");
+                    championObj.put("address", desAddress(address));//脱敏地址
                     result = championObj;
                     break;
                 }
