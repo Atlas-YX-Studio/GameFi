@@ -388,18 +388,11 @@ public class BOBMarketImpl implements IBOBMarketService {
     @Override
     public JSONObject getMySignedNFT(String account) {
         JSONObject result = new JSONObject();
-//        account = "0x0474BA6aaD9bed0017F60578d1B7c4E3".toLowerCase(); //todo:测试数据
-        boolean isSenior = false;
-        if (bobConfig.getContent().getRaceModule().contains("Senior")) {
-            isSenior = true;
-        }
 
-        if (isSenior) {
-            JSONObject champion = getHistoryChampion(account);
-            if (!champion.isEmpty()) {
-                result.put("seniorRaceModule", bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getSeniorRaceModule()); //高级场合约地址
-                result.put("champion", champion);
-            }
+        JSONObject champion = getHistoryChampion(account);
+        if (!champion.isEmpty()) {
+            champion.put("seniorRaceModule", bobConfig.getCommon().getContractAddress() + separator + bobConfig.getContent().getSeniorRaceModule()); //高级场合约地址
+            result.put("champion", champion);
         }
         //查询冠军、退赛的，到个人账户下查询
         int[] states = {0,2,4};//2:已退赛，4:冠军
