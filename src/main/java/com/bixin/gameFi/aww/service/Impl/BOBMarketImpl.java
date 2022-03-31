@@ -247,8 +247,12 @@ public class BOBMarketImpl implements IBOBMarketService {
         //处理冠军信息
         if(state == 3) {
             String championAddress = String.valueOf(raceInfoMap.get("champion_address"));
-            championAddress = desAddress(championAddress);//构造脱敏地址
-            raceInfoMap.put("champion_address", championAddress);
+            if (championAddress.equalsIgnoreCase("0x00000000000000000000000000000000")) { //冠军地址是否被改了，不是默认值了
+                raceInfoMap.put("champion_address", "");
+            }else {
+                championAddress = desAddress(championAddress);//构造脱敏地址
+                raceInfoMap.put("champion_address", championAddress);
+            }
         }
         String chappionNftImage = String.valueOf(raceInfoMap.get("champion_nft_img"));
 
