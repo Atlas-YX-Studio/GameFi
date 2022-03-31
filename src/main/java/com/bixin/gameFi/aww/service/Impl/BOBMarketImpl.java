@@ -16,6 +16,7 @@ import com.bixin.gameFi.common.utils.JacksonUtil;
 import com.bixin.gameFi.core.contract.ContractBiz;
 import com.bixin.gameFi.core.redis.RedisCache;
 import com.fasterxml.jackson.core.type.TypeReference;
+import jnr.ffi.annotations.In;
 import kotlin.jvm.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -228,6 +229,10 @@ public class BOBMarketImpl implements IBOBMarketService {
         //重新赋值total_reward_token
         raceInfoMap.put("total_reward_token", total_reward_token);
 
+        //处理剩余奖池信息
+        Map surplueRewardMap = (Map) raceInfoMap.get("surplus_reward");
+        raceInfoMap.put("surplus_reward", surplueRewardMap.get("value"));
+
         List items = (List) raceInfoMap.get("items");
         Integer state = (Integer) raceInfoMap.get("state");
         raceInfoMap.put("actual_surplus_count", items.size());
@@ -240,7 +245,11 @@ public class BOBMarketImpl implements IBOBMarketService {
         }
 
         //处理冠军信息
-//        String championNFtId = String.valueOf(raceInfoMap.get("champion_nft_id"));
+        if(state == 3) {
+            String championAddress = String.valueOf(raceInfoMap.get("champion_address"));
+            championAddress = desAddress(championAddress);//构造脱敏地址
+            raceInfoMap.put("champion_address", championAddress);
+        }
         String chappionNftImage = String.valueOf(raceInfoMap.get("champion_nft_img"));
 
 //        championNFtId = HexStringUtil.toStringHex(championNFtId.replaceAll("0x", ""));
@@ -306,6 +315,10 @@ public class BOBMarketImpl implements IBOBMarketService {
             if (!StringUtils.isEmpty(account) && !account.equalsIgnoreCase(creator)) {
                 continue;
             }
+
+            //填写脱敏后的所属地址
+            creator = desAddress(creator);
+            item.put("creator", creator);
 
             //解析base_meta
             JSONObject meta = item.getJSONObject("base_meta");
@@ -612,6 +625,18 @@ public class BOBMarketImpl implements IBOBMarketService {
         return nftArry;
     }
 
+    private String desAddress(String address) {
+        try {
+            String startAdd = address.substring(0, 3);
+            String endAdd = address.substring(address.length() - 3, address.length());
+            address = startAdd + "..." + endAdd;
+        }catch (Exception e) {
+            log.error("address is not format, address:{}" + address);
+            return "";
+        }
+
+        return address;
+    }
 
     private Map pullResource(String currentAccount) {
 //        String senderAddress = bobConfig.getCommon().getContractAddress();
