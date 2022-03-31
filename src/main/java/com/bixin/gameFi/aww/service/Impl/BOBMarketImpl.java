@@ -368,6 +368,9 @@ public class BOBMarketImpl implements IBOBMarketService {
                 //查询竞赛信息，查询竞赛冠军
                 String raceKey = bobConfig.getCommon().getContractAddress() + separator + historyRaces[i] + separator + "RaceInfo";
                 Map raceInfoMap = (Map) pullBOBResource(raceKey, null);
+                if (raceInfoMap.isEmpty()) {
+                    continue;
+                }
 
                 String image = HexStringUtil.toStringHex(String.valueOf(raceInfoMap.get("champion_nft_img")).replaceAll("0x", ""));
                 String nftId = String.valueOf(raceInfoMap.get("champion_nft_id"));
